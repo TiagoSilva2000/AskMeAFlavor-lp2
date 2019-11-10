@@ -14,27 +14,34 @@ public abstract class User {
     saveInDatabase();
   }
 
+  public String getEmail() {
+    return this.email;
+  }
+
   public String getName() {
     return this.name;
   }
 
-  String getEmail() {
-    return this.email;
-  }
-
-  // aplicar hash aqui.
-  String getPassword() {
-    return this.password;
-  }
-
-  // aplicar hash aqui
-  String getIDCode() {
+  public String getIDCode() {
     return this.idCode;
   }
 
-  void saveInDatabase() {}
+  // mandar e-mail de confirmação aqui.
+  public String setEmail(String nEmail) {
+    this.email = nEmail;
 
-  void resetPassword() {
+    saveInDatabase();
+    return nEmail;
+  }
+
+  public String setName(String nName) {
+    this.name = nName;
+
+    saveInDatabase();
+    return nName;
+  }
+
+  void setPassword() {
     Scanner scan = new Scanner(System.in);
     String newPass, passConfirm;
     do {
@@ -52,17 +59,16 @@ public abstract class User {
     this.password = newPass;
 
     scan.close();
+    scan = null;
     saveInDatabase();
   }
 
-  void resetEmail() {
-    Scanner scan = new Scanner(System.in);
-    String newEmail;
-    System.out.println("Insira o seu novo endereço de email: ");
-    newEmail = scan.nextLine();
-    this.email = newEmail;
+  public String setIDCode(String IDCode) {
+    this.idCode = IDCode;
 
-    scan.close();
     saveInDatabase();
+    return IDCode;
   }
+
+  protected void saveInDatabase() {}
 }

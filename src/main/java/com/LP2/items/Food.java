@@ -21,4 +21,8 @@ public class Food extends Item {
 
     return newDescription;
   }
+
+  protected String inheritString() {
+    return "- Descrição: " + this.description;
+  }
 }

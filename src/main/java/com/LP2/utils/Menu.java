@@ -1,11 +1,13 @@
 package com.LP2.utils;
 
 import com.LP2.items.Item;
+import java.util.ArrayList;
 
 public class Menu {
-  Item[] items;
+  ArrayList<Item> items;
 
   public Menu() {
+    this.items = new ArrayList<Item>();
     getFromDatabase();
   }
 
@@ -14,38 +16,32 @@ public class Menu {
   }
 
   public void listAllItems() {
-    for (byte i = 0; i < items.length; i++) {
-      System.out.println(
-        (i + 1) +
-          " - Item: " +
-          items[i].getName() +
-          "\nPreço: " +
-          items[i].getPrice()
-      );
+    for (byte i = 0; i < items.size(); i++) {
+      System.out.println((i + 1) + "  " + items.get(i).getItsString());
     }
   }
 
-  Item pushNewItem(Item newItem) {
-    // items.push(newItem);
+  public Item pushNewItem(Item newItem) {
+    items.add(newItem);
     return newItem;
   }
 
   boolean remItem(String name) {
     byte i = 0;
 
-    while (i < items.length && (!items[i].getName().equals(name))) i++;
+    while (i < items.size() && (!items.get(i).getName().equals(name))) i++;
 
-    if (i == items.length) {
+    if (i == items.size()) {
       System.out.println("Produto não encontrado no menu!");
       return false;
     } else {
-      // remover item do array aqui.
+      items.remove(i);
     }
 
     return true;
   }
 
-  public Item[] getMenu() {
+  public ArrayList<Item> getMenu() {
     return this.items;
   }
 }

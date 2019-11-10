@@ -1,34 +1,42 @@
 package com.LP2.utils;
 
+import java.util.ArrayList;
+
 // Implementar uma fila de prioridades com modificação dos indexes.
 public class AllOrders {
-  Order[] orders;
-  byte[] availableCodes; // 1 to 100
+  ArrayList<Order> orders;
+  ArrayList<Integer> availableCodes; // 1 to 100
+  int nextCode;
 
-  public AllOrders() {}
+  public AllOrders() {
+    this.orders = new ArrayList<Order>();
+    this.availableCodes = new ArrayList<Integer>();
+    nextCode = 0;
+  }
 
-  Order pushOrder(Order newOrder) {
-    // orders.push(newOrder)
+  public Order pushOrder(Order newOrder) {
+    orders.add(newOrder);
+    availableCodes.add(this.nextCode);
+    nextCode++;
     return newOrder;
   }
 
   public Order remOrder() {
-    // orders.pop();
-    return this.orders[0];
+    return orders.remove(0);
   }
 
   Order setPriority(byte orderCode) {
-    return orders[orderCode];
+    return orders.get(orderCode);
   }
 
-  Order[] getOrders() {
+  ArrayList<Order> getOrders() {
     return this.orders;
   }
 
   public void listOrders() {
-    for (byte i = 0; i < orders.length; i++) {
+    for (byte i = 0; i < orders.size(); i++) {
       System.out.println(
-        orders[i].getOrderString() + "Code: " + availableCodes[i]
+        orders.get(i).getOrderString() + " - Code: " + availableCodes.get(i)
       );
     }
   }

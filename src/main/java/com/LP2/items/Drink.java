@@ -18,4 +18,8 @@ public class Drink extends Item {
     super.saveInDatabase();
     return newProvider;
   }
+
+  protected String inheritString() {
+    return "- Provider: " + this.provider;
+  }
 }

@@ -41,7 +41,7 @@ public class Order {
 
   String getOrderString() {
     String output = String.format(
-      "%s - R$%f x %d",
+      "%s - R$%.2f x %d",
       this.item.getName(),
       this.item.getPrice(),
       this.qnt

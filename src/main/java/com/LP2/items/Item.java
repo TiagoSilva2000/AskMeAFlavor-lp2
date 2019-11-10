@@ -36,5 +36,13 @@ public abstract class Item {
     return 1;
   }
 
+  protected String inheritString() {
+    return "";
+  }
 
+  public String getItsString() {
+    return (
+      "Nome: " + this.name + " - Preço: " + this.price + " " + inheritString()
+    );
+  }
 }

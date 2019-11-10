@@ -8,11 +8,11 @@ public class Cook extends User {
     super(email, pass, name, idCode);
   }
 
-  void closeOrder(AllOrders allOrders) {
+  public void closeOrder(AllOrders allOrders) {
     allOrders.remOrder();
   }
 
-  void checkOpenOrders(AllOrders allOrders) {
+  public void checkOpenOrders(AllOrders allOrders) {
     allOrders.listOrders();
   }
 }
