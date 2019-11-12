@@ -26,6 +26,9 @@ public abstract class User {
     return this.idCode;
   }
 
+  public String getPassword() {
+    return this.password;
+  }
   // mandar e-mail de confirmação aqui.
   public String setEmail(String nEmail) {
     this.email = nEmail;

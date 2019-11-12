@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<!-- <classpathentry including="postgresql-**.**.**.jar" kind="src" output="target/classes" path="drivers/postgresql-42.2.8.jar">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="org.postgresql" value="true"/>
+		</attributes>
+	</classpathentry> -->
 	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
