@@ -1,11 +1,12 @@
-package com.LP2.users;
+package com.LP2.server.users;
 
-import com.LP2.items.Drink;
-import com.LP2.items.Food;
-import com.LP2.utils.Menu;
+import com.LP2.server.items.Drink;
+import com.LP2.server.items.Food;
+import com.LP2.server.utils.Constants;
+import com.LP2.server.utils.Menu;
 
 public class Manager extends User {
-  String secret;
+  private String secret;
 
   // vai carregar, do banco, as informações do admin e chamar o super.
   public Manager(
@@ -15,7 +16,7 @@ public class Manager extends User {
     String idCode,
     String secret
   ) {
-    super(email, pass, name, idCode);
+    super(email, pass, name, idCode, Constants.getManagerCode());
   }
 
   // comparar os hashes de cada um.

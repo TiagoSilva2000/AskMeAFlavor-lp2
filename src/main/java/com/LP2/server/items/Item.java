@@ -1,4 +1,4 @@
-package com.LP2.items;
+package com.LP2.server.items;
 
 public abstract class Item {
   private String name;

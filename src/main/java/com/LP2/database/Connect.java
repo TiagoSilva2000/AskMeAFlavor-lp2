@@ -2,11 +2,11 @@ package com.LP2.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+// import java.sql.PreparedStatement;
 // import java.sql.ResultSet;
 import java.sql.Statement;
 
-import com.LP2.users.User;
+import com.LP2.app.loader.Dataset;
 
 public class Connect {
   private String url;
@@ -15,9 +15,9 @@ public class Connect {
   private Connection conn;
 
   public Connect() {
-    this.url = "jdbc:postgresql://localhost:5432/askMeAFlavor";
-    this.username = "postgres";
-    this.password = "PENSOU QUE IA PEGAR A MINHA SENHA, NÃO É MESMO?";
+    this.url = Dataset.getValue("CONNECTION_URL");
+    this.username = Dataset.getValue("DB_USER");
+    this.password = Dataset.getValue("DB_PASS");
 
     try {
       Class.forName("org.postgresql.Driver");
@@ -29,12 +29,14 @@ public class Connect {
     System.out.println("Conexão sucedida");
   }
 
+  public Connection getCon() { return this.conn; }
+
   public boolean createUserTable() {
     try  {
       Statement stm = this.conn.createStatement();
       stm.executeQuery("CREATE TABLE Person (" +
                         "id SERIAL NOT NULL PRIMARY KEY," +
-                        "name varchar(80)," +
+                        "name varchar(80) UNIQUE," +
                         "email varchar(80)," +
                         "password varchar(80)," +
                         "IDcode varchar(80)," +
@@ -45,26 +47,6 @@ public class Connect {
       e.printStackTrace();
       return false;
     }
-    return true;
-  }
-
-  public boolean insertUserTable(User user) {
-    try {
-      PreparedStatement stm = this.conn.prepareStatement("INSERT INTO Person" +
-                              "(name, email, password, idcode, usertype)" +
-                              "VALUES (?,?,?,?,?)"
-                              );
-      stm.setString(1, user.getName());
-      stm.setString(2, user.getEmail());
-      stm.setString(3, user.getPassword());
-      stm.setString(4, user.getIDCode());
-      stm.setInt(5, 1);
-      stm.executeUpdate();
-      stm.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
     return true;
   }
 
@@ -137,5 +119,4 @@ public class Connect {
 
     return true;
   }
-
 }

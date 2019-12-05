@@ -1,16 +1,16 @@
-package com.LP2.utils;
+package com.LP2.server.utils;
 
 import java.util.ArrayList;
 
 // Implementar uma fila de prioridades com modificação dos indexes.
 public class AllOrders {
-  ArrayList<Order> orders;
-  ArrayList<Integer> availableCodes; // 1 to 100
-  int nextCode;
+  private ArrayList<Order> orders;
+  private ArrayList<Byte> availableCodes; // 1 to 100
+  private byte nextCode;
 
   public AllOrders() {
     this.orders = new ArrayList<Order>();
-    this.availableCodes = new ArrayList<Integer>();
+    this.availableCodes = new ArrayList<Byte>();
     nextCode = 0;
   }
 

@@ -1,10 +1,10 @@
-package com.LP2.utils;
+package com.LP2.server.utils;
 
-import com.LP2.items.Item;
+import com.LP2.server.items.Item;
 import java.util.ArrayList;
 
 public class Menu {
-  ArrayList<Item> items;
+  private ArrayList<Item> items;
 
   public Menu() {
     this.items = new ArrayList<Item>();

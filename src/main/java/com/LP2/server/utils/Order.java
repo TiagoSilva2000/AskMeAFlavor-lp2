@@ -1,6 +1,6 @@
-package com.LP2.utils;
+package com.LP2.server.utils;
 
-import com.LP2.items.Item;
+import com.LP2.server.items.Item;
 import java.sql.Timestamp;
 import java.time.Instant;
 

@@ -1,17 +1,25 @@
-package com.LP2.users;
+package com.LP2.server.users;
 
 import java.util.Scanner;
 
 public abstract class User {
   String email, password, name, idCode;
+  boolean saveBlocked;
+  protected byte usertype;
 
-  public User(String email, String pass, String name, String idCode) {
+  public User(String email, String pass, String name, String idCode, byte userType) {
     this.email = email;
     this.name = name;
     this.password = pass; // aplicar hash aqui.
     this.idCode = idCode; // aplicar hash aqui.
-
+    this.saveBlocked = false;
+    this.usertype = userType;
     saveInDatabase();
+  }
+
+  public User () {
+    this.email = this.name = this.password = this.idCode = "undefined";
+    this.saveBlocked = true;
   }
 
   public String getEmail() {
@@ -28,6 +36,10 @@ public abstract class User {
 
   public String getPassword() {
     return this.password;
+  }
+
+  public byte getUsertype() {
+    return this.usertype;
   }
   // mandar e-mail de confirmação aqui.
   public String setEmail(String nEmail) {

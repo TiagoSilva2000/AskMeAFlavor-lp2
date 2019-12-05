@@ -1,12 +1,14 @@
-package com.LP2.users;
+package com.LP2.server.users;
 
-import com.LP2.items.Item;
-import com.LP2.utils.AllOrders;
-import com.LP2.utils.Menu;
-import com.LP2.utils.Order;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import com.LP2.server.items.Item;
+import com.LP2.server.utils.AllOrders;
+import com.LP2.server.utils.Constants;
+import com.LP2.server.utils.Menu;
+import com.LP2.server.utils.Order;
 
 public class Client extends User {
   LocalDate lastVisit;
@@ -14,10 +16,11 @@ public class Client extends User {
   double lastBought;
 
   public Client(String email, String pass, String name, String idCode) {
-    super(email, pass, name, idCode);
+    super(email, pass, name, idCode, Constants.getClientCode());
     this.orders = new ArrayList<Order>();
     this.lastVisit = LocalDate.now();
     this.lastBought = 0;
+    // this.usertype = Constants.getClientCode();
   }
 
   private LocalDate setLastVisit(LocalDate currVisit) {
@@ -45,7 +48,7 @@ public class Client extends User {
   }
 
   // mudar para tipo Ordered.
-  public Order order(Item selectedItem, byte qnt, AllOrders allOrders) {
+  private Order order(Item selectedItem, byte qnt, AllOrders allOrders) {
     Order order = new Order(selectedItem, qnt);
     this.orders.add(order);
     allOrders.pushOrder(order);
@@ -83,7 +86,7 @@ public class Client extends User {
     System.out.println("Total: R$ " + getCurrentExpenses());
   }
 
-  boolean cashBackAllowed() {
+  private boolean cashBackAllowed() {
     return !(this.lastVisit.equals(LocalDate.now()));
   }
 
