@@ -8,31 +8,37 @@ public class Order {
   Item item;
   int qnt;
   Timestamp ordered_at;
+  byte status;
 
   public Order(Item item, int qnt) {
     this.item = item;
     this.qnt = qnt;
     this.ordered_at = Timestamp.from(Instant.now());
+    this.status = Constants.getUnOrder();
   }
 
-  void setItem(Item newItem) {
+  public void setItem(Item newItem) {
     this.item = newItem;
   }
 
-  void setQnt(int newQnt) {
+  public void setQnt(int newQnt) {
     this.qnt = newQnt;
   }
 
-  Item getItem() {
+  public Item getItem() {
     return this.item;
   }
 
-  int getQnt() {
+  public int getQnt() {
     return this.qnt;
   }
 
-  Timestamp getTime() {
+  public Timestamp getTime() {
     return this.ordered_at;
+  }
+
+  public byte getStatus() {
+    return this.status;
   }
 
   public double getCost() {

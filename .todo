@@ -1,6 +1,11 @@
-1) Integração com um banco de dados.
-2) Integração com envio de e-mails.
-3) Aplicar hash nas senhas.
-4) Intehrar com formas de pagamento
-5) Adicionar login e autenticação.
-6) Adicionar classe de gerenciamento do restaurante.
+- Integração com um banco de dados.
+- Garantir que nomes de usuário são únicos.
+- Integração com envio de e-mails.
+- itens dentro e fora do menu
+- Aplicar hash nas senhas.
+- Integrar com formas de pagamento
+- Adicionar login e autenticação (através de tokens).
+- Adicionar classe de gerenciamento do restaurante.
+- Adicionar campos created_at e updated_at no User.
+- Verificar se um código digitado está no menu.
+- Adicionar rotas de edição de perfil.

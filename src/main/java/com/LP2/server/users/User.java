@@ -1,30 +1,63 @@
 package com.LP2.server.users;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public abstract class User {
-  String email, password, name, idCode;
-  boolean saveBlocked;
+import com.LP2.database.users.UserController;
+
+public class User {
+  protected String email, password, name, idCode;
+  protected int id;
   protected byte usertype;
 
-  public User(String email, String pass, String name, String idCode, byte userType) {
-    this.email = email;
-    this.name = name;
-    this.password = pass; // aplicar hash aqui.
-    this.idCode = idCode; // aplicar hash aqui.
-    this.saveBlocked = false;
-    this.usertype = userType;
-    saveInDatabase();
+  public User() {}
+
+  public User(User user) {
+    this.email = user.getEmail();
+    this.password = user.getPassword();
+    this.name = user.getName();
+    this.idCode = user.getIDCode();
+    this.id = user.getID();
+    this.usertype = user.getUsertype();
   }
 
-  public User () {
-    this.email = this.name = this.password = this.idCode = "undefined";
-    this.saveBlocked = true;
+  protected User(String name, String email, String password, String idCode, byte userType) {
+    setAll(name, email, password, idCode, userType);
+    this.id = create();
+  }
+
+  public User (final String username, final String password) {
+    this.name = username; this.password = password;
+    ArrayList<String> fields = read();
+    try {
+      if (fields.size() != 0) {
+        byte usertype = (byte) Integer.parseInt(fields.get(5));
+        setAll(fields.get(1), fields.get(2), fields.get(3), fields.get(4), usertype);
+      }
+      this.id = Integer.parseInt(fields.get(0));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void setExtraInfoById() {
+
+  }
+
+  private void setAll(String name, String email, String password, String idCode,
+  byte userType) {
+    this.email = email;
+    this.name = name;
+    this.password = password; // aplicar hash aqui.
+    this.idCode = idCode; // aplicar hash aqui.
+    this.usertype = userType;
   }
 
   public String getEmail() {
     return this.email;
   }
+
+  public int getID() { return this.id; }
 
   public String getName() {
     return this.name;
@@ -41,22 +74,25 @@ public abstract class User {
   public byte getUsertype() {
     return this.usertype;
   }
+
   // mandar e-mail de confirmação aqui.
   public String setEmail(String nEmail) {
     this.email = nEmail;
 
-    saveInDatabase();
+    update();
     return nEmail;
   }
 
   public String setName(String nName) {
     this.name = nName;
 
-    saveInDatabase();
+    update();
     return nName;
   }
 
-  void setPassword() {
+  public void setPassword(String password) { this.password = password; }
+
+  public void setPassword() {
     Scanner scan = new Scanner(System.in);
     String newPass, passConfirm;
     do {
@@ -75,15 +111,29 @@ public abstract class User {
 
     scan.close();
     scan = null;
-    saveInDatabase();
+    update();
   }
 
   public String setIDCode(String IDCode) {
     this.idCode = IDCode;
 
-    saveInDatabase();
+    update();
     return IDCode;
   }
 
-  protected void saveInDatabase() {}
+  public byte setUsertype(byte usertype) { this.usertype = usertype; return usertype; }
+
+  public byte setUsertype(String usertype) {
+    this.usertype = (byte) Integer.parseInt(usertype);
+
+    return this.usertype;
+  }
+
+  protected int create() { return UserController.create(this); }
+
+  protected ArrayList<String> read() { return UserController.get(this.name, this.password); }
+
+  public void update() { UserController.update(this); }
+
+  protected void delete() { UserController.remove(this.id); }
 }

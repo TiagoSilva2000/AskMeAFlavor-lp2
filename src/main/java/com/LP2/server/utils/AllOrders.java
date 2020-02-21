@@ -4,36 +4,42 @@ import java.util.ArrayList;
 
 // Implementar uma fila de prioridades com modificação dos indexes.
 public class AllOrders {
-  private ArrayList<Order> orders;
-  private ArrayList<Byte> availableCodes; // 1 to 100
-  private byte nextCode;
+  static private ArrayList<Order> orders;
+  static private ArrayList<Byte> availableCodes; // 1 to 100
+  static private byte nextCode;
 
   public AllOrders() {
-    this.orders = new ArrayList<Order>();
-    this.availableCodes = new ArrayList<Byte>();
+    orders = new ArrayList<Order>();
+    availableCodes = new ArrayList<Byte>();
     nextCode = 0;
   }
 
-  public Order pushOrder(Order newOrder) {
+  static public void load() {
+    orders = new ArrayList<Order>();
+    availableCodes = new ArrayList<Byte>();
+    nextCode = 0;
+  }
+
+  static public Order pushOrder(Order newOrder) {
     orders.add(newOrder);
-    availableCodes.add(this.nextCode);
+    availableCodes.add(nextCode);
     nextCode++;
     return newOrder;
   }
 
-  public Order remOrder() {
+  static public Order remOrder() {
     return orders.remove(0);
   }
 
-  Order setPriority(byte orderCode) {
+  static public Order setPriority(byte orderCode) {
     return orders.get(orderCode);
   }
 
-  ArrayList<Order> getOrders() {
-    return this.orders;
+  static public ArrayList<Order> getOrders() {
+    return orders;
   }
 
-  public void listOrders() {
+  static public void listOrders() {
     for (byte i = 0; i < orders.size(); i++) {
       System.out.println(
         orders.get(i).getOrderString() + " - Code: " + availableCodes.get(i)

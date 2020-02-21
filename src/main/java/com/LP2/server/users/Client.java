@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.LP2.app.Reader;
+import com.LP2.database.users.ClientController;
 import com.LP2.server.items.Item;
 import com.LP2.server.utils.AllOrders;
 import com.LP2.server.utils.Constants;
@@ -15,12 +17,37 @@ public class Client extends User {
   ArrayList<Order> orders;
   double lastBought;
 
-  public Client(String email, String pass, String name, String idCode) {
-    super(email, pass, name, idCode, Constants.getClientCode());
+  public Client(String name, String email, String password, String idCode) {
+    super(name, email, password, idCode, Constants.getClientCode());
     this.orders = new ArrayList<Order>();
-    this.lastVisit = LocalDate.now();
+    this.lastVisit = null;
     this.lastBought = 0;
-    // this.usertype = Constants.getClientCode();
+    ClientController.create(this);
+  }
+
+  public Client(String username, String password) {
+    super(username, password);
+    setExtraInfoById();
+  }
+
+  public Client(User user){
+    super(user);
+    setExtraInfoById();
+  }
+
+  public void setExtraInfoById() {
+    ArrayList<String> fields = ClientController.get(this.id);
+    if (fields.get(1) == null)
+      lastBought = 0;
+    else
+      lastBought = Double.parseDouble(fields.get(1));
+
+    if (fields.get(2) != null) {
+      lastVisit = LocalDate.parse(fields.get(2));
+    } else {
+      lastVisit = null;
+    }
+    this.orders = new ArrayList<Order>();
   }
 
   private LocalDate setLastVisit(LocalDate currVisit) {
@@ -43,39 +70,45 @@ public class Client extends User {
     return this.lastBought;
   }
 
-  public void viewMenu(Menu currMenu) {
-    currMenu.listAllItems();
+  public ArrayList<Order> getOrders() { return this.orders; }
+
+  public void viewMenu() {
+    Menu.listAllItems();
   }
 
-  // mudar para tipo Ordered.
-  private Order order(Item selectedItem, byte qnt, AllOrders allOrders) {
+  private Order order(Item selectedItem, byte qnt) {
     Order order = new Order(selectedItem, qnt);
     this.orders.add(order);
-    allOrders.pushOrder(order);
+    AllOrders.pushOrder(order);
 
     return order;
   }
 
-  // função de order que será utilizada para abstrair a order original.
-  public int orderMany(Menu currMenu, AllOrders allOrders) {
+  public int orderMany() {
     byte itemCode = 1, ordersQnt = 0, itemQnt;
     Scanner scan = new Scanner(System.in);
 
     while (itemCode != 0) {
-      currMenu.listAllItems();
+      Menu.listAllItems();
       itemCode = scan.nextByte();
       itemQnt = scan.nextByte();
       if (itemCode != 0) {
-        order(currMenu.getMenu().get(itemCode - 1), itemQnt, allOrders);
+        order(Menu.getMenu().get(itemCode - 1), itemQnt);
         ordersQnt++;
       }
-      if (itemCode > currMenu.getMenu().size() || itemCode < 0) {
+      if (itemCode > Menu.getMenu().size() || itemCode < 0) {
         System.out.println("Item não consta nos nossos registros.");
       }
     }
 
     scan.close();
     return ordersQnt;
+  }
+
+  public void addOrders(ArrayList<Order> orders) {
+    for (Order asked : orders) {
+      this.order(asked.getItem(), (byte)asked.getQnt());
+    }
   }
 
   public void listOrders() {
@@ -87,6 +120,10 @@ public class Client extends User {
   }
 
   private boolean cashBackAllowed() {
+    if (this.lastVisit == null) {
+      this.lastVisit = LocalDate.now();
+    }
+
     return !(this.lastVisit.equals(LocalDate.now()));
   }
 
@@ -106,13 +143,12 @@ public class Client extends User {
   private double payTheBill() {
     double theBill = getCurrentExpenses() - getCashBack();
     byte choice = 0;
-    Scanner scan = new Scanner(System.in);
 
     // Retirar parte de validação quando implementarmos a interface.
     do {
       System.out.println("Selecione um método de pagamento, por favor:\n");
       System.out.println("1 - Crédito\t2 - Débito\n");
-      choice = scan.nextByte();
+      choice = (byte) Integer.parseInt(Reader.getScanner().nextLine());
 
       if (choice != 1 && choice != 2) {
         System.out.println("Selecione as opções corretas, por favor!");
@@ -120,14 +156,22 @@ public class Client extends User {
     } while (choice != 1 && choice != 2);
 
     // Adicionar algo interativo e legal sobre o pagamento.
-    scan.close();
     return theBill;
   }
 
-  public void settleTheBill() {
+  public double settleTheBill() {
     setLastBought(payTheBill());
     setLastVisit(LocalDate.now());
 
-    saveInDatabase();
+    updateVisit();
+    System.out.println("Passed!");
+    return this.lastBought;
   }
+
+  public void delete() {
+    super.delete();
+    ClientController.remove(this.id);
+  }
+
+  private void updateVisit() { ClientController.update(this); }
 }

@@ -6,16 +6,28 @@ public class Drink extends Item {
   public Drink(String name, double price, String provider) {
     super(name, price);
     this.provider = provider;
+
+    super.create();
   }
 
-  String getProvider() {
+  public String getProvider() {
     return this.provider;
   }
 
-  String setProvider(String newProvider) {
+  public String getExtra() {
+    return this.provider;
+  }
+
+  public String setExtra(String extra) {
+    this.provider = extra;
+
+    return extra;
+  }
+
+  public String setProvider(String newProvider) {
     this.provider = newProvider;
 
-    super.saveInDatabase();
+    super.update();;
     return newProvider;
   }
 

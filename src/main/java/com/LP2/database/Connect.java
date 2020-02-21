@@ -25,16 +25,25 @@ public class Connect {
         DriverManager.getConnection(this.url, this.username, this.password);
     } catch (Exception e) {
       e.printStackTrace();
+      System.exit(1);
     }
     System.out.println("Conexão sucedida");
   }
 
   public Connection getCon() { return this.conn; }
 
+  public void rebuildTables() {
+    createUserTable();
+    createClientTable();
+    createItemTable();
+    createDrinkTable();
+    createFoodTable();
+  }
+
   public boolean createUserTable() {
     try  {
       Statement stm = this.conn.createStatement();
-      stm.executeQuery("CREATE TABLE Person (" +
+      stm.executeUpdate("CREATE TABLE Person (" +
                         "id SERIAL NOT NULL PRIMARY KEY," +
                         "name varchar(80) UNIQUE," +
                         "email varchar(80)," +
@@ -53,12 +62,10 @@ public class Connect {
   public boolean createItemTable() {
     try {
       Statement stm = this.conn.createStatement();
-      stm.executeQuery("CREATE TABLE Item (" +
+      stm.executeUpdate("CREATE TABLE Item (" +
                         "id SERIAL NOT NULL PRIMARY KEY," +
-                        "name varchar(100)," +
-                        "price real," +
-                        "isFood bool," +
-                        "isDrink bool" +
+                        "name varchar(100) UNIQUE," +
+                        "price real" +
                       ");");
 
       stm.close();
@@ -74,7 +81,7 @@ public class Connect {
   public boolean createFoodTable () {
     try {
       Statement stm = this.conn.createStatement();
-      stm.executeQuery("CREATE TABLE Food (" +
+      stm.executeUpdate("CREATE TABLE Food (" +
                         "food_id integer NOT NULL," + // colocar como foreign key de item.
                         "description varchar(240)," +
                         "PRIMARY KEY(food_id)," +
@@ -91,7 +98,7 @@ public class Connect {
   public boolean createDrinkTable() {
     try {
       Statement stm = this.conn.createStatement();
-      stm.executeQuery("CREATE TABLE Drink (" +
+      stm.executeUpdate("CREATE TABLE Drink (" +
                         "drink_id integer NOT NULL," + // colocar como foreign key de item.
                         "provider varchar(80)," +
                         "PRIMARY KEY(drink_id)," +
@@ -105,10 +112,48 @@ public class Connect {
     return true;
   }
 
+  public boolean createClientTable() {
+    try {
+      Statement stm = this.conn.createStatement();
+      stm.executeUpdate("CREATE TABLE Client (" +
+                        "client_id INTEGER NOT NULL," +
+                        "lastBought REAL," +
+                        "lastVisit DATE," +
+                        "FOREIGN KEY(client_id) REFERENCES Person(id)" +
+                      ")");
+                      stm.close();
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean createOrderClientTable() {
+    try {
+      Statement stm = this.conn.createStatement();
+      stm.executeUpdate(
+        "CREATE TABLE ClientOrder (" +
+          "client_id INTEGER NOT NULL, " +
+          "item_id INTEGER NOT NULL, " +
+          "quantity INTEGER NOT NULL, " +
+          "ordered_at DATE NOT NULL DEFAULT CURRENT_DATE, " +
+          "FOREIGN KEY (client_id) REFERENCES Person(id), " +
+          "FOREIGN KEY (item_id) REFERENCES Item(id)" +
+        ")");
+
+      stm.close();
+      return true;
+    } catch(Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public boolean deleteTable(String tableName) {
     try {
       Statement stm = this.conn.createStatement();
-      stm.executeQuery("DROP TABLE " + tableName);
+      stm.executeUpdate("DROP TABLE " + tableName);
 
       stm.close();
     } catch (Exception e) {

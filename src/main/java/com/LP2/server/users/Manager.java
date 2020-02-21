@@ -19,6 +19,11 @@ public class Manager extends User {
     super(email, pass, name, idCode, Constants.getManagerCode());
   }
 
+  public Manager(User user) {
+    super(user);
+    this.secret = "secret";
+  }
+
   // comparar os hashes de cada um.
   public boolean isSecret(String inSecret) {
     return this.secret.equals(inSecret);
@@ -31,7 +36,7 @@ public class Manager extends User {
     String provider
   ) {
     Drink drink = new Drink(name, price, provider);
-    menu.pushNewItem(drink);
+    Menu.pushNewItem(drink);
 
     return drink;
   }
@@ -43,7 +48,7 @@ public class Manager extends User {
     String description
   ) {
     Food food = new Food(name, price, description);
-    menu.pushNewItem(food);
+    Menu.pushNewItem(food);
 
     return food;
   }

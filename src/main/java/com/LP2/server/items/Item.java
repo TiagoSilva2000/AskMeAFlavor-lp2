@@ -1,14 +1,25 @@
 package com.LP2.server.items;
 
+import com.LP2.database.items.ItemController;
+
 public abstract class Item {
   private String name;
   private double price;
+  private int id;
 
   public Item(String name, double price) {
     this.name = name;
     this.price = price;
-    saveInDatabase();
+    this.id = create();
   }
+
+  public Item(String name) {
+
+  }
+
+  public abstract String getExtra();
+
+  public abstract String setExtra(String extra);
 
   public String getName() {
     return this.name;
@@ -18,22 +29,20 @@ public abstract class Item {
     return this.price;
   }
 
-  String setName(String newName) {
+  public int getID() { return this.id; }
+
+  public String setName(String newName) {
     this.name = newName;
 
-    saveInDatabase();
+    update();
     return newName;
   }
 
-  double setPrice(double newPrice) {
+  public double setPrice(double newPrice) {
     this.price = newPrice;
 
-    saveInDatabase();
+    update();
     return newPrice;
-  }
-
-  byte saveInDatabase() {
-    return 1;
   }
 
   protected String inheritString() {
@@ -45,4 +54,9 @@ public abstract class Item {
       "Nome: " + this.name + " - Preço: " + this.price + " " + inheritString()
     );
   }
+
+  protected int create() { return ItemController.create(this); }
+  protected void read() {}
+  protected void update() {}
+  protected void delete() {}
 }

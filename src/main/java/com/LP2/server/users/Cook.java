@@ -9,11 +9,20 @@ public class Cook extends User {
     super(email, pass, name, idCode, Constants.getCookCode());
   }
 
+  public Cook(String username, String password) {
+    super(username, password);
+  }
+
+  public Cook(User user) {
+    super(user);
+  }
+
+
   public void closeOrder(AllOrders allOrders) {
-    allOrders.remOrder();
+    AllOrders.remOrder();
   }
 
   public void checkOpenOrders(AllOrders allOrders) {
-    allOrders.listOrders();
+    AllOrders.listOrders();
   }
 }

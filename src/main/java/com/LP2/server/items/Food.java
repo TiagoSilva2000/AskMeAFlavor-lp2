@@ -7,19 +7,29 @@ public class Food extends Item {
     super(name, price);
     this.description = description;
 
-    super.saveInDatabase();
+    super.create();
   }
 
-  String getDesc() {
+  public String getDesc() {
     return this.description;
   }
 
-  String setDesc(String newDescription) {
+  public String getExtra() {
+    return this.description;
+  }
+
+  public String setDesc(String newDescription) {
     this.description = newDescription;
 
-    super.saveInDatabase();
+    super.update();;
 
     return newDescription;
+  }
+
+  public String setExtra(String extra) {
+    this.description = extra;
+
+    return extra;
   }
 
   protected String inheritString() {
