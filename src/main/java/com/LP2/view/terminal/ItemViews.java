@@ -24,7 +24,7 @@ public class ItemViews {
   }
 
   static private Item buildItem(byte option) {
-    Item newItem = null;
+    // Item newItem = null;
     String name, extra;
     double price;
 
