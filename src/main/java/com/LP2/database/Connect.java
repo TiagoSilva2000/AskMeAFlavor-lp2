@@ -2,9 +2,6 @@ package com.LP2.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-// import java.sql.PreparedStatement;
-// import java.sql.ResultSet;
 import java.sql.Statement;
 
 import com.LP2.app.loader.Dataset;

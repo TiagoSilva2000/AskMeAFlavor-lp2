@@ -1,5 +1,6 @@
 package com.LP2.server.utils;
 
+import com.LP2.database.items.ItemController;
 import com.LP2.server.items.Item;
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ public class Menu {
 
 
   public byte getFromDatabase() {
+    ArrayList<ArrayList<String>> fields = ItemController.all();
     return 1;
   }
 

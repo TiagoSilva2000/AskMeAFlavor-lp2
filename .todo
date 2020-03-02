@@ -1,11 +1,40 @@
-- Integração com um banco de dados.
-- Garantir que nomes de usuário são únicos.
-- Integração com envio de e-mails.
-- itens dentro e fora do menu
-- Aplicar hash nas senhas.
-- Integrar com formas de pagamento
-- Adicionar login e autenticação (através de tokens).
-- Adicionar classe de gerenciamento do restaurante.
-- Adicionar campos created_at e updated_at no User.
-- Verificar se um código digitado está no menu.
-- Adicionar rotas de edição de perfil.
+1) Carregamento de todos os itens disponíveis atualmente no cardápio.
+  - Uso de JOIN para carregar as informações extras presentes nas tabelas de:
+      -> image, drink e food.
+2) Carregar todos os pedidos no banco que ainda não foram finalizados.
+3) Exibir o cardápio a partir do que está presente no Menu.
+4) Carregar as imagens de acordo com os valores armazenados no banco.
+5) Realizar o login do usuário a partir do usuário e senha.
+  - Uso de JOIN para carregar as informações extras presentes na tabela de:
+    -> client
+6) Conectar o Login do Usuário com o Recebimento de Dados da Interface
+7) Conectar a interface com a criação da conta de um novo cliente.
+8) Conectar módulo de validação com a criação de novo usuário
+9) Criar respostas da interface para a criação de novo usuário
+10) Criar respostas da interface para o login de um usuário já cadastrado.
+11) Conectar a adição de itens ao carrinho com o módulo em memória e realizar
+queries no banco para armazenar essas informações.
+12) Criar métodos para filtrar os itens, de acordo com o filtro que foi selecionado
+na interface.
+13) Conectar pagamento da interface com memória e memória com banco.
+14) Conectar a parte de atualização de perfil na interface com módulo de memória e
+de banco.
+15) Conectar o gerenciamento de pedidos, feito pelos cozinheiros, entre os módulos
+de memória, interface e banco.
+16) Realizar a conexão da parte de gerenciamento de itens, entre os módulos.
+17) Realizar a conexão da parte de gerenciamento de funcionários, entre os módulos.
+18) Relacionar as alterações na tabela de histórico, com base no fim dos pedidos.
+19) Relacionar a parte de comentários, entre os módulos.
+20) Implementar fila de prioridades com envelhecimento para trabalhar com os pedidos
+no módulo de memória.
+
+Extra
+?) Módulo de avaliação de chefs
+?) Módulo de fornecedores
+?) Adicionar módulo de pagamento
+?) Desenvolver módulo de pesquisa, com base em palavras-chave.
+?) Implementar um sistema de cache em banco
+?) Subir o banco na rede.
+?) Implementar um sistema de multithreads para melhoria de experiência do usuário.
+?) Criar Queries para Favoritos e estabelecer relação com a interface
+?) Implementar

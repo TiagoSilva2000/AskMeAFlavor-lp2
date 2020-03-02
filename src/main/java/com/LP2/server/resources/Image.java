@@ -16,8 +16,6 @@ public class Image {
     this.id = -1;
   }
 
-  private int setID(final int id) { this.id = id;  return id; }
-
   public void setFilePath(String filePath) { this.filePath = filePath;}
 
   public void setFileName(String fileName) { this.fileName = fileName; }
@@ -34,7 +32,7 @@ public class Image {
 
   public File load() {
     File loadedImage = new File(this.filePath + this.fileName + this.fileType);
-    if (loadedImage == null) {
+    if (!loadedImage.exists()) {
       System.out.println("This image could not be loaded!");
       return null;
     }

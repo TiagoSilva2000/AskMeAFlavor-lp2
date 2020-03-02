@@ -35,6 +35,11 @@
       <artifactId>postgresql</artifactId>
       <version>42.2.8</version>
     </dependency>
+    <dependency>
+      <groupId>org.tinygroup</groupId>
+      <artifactId>placeholder</artifactId>
+      <version>0.0.9</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -49,6 +54,10 @@
         <plugin>
           <artifactId>postgresql</artifactId>
           <version>42.2.8</version>
+        </plugin>
+        <plugin>
+          <artifactId>placeholder</artifactId>
+          <version>0.0.9</version>
         </plugin>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>

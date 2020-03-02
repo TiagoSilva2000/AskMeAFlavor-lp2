@@ -1,0 +1,4 @@
+Error org.freedesktop.DBus.Error.Failed: cannot use setting "default-url-scheme-handler": not allowed
+[152693:0302/023852.455680:ERROR:buffer_manager.cc(488)] [.DisplayCompositor]GL ERROR :GL_INVALID_OPERATION : glBufferData: <- error from previous GL command
+Error org.freedesktop.DBus.Error.Failed: cannot use setting "default-url-scheme-handler": not allowed
+[153051:0302/023917.613112:ERROR:buffer_manager.cc(488)] [.DisplayCompositor]GL ERROR :GL_INVALID_OPERATION : glBufferData: <- error from previous GL command

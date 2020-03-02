@@ -40,6 +40,33 @@ public class ItemController {
     }
   }
 
+  static public ArrayList<ArrayList<String>> all () {
+    try {
+      final ArrayList<ArrayList<String>> fields = new ArrayList<ArrayList<String>>();
+      ResultSet result = null;
+      int i, j, maxFields;
+      final PreparedStatement stm = connection.getCon()
+        .prepareStatement("SELECT * FROM Item ");
+      result = stm.executeQuery();
+      maxFields = result.getMetaData().getColumnCount();
+
+      i = 0;
+      j = 1;
+      while (result.next())
+        j = 1;
+        fields.add(new ArrayList<String>());
+        while (j <= maxFields)
+          fields.get(i).add(result.getString(j++));
+        i += 1;
+
+      stm.close();
+      return fields;
+    } catch (final Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   static public ArrayList<String> get(final String name) {
     try {
       final ArrayList<String> fields = new ArrayList<String>();
