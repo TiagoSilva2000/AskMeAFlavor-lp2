@@ -44,11 +44,13 @@ public class ItemController {
     try {
       final ArrayList<String> fields = new ArrayList<String>();
       ResultSet result = null;
-      int i = 1, maxFields;
+      int i, maxFields;
       final PreparedStatement stm = connection.getCon().prepareStatement("SELECT * FROM Item " + "WHERE name = (?)");
       stm.setString(1, name);
       result = stm.executeQuery();
       maxFields = result.getMetaData().getColumnCount();
+
+      i = 1;
       while (i <= maxFields)
         fields.add(result.getString(i++));
 
@@ -58,13 +60,6 @@ public class ItemController {
       e.printStackTrace();
       return null;
     }
-  }
-
-  static public Item getItem (final String name) {
-
-
-
-    return null;
   }
 
   static public boolean update(final Item item) {

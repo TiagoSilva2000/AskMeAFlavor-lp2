@@ -6,7 +6,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.LP2.database.Connect;
+import com.LP2.server.security.Encrypt;
 import com.LP2.server.users.User;
+import com.LP2.server.utils.Constants;
 
 public class UserController {
   static protected Connect connection;
@@ -25,22 +27,24 @@ public class UserController {
   }
 
   static public int create(final User user) {
+    String salt = Encrypt.getSalt(Constants.getSaltLen());
+
     try {
       int id;
       ResultSet result = null;
       final PreparedStatement stm = connection.getCon()
       .prepareStatement(
         "INSERT INTO Person" +
-        "(name, email, password, idcode, usertype)" +
-        "VALUES (?,?,?,?,?)"
+        "(name, email, password, idcode, usertype, salt)" +
+        "VALUES (?,?,?,?,?, ?)"
         , Statement.RETURN_GENERATED_KEYS);
 
       stm.setString(1, user.getName());
       stm.setString(2, user.getEmail());
-      stm.setString(3, user.getPassword());
+      stm.setString(3, Encrypt.encryptPBKDF(user.getPassword(), salt));
       stm.setString(4, user.getIDCode());
       stm.setInt(5, user.getUsertype());
-
+      stm.setString(6, salt);
       stm.executeUpdate();
       result = stm.getGeneratedKeys();
       result.next();
@@ -58,6 +62,7 @@ public class UserController {
     ResultSet result = null;
     ArrayList<String> fields = new ArrayList<String>();
     int i = 1, maxFields;
+    boolean passwordMatch = false;
     try {
       final PreparedStatement stm = connection.getCon().prepareStatement(
         "SELECT * from Person " +
@@ -66,7 +71,9 @@ public class UserController {
       result = stm.executeQuery();
       maxFields = result.getMetaData().getColumnCount();
       result.next();
-      if (matchPassword(password, result.getString("password"))) {
+      passwordMatch = Encrypt.validatePBKDF(password, result.getString("password"),
+                      result.getString("salt"));
+      if (passwordMatch) {
         while (i <= maxFields)
           fields.add(result.getString(i++));
       } else {

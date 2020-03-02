@@ -203,7 +203,7 @@ public class Router {
 
           System.out.println("Name: ");
           name = Reader.getScanner().nextLine();
-          itemm = ItemController.getItem (name);
+          // itemm = ItemController.getItem (name);
           ItemViews.editItem(itemm);
           ItemController.update(itemm);
           break;

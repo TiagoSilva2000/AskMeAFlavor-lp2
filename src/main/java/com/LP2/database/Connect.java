@@ -2,6 +2,7 @@ package com.LP2.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 // import java.sql.PreparedStatement;
 // import java.sql.ResultSet;
 import java.sql.Statement;
@@ -33,11 +34,13 @@ public class Connect {
   public Connection getCon() { return this.conn; }
 
   public void rebuildTables() {
-    createUserTable();
     createClientTable();
-    createItemTable();
     createDrinkTable();
+    createImageTable();
+    createItemTable();
     createFoodTable();
+    createOrderClientTable();
+    createUserTable();
   }
 
   public boolean createUserTable() {
@@ -148,6 +151,110 @@ public class Connect {
       e.printStackTrace();
       return false;
     }
+  }
+
+
+  public boolean createImageTable() {
+    try {
+      Statement stm = this.conn.createStatement();
+      stm.executeUpdate(
+        "CREATE TABLE Image (" +
+        "id SERIAL NOT NULL PRIMARY KEY, " +
+        "filePath varchar(80)," +
+        "fileName varchar(80)," +
+        "fileType varchar(20), " +
+        "content bytea" +
+        ")"
+      );
+
+      stm.close();
+      return true;
+    } catch(Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean createVisitTable() {
+    try {
+      Statement stm = this.conn.createStatement();
+      stm.executeUpdate(
+        "CREATE TABLE Visit (" +
+        "id SERIAL NOT NULL PRIMARY KEY, " +
+        "client_id INTEGER NOT NULL, " +
+        "entered_at TIMESTAMP NOT NULL, " +
+        "exited_at TIMESTAMP, " +
+        "FOREIGN KEY (client_id) REFERENCES Person(id)" +
+        ")"
+      );
+
+      stm.close();
+      return true;
+    } catch(Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean createReviewTable() {
+    try {
+      Statement stm = this.conn.createStatement();
+      stm.executeUpdate(
+        "CREATE TABLE Review (" +
+        "id SERIAL NOT NULL PRIMARY KEY, " +
+        "item_id INTEGER NOT NULL, " +
+        "client_id INTEGER NOT NULL, " +
+        "content varchar(80) NOT NULL, " +
+        "state varchar(30) DEFAULT 'visible' NOT NULL," +
+        "FOREIGN KEY (item_id) REFERENCES Item(id), " +
+        "FOREIGN KEY (client_id) REFERENCES Person(id)" +
+        ")"
+      );
+
+      stm.close();
+      return true;
+    } catch(Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean createFavouritesTable() {
+    try {
+      Statement stm = this.conn.createStatement();
+      stm.executeUpdate(
+        "CREATE TABLE Favourite (" +
+        "client_id INTEGER NOT NULL, " +
+        "item_id INTEGER NOT NULL, " +
+        "FOREIGN KEY(client_id) REFERENCES Person(id), " +
+        "FOREIGN KEY (item_id) REFERENCES Item(id), " +
+        "PRIMARY KEY(client_id, item_id)" +
+        ")"
+      );
+
+      stm.close();
+      return true;
+    } catch(Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean addColumnToTable(String query) {
+    try {
+      Statement stm = this.conn.createStatement();
+      stm.executeUpdate(
+        query
+      );
+
+      stm.close();
+      return true;
+    } catch(Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+
+
   }
 
   public boolean deleteTable(String tableName) {

@@ -2,23 +2,21 @@ package com.LP2.app;
 
 import com.LP2.app.loader.Loader;
 import com.LP2.database.Connect;
+import com.LP2.server.security.Encrypt;
+import com.LP2.server.users.Client;
+import com.LP2.server.users.User;
+import com.LP2.server.validators.Validator;
 
 public class App {
 
-  public static void printIt() {
-    System.out.println("Hello, World!");
-  }
-
-
   public static void main(String[] args) {
-    // Connect db = null;
+    Connect db = null;
+    Client client = null;
 
-    printIt();
-    // Loader.preLoad();
-    // db = new Connect();
-    // Loader.loadControllers(db);
+    Loader.preLoad();
+    db = new Connect();
+    Loader.loadControllers(db);
 
-
-    // Loader.unloadStreams();
+    Loader.unloadStreams();
   }
 }

@@ -8,7 +8,22 @@ public class Constants {
   static private byte canceledOrder = -1,
                       unfinishedOrder = 0,
                       finishedOrder = 1;
+  static private short noCodeminPassLen = 8,
+                      minPassLen = 15,
+                      maxPassLen = 256,
+                      saltLen = 16;
 
+  static private String resourcesPath = "";
+
+  static public short getSaltLen() { return saltLen; }
+
+  static public String getResourcesPath() { return resourcesPath; }
+
+  static public short getMaxPassLen() { return maxPassLen; }
+
+  static public short getMinPassLen() { return minPassLen; }
+
+  static public short getNoCodeMinPassLen() { return noCodeminPassLen; }
 
   static public byte getDevCode() { return devCode; }
 
