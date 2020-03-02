@@ -10,6 +10,13 @@ public class Drink extends Item {
     super.create();
   }
 
+  public Drink(String name, double price, String provider, boolean isPresent) {
+    super(name, price, isPresent);
+    this.provider = provider;
+
+    super.create();
+  }
+
   public String getProvider() {
     return this.provider;
   }

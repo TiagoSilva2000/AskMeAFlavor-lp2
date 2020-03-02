@@ -36,7 +36,7 @@ public class Connect {
     createImageTable();
     createItemTable();
     createFoodTable();
-    createOrderClientTable();
+    createOrderTable();
     createUserTable();
   }
 
@@ -129,7 +129,7 @@ public class Connect {
     }
   }
 
-  public boolean createOrderClientTable() {
+  public boolean createOrderTable() {
     try {
       Statement stm = this.conn.createStatement();
       stm.executeUpdate(

@@ -10,6 +10,13 @@ public class Food extends Item {
     super.create();
   }
 
+  public Food(String name, double price, String description, boolean isPresent) {
+    super(name, price, isPresent);
+    this.description = description;
+
+    super.create();
+  }
+
   public String getDesc() {
     return this.description;
   }

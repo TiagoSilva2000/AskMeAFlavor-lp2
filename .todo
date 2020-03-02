@@ -1,6 +1,7 @@
 1) Carregamento de todos os itens disponíveis atualmente no cardápio.
   - Uso de JOIN para carregar as informações extras presentes nas tabelas de:
       -> image, drink e food.
+1.5) Usar fields para marcar que algum erro ocorreu.
 2) Carregar todos os pedidos no banco que ainda não foram finalizados.
 3) Exibir o cardápio a partir do que está presente no Menu.
 4) Carregar as imagens de acordo com os valores armazenados no banco.
@@ -27,6 +28,7 @@ de memória, interface e banco.
 19) Relacionar a parte de comentários, entre os módulos.
 20) Implementar fila de prioridades com envelhecimento para trabalhar com os pedidos
 no módulo de memória.
+
 
 Extra
 ?) Módulo de avaliação de chefs

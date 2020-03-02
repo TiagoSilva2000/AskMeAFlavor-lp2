@@ -15,8 +15,11 @@ public class App {
     db = new Connect();
     Loader.loadControllers(db);
 
-    // router = new Router(db);
     Login.main(args);
+    // db.createOrderTable();
+    // db.deleteTable("clientorder");
+    // router = new Router(db);
+    // Login.main(args);
 
     Loader.unloadStreams();
   }

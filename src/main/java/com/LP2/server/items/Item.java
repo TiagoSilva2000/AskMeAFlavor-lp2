@@ -6,16 +6,29 @@ public abstract class Item {
   private String name;
   private double price;
   private int id;
+  protected boolean presentInMenu;
 
   public Item(String name, double price) {
     this.name = name;
     this.price = price;
+    this.presentInMenu = true;
+    this.id = create();
+  }
+
+  public Item(String name, double price, boolean presentInMenu) {
+    this.name = name;
+    this.price = price;
+    this.presentInMenu = presentInMenu;
     this.id = create();
   }
 
   public Item(String name) {
 
   }
+
+  public boolean isPresent() { return this.presentInMenu; }
+
+  public void changePresence(boolean presentInMenu) { this.presentInMenu = presentInMenu; }
 
   public abstract String getExtra();
 

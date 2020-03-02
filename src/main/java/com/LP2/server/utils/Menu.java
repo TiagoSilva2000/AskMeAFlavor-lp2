@@ -22,6 +22,37 @@ public class Menu {
     items = new ArrayList<Item>();
   }
 
+  static public Item selectItemAt(final int idx) {
+    if (idx < 0 || idx > items.size())
+      return null;
+
+    return items.get(idx);
+  }
+
+  static public Item selectItem(final String name) {
+    int i = 0;
+
+    while (i < items.size() && !items.get(i).getName().equals(name))
+      i += 1;
+
+    if (i == items.size())
+      return null;
+
+    return items.get(i);
+  }
+
+  static public Item selectItem(final int code) {
+    int i = 0;
+
+    while (i < items.size() && code != items.get(i).getID())
+      i += 1;
+
+    if (i == items.size())
+      return null;
+
+    return items.get(i);
+  }
+
   static public boolean hasCode(int code) { return code >= 0 && code <= items.size(); }
 
   static public void listAllItems() {
