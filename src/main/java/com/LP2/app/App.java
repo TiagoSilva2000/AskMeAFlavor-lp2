@@ -2,18 +2,11 @@ package com.LP2.app;
 
 import com.LP2.app.loader.Loader;
 import com.LP2.database.Connect;
-import com.LP2.database.items.ItemController;
-import com.LP2.server.items.Drink;
-import com.LP2.server.items.Food;
-import com.LP2.server.resources.Image;
-import com.LP2.server.utils.Menu;
-import com.LP2.view.pages.Login;
 
 public class App {
 
   public static void main(String[] args) {
     Connect db = null;
-    Image img = null;
 
     Loader.preLoad();
     db = new Connect();

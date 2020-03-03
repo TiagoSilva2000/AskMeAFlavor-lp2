@@ -2,11 +2,7 @@ package com.LP2.app;
 
 import java.util.ArrayList;
 
-import com.LP2.database.Connect;
-import com.LP2.database.items.FoodController;
-import com.LP2.database.items.ItemController;
 import com.LP2.database.misc.Historic;
-import com.LP2.database.users.ClientController;
 import com.LP2.database.users.UserController;
 import com.LP2.server.feedback.Review;
 import com.LP2.server.items.Drink;
@@ -88,7 +84,7 @@ final public class Session {
 
   static public void deleteCook(final int id) {
     if (loggedUser.getUsertype() == Constants.getManagerCode())
-      ClientController.remove(id);
+      UserController.remove(id);
   }
 
   static private void startVisit() {

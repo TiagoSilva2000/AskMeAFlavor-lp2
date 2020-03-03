@@ -11,8 +11,6 @@ import com.LP2.database.Connect;
 import com.LP2.database.items.ItemController;
 import com.LP2.database.misc.ImageController;
 import com.LP2.database.users.UserController;
-import com.LP2.server.utils.AllOrders;
-import com.LP2.server.utils.Menu;
 
 public class Loader {
   static private Data parse (String line) {
