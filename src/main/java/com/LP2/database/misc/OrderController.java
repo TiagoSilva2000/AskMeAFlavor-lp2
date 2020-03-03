@@ -53,6 +53,12 @@ public class OrderController {
     }
   }
 
+  static public int update(final Order order) {
+
+
+    return 1;
+  }
+
   static public ArrayList<ArrayList<String>> readByStatus(byte status) {
     if (status < -1 || status > 1)
       return null;

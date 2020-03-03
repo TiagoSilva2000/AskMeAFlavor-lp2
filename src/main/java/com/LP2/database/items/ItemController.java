@@ -20,13 +20,20 @@ public class ItemController {
   }
 
   static public int create(final Item item) {
+
+
     try {
       ResultSet result;
       int id;
       final PreparedStatement stm = connection.getCon()
-          .prepareStatement("INSERT INTO Item" + "(name, price) " + "VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+          .prepareStatement("INSERT INTO Item" +
+                            "(name, price, img_id) " +
+                            "VALUES (?, ?, ?)",
+                            Statement.RETURN_GENERATED_KEYS);
       stm.setString(1, item.getName());
       stm.setDouble(2, item.getPrice());
+      if (item.getImage() != null)
+        stm.setInt(3, item.getImage().getID());
       stm.executeUpdate();
       result = stm.getGeneratedKeys();
       result.next();
@@ -46,20 +53,41 @@ public class ItemController {
       ResultSet result = null;
       int i, j, maxFields;
       final PreparedStatement stm = connection.getCon()
-        .prepareStatement("SELECT * FROM Item ");
+        .prepareStatement("SELECT " +
+                            "Item.name, Item.price, Item.img_id, " +
+                            "Drink.provider, Food.description, " +
+                            "CASE WHEN Drink.provider IS NOT NULL THEN 'drink' " +
+                            "ELSE 'food' " +
+                            "END AS itemType " +
+                            "FROM Item " +
+                          "FULL OUTER JOIN Food ON (Item.id = Food.food_id) " +
+                          "FULL OUTER JOIN Drink ON (Drink.drink_id = Item.id) " +
+                          "FULL OUTER JOIN Image ON (Item.id = Image.id)" );
       result = stm.executeQuery();
       maxFields = result.getMetaData().getColumnCount();
 
       i = 0;
       j = 1;
-      while (result.next())
+      while (result.next()) {
         j = 1;
         fields.add(new ArrayList<String>());
-        while (j <= maxFields)
-          fields.get(i).add(result.getString(j++));
+        while (j <= maxFields) {
+          String field = result.getMetaData().getColumnName(j);
+          String content = result.getString(j++);
+          System.out.println(field + ":" + content);
+          // if (content == null)
+          //   content = "null";
+
+          // if ((field.equals("img_id") || !content.equals("null")))
+            fields.get(i).add(content);
+
+        }
+        System.out.println("\n");
         i += 1;
+      }
 
       stm.close();
+      System.exit(1);
       return fields;
     } catch (final Exception e) {
       e.printStackTrace();

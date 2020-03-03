@@ -7,19 +7,28 @@ import java.util.ArrayList;
 public class Menu {
   static private ArrayList<Item> items;
 
-  public Menu() {
-    items = new ArrayList<Item>();
-    getFromDatabase();
-  }
+  // public Menu() {
+  //   items = new ArrayList<Item>();
+  //   load();
+  // }
 
 
-  public byte getFromDatabase() {
-    ArrayList<ArrayList<String>> fields = ItemController.all();
-    return 1;
-  }
+  // public byte getFromDatabase() {
+  //   ArrayList<ArrayList<String>> fields = ItemController.all();
+  //   return 1;
+  // }
 
   static public void load() {
     items = new ArrayList<Item>();
+    ArrayList<ArrayList<String>> fields = ItemController.all();
+
+    for (int i = 0; i < fields.size(); i++) {
+      for (int j = 0; j < fields.get(i).size(); j++)
+        System.out.println(fields.get(i).get(j));
+
+      System.out.println("\n");
+    }
+    System.out.println("Passed!");
   }
 
   static public Item selectItemAt(final int idx) {
@@ -66,7 +75,7 @@ public class Menu {
     return newItem;
   }
 
-  static boolean remItem(String name) {
+  static private boolean rmFromMenu (final String name) {
     byte i = 0;
 
     while (i < items.size() && (!items.get(i).getName().equals(name))) i++;
@@ -80,6 +89,39 @@ public class Menu {
 
     return true;
   }
+
+  static private boolean rmFromMenu (final int id) {
+    byte i = 0;
+
+    while (i < items.size() && (items.get(i).getID() != id)) i++;
+
+    if (i == items.size()) {
+      return false;
+    } else {
+      items.remove(i);
+    }
+
+    return true;
+  }
+
+  static public boolean rmItem(final String name) {
+    boolean success = rmFromMenu(name);
+
+    if (success)
+      ItemController.remove(name);
+
+    return success;
+  }
+
+  static public boolean rmItem(final int id) {
+    boolean success = rmFromMenu(id);
+
+    if (success)
+      ItemController.remove(id);
+
+    return success;
+  }
+
 
   static public ArrayList<Item> getMenu() {
     return items;

@@ -46,8 +46,6 @@ public class Loader {
   static public boolean preLoad() {
     loadVariables();
     loadStreams();
-    Menu.load();
-    AllOrders.load();
 
     return true;
   }

@@ -15,15 +15,14 @@ public class FoodController extends ItemController {
 
   static public int create(final Food food) {
     try {
-      final int id = ItemController.create(food);
       final PreparedStatement stm = connection.getCon()
-          .prepareStatement("INSERT INTO Food " + "(food_id, description)" + "(?, ?)");
+          .prepareStatement("INSERT INTO Food " + "(food_id, description)" + " VALUES (?, ?)");
       stm.setInt(1, food.getID());
       stm.setString(2, food.getDesc());
       stm.executeUpdate();
 
       stm.close();
-      return id;
+      return food.getID();
     } catch (final Exception e) {
       e.printStackTrace();
       return -1;

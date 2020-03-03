@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -36,11 +37,14 @@ public class ImageController {
       FileInputStream fis = new FileInputStream(file);
       try {
         final PreparedStatement stm = connection.getCon()
-            .prepareStatement("INSERT INTO Image" + "VALUES (?, ?, ?, ?)");
-        stm.setBinaryStream(1, fis, (int) file.length());
-        stm.setString(2, img.getFilePath());
-        stm.setString(3, img.getFileName());
-        stm.setString(4, img.getFileType());
+            .prepareStatement("INSERT INTO Image " +
+                              "(filepath, filename, filetype, content) " +
+                              "VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+        stm.setString(1, img.getFilePath());
+        stm.setString(2, img.getFileName());
+        stm.setString(3, img.getFileType());
+        stm.setBinaryStream(4, fis, (int) file.length());
+        stm.executeUpdate();
         result = stm.getGeneratedKeys();
         result.next();
         id = result.getInt(1);

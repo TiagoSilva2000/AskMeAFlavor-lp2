@@ -5,12 +5,18 @@ import java.util.ArrayList;
 import com.LP2.database.Connect;
 import com.LP2.database.items.FoodController;
 import com.LP2.database.items.ItemController;
+import com.LP2.database.misc.Historic;
+import com.LP2.database.users.ClientController;
+import com.LP2.database.users.UserController;
 import com.LP2.server.feedback.Review;
 import com.LP2.server.items.Drink;
 import com.LP2.server.items.Food;
+import com.LP2.server.resources.Image;
 import com.LP2.server.users.Client;
+import com.LP2.server.users.Cook;
 import com.LP2.server.users.User;
 import com.LP2.server.utils.AllOrders;
+import com.LP2.server.utils.Constants;
 import com.LP2.server.utils.Menu;
 import com.LP2.server.utils.Order;
 
@@ -18,17 +24,14 @@ final public class Router {
   private User loggedUser;
   private Menu menu;
   private AllOrders currentOrders;
-  private Connect db;
 
   public Router(final Connect db) {
-    this.db = db;
     this.loggedUser = null;
     this.menu = new Menu();
     this.currentOrders = new AllOrders();
   }
 
   public void closeSession() {
-    this.db = null;
     this.menu = null;
     this.loggedUser = null;
     this.currentOrders = null;
@@ -59,41 +62,66 @@ final public class Router {
       Menu.pushNewItem(drink);
   }
 
-  public void updateFood() {}
+  public void updateFood(final int id, final String name, final double price,
+                        final String desc, final Image img) {
+    new Food(id).update(name, price, desc, img);;
+  }
 
-  public void updateDrink() {}
+  public void updateDrink(final int id, final String name, final double price,
+                        final String provider, final Image img) {
+    new Drink(id).update(name, price, provider, img);;
+  }
 
-  public void deleteItem(final int id) { ItemController.remove(id); }
+  public void deleteItem(final int id) { Menu.rmItem(id); }
 
-  public void deleteItem(final String name) { ItemController.remove(name); }
+  public void deleteItem(final String name) { Menu.rmItem(name); }
 
-  public void storeCook() {}
+  public void storeCook(final String name, final String email,
+                        final String password, final String idCode) {
+    new Cook(email, password, name, idCode);
+  }
 
-  public void updateCook() {}
+  public void updateCook(final int id, final String name, final String email,
+                        final String password, final String idCode) {
+    new Cook(id).update(name, password, email, idCode);
+  }
 
-  public void deleteCook() {}
+  public void deleteCook(final int id) {
+    if (loggedUser.getUsertype() == Constants.getManagerCode())
+      ClientController.remove(id);
+  }
 
-  public void loadItem() {}
+  private void startVisit() {
+    Historic.startVisit();
+  }
 
-  private void startVisit() {}
-
-  private void finishVisit() {}
+  private void finishVisit() {
+    Historic.finishVisit();
+  }
 
   public void order(final String itemName, final int qnt) {
-    startVisit();
-    AllOrders.pushOrder(new Order(Menu.selectItem(itemName), qnt));
+    Order order = new Order(Menu.selectItem(itemName), qnt, loggedUser.getID());
+    int ordersQnt = loggedUser.getOrdersQnt();
+    if (ordersQnt == 0)
+      startVisit();
+    loggedUser.order(order);
   }
 
   public void order(final int itemID, final int qnt) {
-    startVisit();
-    AllOrders.pushOrder(new Order(Menu.selectItem(itemID), qnt));
+    Order order = new Order(Menu.selectItem(itemID), qnt, loggedUser.getID());
+    int ordersQnt = loggedUser.getOrdersQnt();
+    if (ordersQnt == 0)
+      startVisit();
+    loggedUser.order(order);
   }
 
-  public void closeOrder() {}
+  public void closeOrder(final int id) { AllOrders.remOrder(id); }
 
-  public void processPayment() {
-
+  public double processPayment() {
+    double paidValue = loggedUser.settleTheBill();
     finishVisit();
+
+    return paidValue;
   }
 
   public void reloadMenu(boolean all) {

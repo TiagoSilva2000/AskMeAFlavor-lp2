@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.LP2.database.users.UserController;
+import com.LP2.server.utils.Order;
 
 public class User {
   protected String email, password, name, idCode;
@@ -121,6 +122,12 @@ public class User {
     return IDCode;
   }
 
+  public double settleTheBill() { return -1; }
+
+  public void order(final Order order) {}
+
+  public int getOrdersQnt() { return -1; }
+
   public byte setUsertype(byte usertype) { this.usertype = usertype; return usertype; }
 
   public byte setUsertype(String usertype) {
@@ -135,5 +142,15 @@ public class User {
 
   public void update() { UserController.update(this); }
 
+  public void update(final String name, final String password, final String email,
+                    final String idCode) {
+    this.setEmail(email);
+    this.setPassword(password);
+    this.setIDCode(idCode);
+    this.setName(name);
+    UserController.update(this);
+  }
+
   protected void delete() { UserController.remove(this.id); }
+
 }

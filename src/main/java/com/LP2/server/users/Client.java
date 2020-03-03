@@ -77,12 +77,14 @@ public class Client extends User {
   }
 
   private Order order(Item selectedItem, byte qnt) {
-    Order order = new Order(selectedItem, qnt);
+    Order order = new Order(selectedItem, qnt, this.id);
     this.orders.add(order);
     AllOrders.pushOrder(order);
 
     return order;
   }
+
+  public int getOrdersQnt() { return this.orders.size(); }
 
   public int orderMany() {
     byte itemCode = 1, ordersQnt = 0, itemQnt;
@@ -157,6 +159,11 @@ public class Client extends User {
 
     // Adicionar algo interativo e legal sobre o pagamento.
     return theBill;
+  }
+
+  public void order(Order order) {
+    this.orders.add(order);
+    AllOrders.pushOrder(order);
   }
 
   public double settleTheBill() {

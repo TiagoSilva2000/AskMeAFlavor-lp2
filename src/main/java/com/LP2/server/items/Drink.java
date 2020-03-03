@@ -1,20 +1,25 @@
 package com.LP2.server.items;
 
+import com.LP2.database.items.DrinkController;
+import com.LP2.server.resources.Image;
+
 public class Drink extends Item {
   String provider;
 
   public Drink(String name, double price, String provider) {
     super(name, price);
     this.provider = provider;
-
-    super.create();
+    DrinkController.create(this);
   }
 
   public Drink(String name, double price, String provider, boolean isPresent) {
     super(name, price, isPresent);
     this.provider = provider;
+    DrinkController.create(this);
+  }
 
-    super.create();
+  public Drink(final int id) {
+    super(id);
   }
 
   public String getProvider() {
@@ -40,5 +45,10 @@ public class Drink extends Item {
 
   protected String inheritString() {
     return "- Provider: " + this.provider;
+  }
+
+  public void update(final String name, final double price, final String provider,
+                    final Image img) {
+
   }
 }

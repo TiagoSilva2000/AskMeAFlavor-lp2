@@ -30,7 +30,7 @@ public class CustomizeMenuBar {
 
         @Override
         public void paint(Graphics g, JComponent c) {
-            g.setColor(Color.WHITE);
+            g.setColor(Color.decode("14027569"));
             g.fillRect(0, 0, c.getWidth(), c.getHeight());
         }
 

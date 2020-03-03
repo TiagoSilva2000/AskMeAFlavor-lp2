@@ -13,6 +13,8 @@ public class Cook extends User {
     super(username, password);
   }
 
+  public Cook(final int id) { }
+
   public Cook(User user) {
     super(user);
   }
