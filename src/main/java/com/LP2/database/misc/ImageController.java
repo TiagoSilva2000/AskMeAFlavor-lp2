@@ -13,6 +13,8 @@ import com.LP2.app.ErrorCodes;
 import com.LP2.database.Connect;
 import com.LP2.server.resources.Image;
 
+import org.apache.commons.io.IOUtils;
+
 public class ImageController {
   static protected Connect connection;
 
@@ -25,9 +27,8 @@ public class ImageController {
   }
 
   static public int create(final Image img) {
-    File file = img.load();
     int id = -1;
-
+    File file = img.load();
     if (file == null) {
       System.out.println("Operation to create an image failed!");
       return -1;

@@ -18,6 +18,12 @@ public class Food extends Item {
     FoodController.create(this);
   }
 
+  public Food(String name, double price, String description, Image img, int id) {
+    super(name, price, img, id);
+    this.description = description;
+    this.presentInMenu = true;
+  }
+
   public Food(String name, double price, String description, boolean isPresent) {
     super(name, price, isPresent);
     this.description = description;

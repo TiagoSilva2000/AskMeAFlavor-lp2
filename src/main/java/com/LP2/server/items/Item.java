@@ -27,6 +27,14 @@ public abstract class Item {
     this.id = ItemController.create(this);
   }
 
+  public Item(String name, double price, Image img, int id) {
+    this.name = name;
+    this.price = price;
+    this.presentInMenu = true;
+    this.img = img;
+    this.id = id;
+  }
+
   public Item(String name, double price, boolean presentInMenu) {
     this.name = name;
     this.price = price;

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import com.LP2.app.Reader;
+import com.LP2.app.Session;
 import com.LP2.database.Connect;
 import com.LP2.database.items.ItemController;
 import com.LP2.database.misc.ImageController;
@@ -46,6 +47,7 @@ public class Loader {
   static public boolean preLoad() {
     loadVariables();
     loadStreams();
+    loadSession();
 
     return true;
   }
@@ -70,6 +72,12 @@ public class Loader {
 
   static public boolean unloadStreams() {
     Reader.unloadStream();
+    return true;
+  }
+
+  static public boolean loadSession() {
+    Session.load();
+
     return true;
   }
 

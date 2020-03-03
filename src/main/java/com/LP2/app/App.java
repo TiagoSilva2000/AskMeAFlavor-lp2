@@ -13,17 +13,19 @@ public class App {
 
   public static void main(String[] args) {
     Connect db = null;
-    Router router = null;
     Image img = null;
 
     Loader.preLoad();
     db = new Connect();
     Loader.loadControllers(db);
 
+
+
+    // Drink drink = new Drink("refri", 10, "coca-cola");
+
     // img = new Image(System.getProperty("user.dir") + "/public/", "img1", ".svg");
     // Food food = new Food("arroz", 4, "temperada com sal a gosto e azeite", img);
-    // Menu.load();
-    // db.addColumnToTable("ALTER TABLE Item ADD COLUMN itemType SMALLINT NOT NULL");
+    // db.addColumnToTable("ALTER TABLE Item ADD COLUMN present BOOLEAN NOT NULL DEFAULT TRUE");
 
     // for (int i = 0; i < Menu.getMenu().size(); i++)
     //   System.out.println(Menu.getMenu().get(i).getItsString());
@@ -35,12 +37,11 @@ public class App {
     // db.addColumnToTable("DELETE FROM Item");
     // db.addColumnToTable("DELETE FROM Image");
 
-    Login.main(args);
-    // db.createOrderTable();
-    // db.deleteTable("clientorder");
-    // router = new Router(db);
+    // Login.main(args);
+    // Session = new Session(db);
     // Login.main(args);
 
+    Session.close();
     Loader.unloadStreams();
   }
 }

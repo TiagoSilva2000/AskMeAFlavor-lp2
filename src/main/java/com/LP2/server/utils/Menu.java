@@ -1,7 +1,10 @@
 package com.LP2.server.utils;
 
 import com.LP2.database.items.ItemController;
+import com.LP2.server.items.Drink;
+import com.LP2.server.items.Food;
 import com.LP2.server.items.Item;
+import com.LP2.server.resources.Image;
 import java.util.ArrayList;
 
 public class Menu {
@@ -21,14 +24,40 @@ public class Menu {
   static public void load() {
     items = new ArrayList<Item>();
     ArrayList<ArrayList<String>> fields = ItemController.all();
+    int lastPos;
+    Image img = null;
+    String name, extra, filename, filepath, filetype;
+    double price;
+    int imgId, id;
+    byte[] content = null;
+
+    img = null;
+    filename = null;
+    filepath= null;
+    filetype = null;
 
     for (int i = 0; i < fields.size(); i++) {
-      for (int j = 0; j < fields.get(i).size(); j++)
-        System.out.println(fields.get(i).get(j));
+      lastPos = fields.get(i).size() - 1;
+      filepath = filename = filetype = null; imgId = -1; img = null; content = null;
+      id = Integer.parseInt(fields.get(i).get(0));
+      name = fields.get(i).get(1);
+      price = Double.parseDouble(fields.get(i).get(2));
+      extra = fields.get(i).get(4);
 
-      System.out.println("\n");
+      if (!fields.get(i).get(3).equals("null")) {
+        imgId = Integer.parseInt(fields.get(i).get(3));
+        filepath = fields.get(i).get(5);
+        filename = fields.get(i).get(6);
+        filetype = fields.get(i).get(7);
+        content = fields.get(i).get(8).getBytes();
+        img = new Image(filename, filepath, filetype, imgId, content);
+      }
+      if (fields.get(i).get(lastPos).equals("food")) {
+        items.add(new Food(name, price, extra, img, id));
+      } else {
+        items.add(new Drink(name, price, extra, img, id));
+      }
     }
-    System.out.println("Passed!");
   }
 
   static public Item selectItemAt(final int idx) {

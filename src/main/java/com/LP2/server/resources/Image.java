@@ -1,21 +1,40 @@
 package com.LP2.server.resources;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import com.LP2.database.misc.ImageController;
+
+import org.apache.commons.io.IOUtils;
 
 public class Image {
   private String filePath;
   private String fileType;
   private String fileName;
   private int id;
-
+  byte[] content;
+  // private File file;
 
   public Image(String filePath, String fileName, String fileType) {
     this.filePath = filePath;
     this.fileName = fileName;
     this.fileType = fileType;
+    // this.file = this.load();
+    try {
+      this.content = IOUtils.toByteArray(new FileInputStream(this.load()));
+    } catch(IOException e) {
+      e.printStackTrace();
+    }
     this.id = ImageController.create(this);
+  }
+
+  public Image(String filePath, String fileName, String fileType, int id, byte[] content) {
+    this.filePath = filePath;
+    this.fileName = fileName;
+    this.fileType = fileType;
+    this.id = id;
+    this.content = content;
   }
 
   public void setFilePath(String filePath) { this.filePath = filePath;}

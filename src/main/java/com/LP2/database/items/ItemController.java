@@ -3,6 +3,7 @@ package com.LP2.database.items;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import com.LP2.database.Connect;
@@ -34,6 +35,9 @@ public class ItemController {
       stm.setDouble(2, item.getPrice());
       if (item.getImage() != null)
         stm.setInt(3, item.getImage().getID());
+      else
+        stm.setNull(3, Types.INTEGER);
+
       stm.executeUpdate();
       result = stm.getGeneratedKeys();
       result.next();
@@ -54,15 +58,16 @@ public class ItemController {
       int i, j, maxFields;
       final PreparedStatement stm = connection.getCon()
         .prepareStatement("SELECT " +
-                            "Item.name, Item.price, Item.img_id, " +
-                            "Drink.provider, Food.description, " +
+                            "Item.id, Item.name, Item.price, Item.img_id, " +
+                            "Drink.provider, Food.description, Image.filepath, " +
+                            "Image.filename, Image.filetype, Image.content, " +
                             "CASE WHEN Drink.provider IS NOT NULL THEN 'drink' " +
                             "ELSE 'food' " +
                             "END AS itemType " +
                             "FROM Item " +
                           "FULL OUTER JOIN Food ON (Item.id = Food.food_id) " +
                           "FULL OUTER JOIN Drink ON (Drink.drink_id = Item.id) " +
-                          "FULL OUTER JOIN Image ON (Item.id = Image.id)" );
+                          "FULL OUTER JOIN Image ON (Item.img_id = Image.id)" );
       result = stm.executeQuery();
       maxFields = result.getMetaData().getColumnCount();
 
@@ -74,20 +79,20 @@ public class ItemController {
         while (j <= maxFields) {
           String field = result.getMetaData().getColumnName(j);
           String content = result.getString(j++);
-          System.out.println(field + ":" + content);
-          // if (content == null)
-          //   content = "null";
 
-          // if ((field.equals("img_id") || !content.equals("null")))
+          if (content == null)
+            content = "null";
+
+          if ((field.equals("img_id") || !content.equals("null"))) {
             fields.get(i).add(content);
-
+            // if (!field.equals("content"))
+            //   System.out.println(field + ":" + content);
+          }
         }
-        System.out.println("\n");
         i += 1;
       }
 
       stm.close();
-      System.exit(1);
       return fields;
     } catch (final Exception e) {
       e.printStackTrace();
