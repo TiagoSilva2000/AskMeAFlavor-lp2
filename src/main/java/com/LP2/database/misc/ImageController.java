@@ -15,6 +15,8 @@ import com.LP2.server.resources.Image;
 
 import org.apache.commons.io.IOUtils;
 
+import javassist.bytecode.ByteArray;
+
 public class ImageController {
   static protected Connect connection;
 
@@ -47,8 +49,8 @@ public class ImageController {
         stm.setBinaryStream(4, fis, (int) file.length());
         stm.executeUpdate();
         result = stm.getGeneratedKeys();
-        result.next();
-        id = result.getInt(1);
+        while(result.next())
+          id = result.getInt(1);
 
         stm.close();
         return id;
@@ -108,8 +110,9 @@ public class ImageController {
       maxFields = result.getMetaData().getColumnCount();
 
       i = 1;
-      while (i <= maxFields)
-        fields.add(result.getString(i++));
+      while (result.next())
+        while (i <= maxFields)
+          fields.add(result.getString(i++));
 
 
       stm.close();
@@ -122,30 +125,37 @@ public class ImageController {
     }
   }
 
-  static public ArrayList<ArrayList<String>> get() {
-    ArrayList<ArrayList<String>> images = new ArrayList<ArrayList<String>>();
+  static private Image buildImage(final ArrayList<String> fields, final byte[] content) {
+    final int id = Integer.parseInt(fields.get(0));
+    final String filePath = fields.get(1);
+    final String fileName = fields.get(2);
+    final String fileType = fields.get(3);
+
+    return new Image(id, filePath, fileName, fileType, content);
+  }
+
+  static public Image getImage(final int id) {
+    ArrayList<String> fields = new ArrayList<String>();
 
     try {
       ResultSet result = null;
-      int i, j, maxFields;
+      int i, maxFields;
+      byte[] content = null;
       final PreparedStatement stm = connection.getCon().prepareStatement(
-        "SELECT * FROM Image"
+        "SELECT * FROM Image WHERE id = (?)"
       );
+      stm.setInt(1, id);
       result = stm.executeQuery();
 
-      i = 0;
       maxFields = result.getMetaData().getColumnCount();
-
-      while (result.next()) {
-        images.add(new ArrayList<String>());
-        j = 1;
-        while (j <= maxFields)
-          images.get(i).add(result.getString(j++));
-        i += 1;
-      }
+      i = 1;
+      while (result.next())
+        while (i <= (maxFields - 1))
+          fields.add(result.getString(i++));
+        content = result.getBytes(i);
 
       stm.close();
-      return images;
+      return buildImage(fields, content);
     } catch(SQLException e) {
       e.printStackTrace();
       System.out.println("Error Code: ");

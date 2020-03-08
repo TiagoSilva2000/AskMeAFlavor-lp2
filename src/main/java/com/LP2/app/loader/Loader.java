@@ -10,6 +10,8 @@ import com.LP2.app.Session;
 import com.LP2.database.Connect;
 import com.LP2.database.items.ItemController;
 import com.LP2.database.misc.ImageController;
+import com.LP2.database.misc.OrderController;
+import com.LP2.database.misc.VisitController;
 import com.LP2.database.users.UserController;
 
 public class Loader {
@@ -83,7 +85,8 @@ public class Loader {
     UserController.setConnection(db);
     ItemController.setConnection(db);
     ImageController.setConnection(db);
-
+    OrderController.setConnection(db);
+    VisitController.setConnection(db);
     return true;
   }
 

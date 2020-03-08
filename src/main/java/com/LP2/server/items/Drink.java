@@ -12,13 +12,14 @@ public class Drink extends Item {
     DrinkController.create(this);
   }
 
-  public Drink(String name, double price, String provider, Image img) {
-    super(name, price, img);
+  public Drink(String name, double price, String provider, boolean present, Image img) {
+    super(name, price, img, present);
     this.provider = provider;
     DrinkController.create(this);
   }
 
-  public Drink(String name, double price, String provider, Image img, int id) {
+  public Drink(final int id, final String name, final double price,
+              final String provider, final Image img) {
     super(name, price, img, id);
     this.provider = provider;
   }
@@ -29,8 +30,15 @@ public class Drink extends Item {
     DrinkController.create(this);
   }
 
+  public Drink (final Item item, final String prov) {
+    super(item);
+    this.provider = prov;
+  }
+
   public Drink(final int id) {
     super(id);
+    Drink drink = DrinkController.getDrink(this);
+    this.provider = drink.provider;
   }
 
   public String getProvider() {
@@ -50,7 +58,6 @@ public class Drink extends Item {
   public String setProvider(String newProvider) {
     this.provider = newProvider;
 
-    super.update();;
     return newProvider;
   }
 
@@ -58,8 +65,12 @@ public class Drink extends Item {
     return "- Provider: " + this.provider;
   }
 
-  public void update(final String name, final double price, final String provider,
-                    final Image img) {
+  public boolean update(final String name, final double price, final String provider,
+                      final boolean present, final Image img) {
+    boolean oldPresence = super.update(name, price, provider, present, img);
+    this.provider = provider;
+    DrinkController.update(this);
 
+    return oldPresence;
   }
 }

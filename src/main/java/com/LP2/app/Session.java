@@ -2,14 +2,16 @@ package com.LP2.app;
 
 import java.util.ArrayList;
 
-import com.LP2.database.misc.Historic;
+import com.LP2.database.items.ItemController;
 import com.LP2.database.users.UserController;
 import com.LP2.server.feedback.Review;
 import com.LP2.server.items.Drink;
 import com.LP2.server.items.Food;
+import com.LP2.server.items.Item;
 import com.LP2.server.resources.Image;
 import com.LP2.server.users.Client;
 import com.LP2.server.users.Cook;
+import com.LP2.server.users.Manager;
 import com.LP2.server.users.User;
 import com.LP2.server.utils.AllOrders;
 import com.LP2.server.utils.Constants;
@@ -35,6 +37,12 @@ final public class Session {
 
   static public void login(final String username, final String password) {
     loggedUser = new User(username, password);
+    if (loggedUser.getUsertype() == Constants.getClientCode())
+      loggedUser = new Client(loggedUser);
+    else if (loggedUser.getUsertype() == Constants.getManagerCode())
+      loggedUser = new Manager(loggedUser);
+    else
+      loggedUser = new Cook(loggedUser);
   }
 
   static public void sigin(final String name, final String email, final String password, final String idCode) {
@@ -45,32 +53,75 @@ final public class Session {
     loggedUser = null;
   }
 
-  static public void storeFood(String name, double price, String description, boolean isPresent) {
+  static public User getLoggedUser() { return loggedUser; }
+
+  static public void storeFood(String name, double price, String description,
+                              boolean isPresent) {
     Food food = new Food(name, price, description, isPresent);
     if (food.isPresent())
       Menu.pushNewItem(food);
   }
 
-  static public void storeDrink(String name, double price, String provider, boolean isPresent) {
-    Drink drink = new Drink(name, price, provider, isPresent);
+  static public void storeFood(String name, double price, String description,
+                              boolean isPresent, Image img) {
+    Food food = new Food(name, price, description, isPresent, img);
+    if (food.isPresent())
+      Menu.pushNewItem(food);
+  }
 
+  static public void storeDrink(String name, double price, String provider,
+                              boolean isPresent, Image img) {
+    Drink drink = new Drink(name, price, provider, isPresent, img);
     if (drink.isPresent())
       Menu.pushNewItem(drink);
   }
 
-  static public void updateFood(final int id, final String name, final double price,
-                        final String desc, final Image img) {
-    new Food(id).update(name, price, desc, img);
+
+  static public void storeDrink(String name, double price, String provider, boolean isPresent) {
+    Drink drink = new Drink(name, price, provider, isPresent);
+
+    if (drink.isPresent())
+    Menu.pushNewItem(drink);
   }
 
-  static public void updateDrink(final int id, final String name, final double price,
-                        final String provider, final Image img) {
-    new Drink(id).update(name, price, provider, img);
+  static public void updateFood(final int oldId, final String uName, final double uPrice,
+                                final boolean uPresent, final String description,
+                                final Image uImg) {
+    Item food = Menu.selectItem(oldId);
+    if (food == null)
+      food = new Food(oldId);
+    boolean oldPresent = food.update(uName, uPrice, description, uPresent, uImg);
+
+    if (uPresent && !oldPresent) {
+      Menu.pushNewItem(food);
+    } else if (!uPresent && oldPresent) {
+      Menu.rmFromMenu(oldId);
+    } else if (uPresent == oldPresent) {
+      Menu.updateItem(oldId, food);
+    }
   }
 
-  static public void deleteItem(final int id) { Menu.rmItem(id); }
+  static public void updateDrink(final int oldId, final String uName, final double uPrice,
+                                final boolean uPresent, final String provider,
+                                final Image uImg) {
+    Item drink = Menu.selectItem(oldId);
+    if (drink == null)
+      drink = new Drink(oldId);
+    boolean oldPresent = drink.update(uName, uPrice, provider, uPresent, uImg);
 
-  static public void deleteItem(final String name) { Menu.rmItem(name); }
+    if (uPresent && !oldPresent) {
+      Menu.pushNewItem(drink);
+    } else if (!uPresent && oldPresent) {
+      Menu.rmFromMenu(oldId);
+    } else if (uPresent == oldPresent) {
+      Menu.updateItem(oldId, drink);
+    }
+  }
+
+  static public void deleteItem(final int id) {
+    Menu.rmItem(id);
+    ItemController.remove(id);
+  }
 
   static public void storeCook(final String name, final String email,
                         final String password, final String idCode) {
@@ -88,27 +139,32 @@ final public class Session {
   }
 
   static private void startVisit() {
-    Historic.startVisit();
   }
 
   static private void finishVisit() {
-    Historic.finishVisit();
   }
 
-  static public void order(final String itemName, final int qnt) {
-    Order order = new Order(Menu.selectItem(itemName), qnt, loggedUser.getID());
-    int ordersQnt = loggedUser.getOrdersQnt();
-    if (ordersQnt == 0)
-      startVisit();
-    loggedUser.order(order);
-  }
+  // static public void order(final String itemName, final int qnt) {
+  //   if (loggedUser == null)
+  //     return;
+
+  //   Order order = new Order(Menu.selectItem(itemName), qnt, loggedUser.getID());
+  //   int ordersQnt = loggedUser.getOrdersQnt();
+  //   if (ordersQnt == 0)
+  //     startVisit();
+  //   loggedUser.order(order);
+  // }
 
   static public void order(final int itemID, final int qnt) {
-    Order order = new Order(Menu.selectItem(itemID), qnt, loggedUser.getID());
-    int ordersQnt = loggedUser.getOrdersQnt();
-    if (ordersQnt == 0)
-      startVisit();
-    loggedUser.order(order);
+    Item selectedItem = Menu.selectItem(itemID);
+    if (loggedUser == null || selectedItem == null)
+      return;
+    Order order = loggedUser.order(selectedItem, qnt);
+    if (order == null) {
+      System.out.println("Erro...");
+      System.exit(343);
+    }
+    AllOrders.pushOrder(order);
   }
 
   static public void closeOrder(final int id) { AllOrders.remOrder(id); }

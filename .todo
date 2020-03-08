@@ -1,4 +1,4 @@
-1) Carregamento de todos os itens disponíveis atualmente no cardápio.
+  1) Carregamento de todos os itens disponíveis atualmente no cardápio.
   - Uso de JOIN para carregar as informações extras presentes nas tabelas de:
       -> image, drink e food.
 1.5) Usar fields para marcar que algum erro ocorreu.

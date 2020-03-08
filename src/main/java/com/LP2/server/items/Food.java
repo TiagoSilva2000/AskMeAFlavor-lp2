@@ -12,13 +12,13 @@ public class Food extends Item {
     FoodController.create(this);
   }
 
-  public Food(String name, double price, String description, Image img) {
-    super(name, price, img);
+  public Food(String name, double price, String description, boolean present, Image img) {
+    super(name, price, img, present);
     this.description = description;
     FoodController.create(this);
   }
 
-  public Food(String name, double price, String description, Image img, int id) {
+  public Food(int id, String name, double price, String description, Image img) {
     super(name, price, img, id);
     this.description = description;
     this.presentInMenu = true;
@@ -30,7 +30,16 @@ public class Food extends Item {
     FoodController.create(this);
   }
 
-  public Food(final int id) { super(id); }
+  public Food (final Item item, final String desc) {
+    super(item);
+    this.description = desc;
+  }
+
+  public Food(final int id) {
+    super(id);
+    Food food = FoodController.getFood(this);
+    this.description = food.description;
+  }
 
   public String getDesc() {
     return this.description;
@@ -43,7 +52,7 @@ public class Food extends Item {
   public String setDesc(String newDescription) {
     this.description = newDescription;
 
-    super.update();;
+    // super.update();
 
     return newDescription;
   }
@@ -58,7 +67,13 @@ public class Food extends Item {
     return "- Descrição: " + this.description;
   }
 
-  public void update(final String name, final double price, final String desc,
-                    final Image img) {}
+  public boolean update(final String name, final double price, final String desc,
+                      final boolean present, final Image img) {
+    boolean oldPresence = super.update(name, price, desc, present, img);
+    this.description = desc;
+    FoodController.update(this);
+
+    return oldPresence;
+  }
 
 }

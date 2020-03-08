@@ -2,9 +2,11 @@ package com.LP2.server.resources;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.LP2.database.misc.ImageController;
+import com.mchange.v2.lang.ThreadUtils;
 
 import org.apache.commons.io.IOUtils;
 
@@ -21,20 +23,35 @@ public class Image {
     this.fileName = fileName;
     this.fileType = fileType;
     // this.file = this.load();
+
+    File tmpf = this.load();
+    this.content = new byte[(int)tmpf.length()];
     try {
-      this.content = IOUtils.toByteArray(new FileInputStream(this.load()));
+      FileInputStream fis = new FileInputStream(tmpf);
+      fis.read(this.content);
+      fis.close();
     } catch(IOException e) {
       e.printStackTrace();
     }
     this.id = ImageController.create(this);
   }
 
-  public Image(String filePath, String fileName, String fileType, int id, byte[] content) {
+  public Image(final int id, final String filePath, final String fileName, final String fileType,
+              final byte[] content) {
+    this.id = id;
     this.filePath = filePath;
     this.fileName = fileName;
     this.fileType = fileType;
-    this.id = id;
     this.content = content;
+  }
+
+  public Image(final int id) {
+    Image holder = ImageController.getImage(id);
+    this.id = holder.id;
+    this.filePath = holder.filePath;
+    this.fileName = holder.fileName;
+    this.fileType = holder.fileType;
+    this.content = holder.content;
   }
 
   public void setFilePath(String filePath) { this.filePath = filePath;}

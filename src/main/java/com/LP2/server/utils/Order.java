@@ -10,18 +10,31 @@ public class Order {
   private int qnt;
   private Timestamp ordered_at;
   private byte status;
-  private int client_id;
+  private int clientId;
   private int id;
+  private int visitId;
 
 
-
-  public Order(Item item, int qnt, final int client_id) {
+  public Order(Item item, int qnt, final int clientId, final int visitId) {
     this.item = item;
     this.qnt = qnt;
     this.ordered_at = Timestamp.from(Instant.now());
     this.status = Constants.getUnOrder();
-    this.client_id = client_id;
-    id = OrderController.create(this, client_id);
+    this.clientId = clientId;
+    this.visitId = visitId;
+    id = OrderController.create(this);
+  }
+
+  public Order(final int id, final int visitId, final int clientId,
+              final int itemId, final byte status, final Timestamp ordered_at,
+              final int qnt) {
+    this.id = id;
+    this.visitId = visitId;
+    this.clientId = clientId;
+    this.item = Menu.selectItem(itemId);
+    this.status = status;
+    this.ordered_at = ordered_at;
+    this.qnt = qnt;
   }
 
   public int getID () { return this.id; }
@@ -37,6 +50,10 @@ public class Order {
   public Item getItem() {
     return this.item;
   }
+
+  public int getVisitId() { return this.visitId; }
+
+  public int getClientId() { return this.clientId; }
 
   public int getQnt() {
     return this.qnt;

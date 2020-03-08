@@ -10,16 +10,9 @@ public class AllOrders {
   static private ArrayList<Byte> availableCodes; // 1 to 100
   static private byte nextCode;
 
-  public AllOrders() {
-    orders = new ArrayList<Order>();
+  static public void load(final int status) {
+    orders = OrderController.all(status);
     availableCodes = new ArrayList<Byte>();
-    nextCode = 0;
-  }
-
-  static public void load() {
-    orders = new ArrayList<Order>();
-    availableCodes = new ArrayList<Byte>();
-    nextCode = 0;
   }
 
   static public Order pushOrder(Order newOrder) {
@@ -58,7 +51,7 @@ public class AllOrders {
   static public void listOrders() {
     for (byte i = 0; i < orders.size(); i++) {
       System.out.println(
-        orders.get(i).getOrderString() + " - Code: " + availableCodes.get(i)
+        orders.get(i).getOrderString() + " - Code: " + orders.get(i).getID()
       );
     }
   }

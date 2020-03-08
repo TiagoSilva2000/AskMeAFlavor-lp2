@@ -40,6 +40,18 @@ public class Connect {
     createUserTable();
   }
 
+  public void resetTables() {
+    this.addColumnToTable("DELETE FROM Client");
+    this.addColumnToTable("DELETE FROM ClientOrder");
+    this.addColumnToTable("DELETE FROM Food");
+    this.addColumnToTable("DELETE FROM Drink");
+    this.addColumnToTable("DELETE FROM Image");
+    this.addColumnToTable("DELETE FROM Review");
+    this.addColumnToTable("DELETE FROM Visit");
+    this.addColumnToTable("DELETE FROM Item");
+    this.addColumnToTable("DELETE FROM Person");
+  }
+
   public boolean createUserTable() {
     try  {
       Statement stm = this.conn.createStatement();
@@ -85,7 +97,7 @@ public class Connect {
                         "food_id integer NOT NULL," + // colocar como foreign key de item.
                         "description varchar(240)," +
                         "PRIMARY KEY(food_id)," +
-                        "FOREIGN KEY(food_id) REFERENCES Item(id)" +
+                        "FOREIGN KEY(food_id) REFERENCES Item(id) ON DELETE CASCADE" +
                       ")");
       stm.close();
     } catch (Exception e) {
@@ -102,7 +114,7 @@ public class Connect {
                         "drink_id integer NOT NULL," + // colocar como foreign key de item.
                         "provider varchar(80)," +
                         "PRIMARY KEY(drink_id)," +
-                        "FOREIGN KEY(drink_id) REFERENCES Item(id)" +
+                        "FOREIGN KEY(drink_id) REFERENCES Item(id) ON DELETE CASCADE" +
                       ")");
       stm.close();
     } catch (Exception e) {
@@ -119,7 +131,7 @@ public class Connect {
                         "client_id INTEGER NOT NULL," +
                         "lastBought REAL," +
                         "lastVisit DATE," +
-                        "FOREIGN KEY(client_id) REFERENCES Person(id)" +
+                        "FOREIGN KEY(client_id) REFERENCES Person(id) ON DELETE CASCADE" +
                       ")");
                       stm.close();
       return true;
@@ -138,8 +150,8 @@ public class Connect {
           "item_id INTEGER NOT NULL, " +
           "quantity INTEGER NOT NULL, " +
           "ordered_at DATE NOT NULL DEFAULT CURRENT_DATE, " +
-          "FOREIGN KEY (client_id) REFERENCES Person(id), " +
-          "FOREIGN KEY (item_id) REFERENCES Item(id)" +
+          "FOREIGN KEY (client_id) REFERENCES Person(id) ON DELETE CASCADE, " +
+          "FOREIGN KEY (item_id) REFERENCES Item(id) ON DELETE CASCADE" +
         ")");
 
       stm.close();
@@ -181,7 +193,7 @@ public class Connect {
         "client_id INTEGER NOT NULL, " +
         "entered_at TIMESTAMP NOT NULL, " +
         "exited_at TIMESTAMP, " +
-        "FOREIGN KEY (client_id) REFERENCES Person(id)" +
+        "FOREIGN KEY (client_id) REFERENCES Person(id) ON DELETE CASCADE" +
         ")"
       );
 
@@ -203,8 +215,8 @@ public class Connect {
         "client_id INTEGER NOT NULL, " +
         "content varchar(80) NOT NULL, " +
         "state varchar(30) DEFAULT 'visible' NOT NULL," +
-        "FOREIGN KEY (item_id) REFERENCES Item(id), " +
-        "FOREIGN KEY (client_id) REFERENCES Person(id)" +
+        "FOREIGN KEY (item_id) REFERENCES Item(id) ON DELETE CASCADE, " +
+        "FOREIGN KEY (client_id) REFERENCES Person(id) ON DELETE CASCADE" +
         ")"
       );
 
@@ -223,8 +235,8 @@ public class Connect {
         "CREATE TABLE Favourite (" +
         "client_id INTEGER NOT NULL, " +
         "item_id INTEGER NOT NULL, " +
-        "FOREIGN KEY(client_id) REFERENCES Person(id), " +
-        "FOREIGN KEY (item_id) REFERENCES Item(id), " +
+        "FOREIGN KEY(client_id) REFERENCES Person(id) ON DELETE CASCADE, " +
+        "FOREIGN KEY (item_id) REFERENCES Item(id) ON DELETE CASCADE, "  +
         "PRIMARY KEY(client_id, item_id)" +
         ")"
       );

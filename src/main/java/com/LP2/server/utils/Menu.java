@@ -21,9 +21,9 @@ public class Menu {
   //   return 1;
   // }
 
-  static public void load() {
+  static public void load(final byte presenceCode) {
     items = new ArrayList<Item>();
-    ArrayList<ArrayList<String>> fields = ItemController.all();
+    ArrayList<ArrayList<String>> fields = ItemController.all(presenceCode);
     int lastPos;
     Image img = null;
     String name, extra, filename, filepath, filetype;
@@ -50,14 +50,20 @@ public class Menu {
         filename = fields.get(i).get(6);
         filetype = fields.get(i).get(7);
         content = fields.get(i).get(8).getBytes();
-        img = new Image(filename, filepath, filetype, imgId, content);
+        img = new Image(imgId, filepath, filename, filetype, content);
       }
       if (fields.get(i).get(lastPos).equals("food")) {
-        items.add(new Food(name, price, extra, img, id));
+        items.add(new Food(id, name, price, extra, img));
       } else {
-        items.add(new Drink(name, price, extra, img, id));
+        items.add(new Drink(id, name, price, extra, img));
       }
     }
+  }
+
+  static public void updateItem(final int id, final Item item) {
+    for (int i = 0; i < items.size(); i++)
+      if (items.get(i).getID() == id)
+        items.set(i, item);
   }
 
   static public Item selectItemAt(final int idx) {
@@ -91,6 +97,16 @@ public class Menu {
     return items.get(i);
   }
 
+  // static public Food selectFood(final int code) {
+
+  //   return selectItem(code);
+  // }
+
+  // static public Drink drink(final int code) {
+
+  //   return selectItem(code);
+  // }
+
   static public boolean hasCode(int code) { return code >= 0 && code <= items.size(); }
 
   static public void listAllItems() {
@@ -104,7 +120,7 @@ public class Menu {
     return newItem;
   }
 
-  static private boolean rmFromMenu (final String name) {
+  static public boolean rmFromMenu (final String name) {
     byte i = 0;
 
     while (i < items.size() && (!items.get(i).getName().equals(name))) i++;
@@ -119,7 +135,7 @@ public class Menu {
     return true;
   }
 
-  static private boolean rmFromMenu (final int id) {
+  static public boolean rmFromMenu (final int id) {
     byte i = 0;
 
     while (i < items.size() && (items.get(i).getID() != id)) i++;
@@ -136,17 +152,11 @@ public class Menu {
   static public boolean rmItem(final String name) {
     boolean success = rmFromMenu(name);
 
-    if (success)
-      ItemController.remove(name);
-
     return success;
   }
 
   static public boolean rmItem(final int id) {
     boolean success = rmFromMenu(id);
-
-    if (success)
-      ItemController.remove(id);
 
     return success;
   }

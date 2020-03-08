@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import com.LP2.database.Connect;
 import com.LP2.server.items.Item;
+import com.LP2.server.resources.Image;
+import com.LP2.server.utils.Constants;
 
 public class ItemController {
   static protected Connect connection;
@@ -25,11 +27,11 @@ public class ItemController {
 
     try {
       ResultSet result;
-      int id;
+      int id = -1;
       final PreparedStatement stm = connection.getCon()
           .prepareStatement("INSERT INTO Item" +
-                            "(name, price, img_id) " +
-                            "VALUES (?, ?, ?)",
+                            "(name, price, img_id, present) " +
+                            "VALUES (?, ?, ?, ?)",
                             Statement.RETURN_GENERATED_KEYS);
       stm.setString(1, item.getName());
       stm.setDouble(2, item.getPrice());
@@ -37,11 +39,11 @@ public class ItemController {
         stm.setInt(3, item.getImage().getID());
       else
         stm.setNull(3, Types.INTEGER);
-
+      stm.setBoolean(4, item.isPresent());
       stm.executeUpdate();
       result = stm.getGeneratedKeys();
-      result.next();
-      id = result.getInt(1);
+      while (result.next())
+        id = result.getInt(1);
 
       stm.close();
       return id;
@@ -51,47 +53,56 @@ public class ItemController {
     }
   }
 
-  static public ArrayList<ArrayList<String>> all () {
+
+  static public ArrayList<ArrayList<String>> all (final byte presenceCode) {
     try {
       final ArrayList<ArrayList<String>> fields = new ArrayList<ArrayList<String>>();
       ResultSet result = null;
       int i, j, maxFields;
+      String queryString = (
+      "SELECT " +
+        "Item.id, Item.name, Item.price, Item.img_id, " +
+        "Drink.provider, Food.description, Image.filepath, " +
+        "Image.filename, Image.filetype, Image.content, " +
+          "CASE WHEN Drink.provider IS NOT NULL THEN 'drink' " +
+          "ELSE 'food' " +
+          "END AS itemType " +
+        "FROM Item " +
+      "FULL OUTER JOIN Food ON (Item.id = Food.food_id) " +
+      "FULL OUTER JOIN Drink ON (Drink.drink_id = Item.id) " +
+      "FULL OUTER JOIN Image ON (Item.img_id = Image.id) ");
+
+      if (presenceCode == Constants.getPresent())
+        queryString += "WHERE Item.present = true";
+      else if (presenceCode == Constants.getNotPresent())
+        queryString += "WHERE Item.present = false";
+
       final PreparedStatement stm = connection.getCon()
-        .prepareStatement("SELECT " +
-                            "Item.id, Item.name, Item.price, Item.img_id, " +
-                            "Drink.provider, Food.description, Image.filepath, " +
-                            "Image.filename, Image.filetype, Image.content, " +
-                            "CASE WHEN Drink.provider IS NOT NULL THEN 'drink' " +
-                            "ELSE 'food' " +
-                            "END AS itemType " +
-                            "FROM Item " +
-                          "FULL OUTER JOIN Food ON (Item.id = Food.food_id) " +
-                          "FULL OUTER JOIN Drink ON (Drink.drink_id = Item.id) " +
-                          "FULL OUTER JOIN Image ON (Item.img_id = Image.id)" );
+                                    .prepareStatement(queryString);
       result = stm.executeQuery();
       maxFields = result.getMetaData().getColumnCount();
 
       i = 0;
       j = 1;
-      while (result.next()) {
-        j = 1;
-        fields.add(new ArrayList<String>());
-        while (j <= maxFields) {
-          String field = result.getMetaData().getColumnName(j);
-          String content = result.getString(j++);
+      if (result != null) {
+        while (result.next()) {
+          j = 1;
+          fields.add(new ArrayList<String>());
+          while (j <= maxFields) {
+            String field = result.getMetaData().getColumnName(j);
+            String content = result.getString(j++);
 
-          if (content == null)
-            content = "null";
+            if (content == null)
+              content = "null";
 
-          if ((field.equals("img_id") || !content.equals("null"))) {
-            fields.get(i).add(content);
-            // if (!field.equals("content"))
-            //   System.out.println(field + ":" + content);
+            if ((field.equals("img_id") || !content.equals("null")))
+              fields.get(i).add(content);
           }
+          i += 1;
         }
-        i += 1;
       }
 
+      result.close();
       stm.close();
       return fields;
     } catch (final Exception e) {
@@ -100,22 +111,39 @@ public class ItemController {
     }
   }
 
-  static public ArrayList<String> get(final String name) {
+  static private Item buildItem (final ArrayList<String> fields) {
+    final int id = Integer.parseInt(fields.get(0));
+    final String name = fields.get(1);
+    final double price = Double.parseDouble(fields.get(2));
+    final boolean present = Boolean.parseBoolean(fields.get(3));
+    Image img = null;
+
+    if (fields.get(4) != null)
+      img = new Image(Integer.parseInt(fields.get(4)));
+
+    return new Item(id, name, price, present, img);
+  }
+
+  static public Item getItem(final int id) {
     try {
       final ArrayList<String> fields = new ArrayList<String>();
       ResultSet result = null;
-      int i, maxFields;
-      final PreparedStatement stm = connection.getCon().prepareStatement("SELECT * FROM Item " + "WHERE name = (?)");
-      stm.setString(1, name);
+      int i, maxFields = 0;
+      final PreparedStatement stm = connection.getCon()
+        .prepareStatement("SELECT * FROM Item " +
+                          "WHERE id = (?)");
+      stm.setInt(1, id);
       result = stm.executeQuery();
-      maxFields = result.getMetaData().getColumnCount();
 
       i = 1;
-      while (i <= maxFields)
-        fields.add(result.getString(i++));
+      while (result.next()) {
+        maxFields = result.getMetaData().getColumnCount();
+        while (i <= maxFields)
+          fields.add(result.getString(i++));
+      }
 
       stm.close();
-      return fields;
+      return buildItem(fields);
     } catch (final Exception e) {
       e.printStackTrace();
       return null;
@@ -124,12 +152,17 @@ public class ItemController {
 
   static public boolean update(final Item item) {
     try {
-
+      boolean isPresent = item.isPresent();
       final PreparedStatement stm = connection.getCon()
-          .prepareStatement("UPDATE Item " + "SET name = (?), price = (?) " + "WHERE id = (?)");
+          .prepareStatement("UPDATE Item " +
+                              "SET name = (?), price = (?), " +
+                              "present = (?), img_id = (?) " +
+                            "WHERE id = (?)");
       stm.setString(1, item.getName());
       stm.setDouble(2, item.getPrice());
-      stm.setInt(3, item.getID());
+      stm.setBoolean(3, isPresent);
+      stm.setInt(4, item.getImage().getID());
+      stm.setInt(5, item.getID());
       stm.executeUpdate();
 
       return true;

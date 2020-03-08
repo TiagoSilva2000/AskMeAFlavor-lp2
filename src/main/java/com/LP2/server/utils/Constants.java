@@ -12,6 +12,16 @@ public class Constants {
                       minPassLen = 15,
                       maxPassLen = 256,
                       saltLen = 16;
+  static private byte notPresent = 0,
+                  present = 1,
+                  all = 2;
+
+
+  static public byte getNotPresent() { return notPresent; }
+
+  static public byte getPresent() { return present; }
+
+  static public byte getPresentAndNotPresent() { return all; }
 
   static private String resourcesPath = "";
 

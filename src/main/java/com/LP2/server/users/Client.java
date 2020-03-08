@@ -11,17 +11,20 @@ import com.LP2.server.utils.AllOrders;
 import com.LP2.server.utils.Constants;
 import com.LP2.server.utils.Menu;
 import com.LP2.server.utils.Order;
+import com.LP2.server.utils.Visit;
 
 public class Client extends User {
-  LocalDate lastVisit;
-  ArrayList<Order> orders;
-  double lastBought;
+  private LocalDate lastVisit;
+  private ArrayList<Order> orders;
+  private double lastBought;
+  private Visit visit;
 
   public Client(String name, String email, String password, String idCode) {
     super(name, email, password, idCode, Constants.getClientCode());
     this.orders = new ArrayList<Order>();
     this.lastVisit = null;
     this.lastBought = 0;
+    visit = null;
     ClientController.create(this);
   }
 
@@ -37,13 +40,9 @@ public class Client extends User {
 
   public void setExtraInfoById() {
     ArrayList<String> fields = ClientController.get(this.id);
-    if (fields.get(1) == null)
-      lastBought = 0;
-    else
-      lastBought = Double.parseDouble(fields.get(1));
-
-    if (fields.get(2) != null) {
-      lastVisit = LocalDate.parse(fields.get(2));
+    lastBought = Double.parseDouble(fields.get(0));
+    if (fields.get(1) != null) {
+      lastVisit = LocalDate.parse(fields.get(1));
     } else {
       lastVisit = null;
     }
@@ -76,10 +75,11 @@ public class Client extends User {
     Menu.listAllItems();
   }
 
-  private Order order(Item selectedItem, byte qnt) {
-    Order order = new Order(selectedItem, qnt, this.id);
+  public Order order(final Item selectedItem, final int qnt) {
+    if (this.orders.size() == 0)
+      this.visit = new Visit(this.id);
+    Order order = new Order(selectedItem, qnt, this.id, this.visit.getId());
     this.orders.add(order);
-    AllOrders.pushOrder(order);
 
     return order;
   }

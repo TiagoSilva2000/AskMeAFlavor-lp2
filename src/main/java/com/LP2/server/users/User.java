@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.LP2.database.users.UserController;
+import com.LP2.server.items.Item;
 import com.LP2.server.utils.Order;
 
 public class User {
@@ -30,6 +31,9 @@ public class User {
   public User (final String username, final String password) {
     this.name = username; this.password = password;
     ArrayList<String> fields = read();
+    if (fields.size() == 0) {
+      return;
+    }
     try {
       if (fields.size() != 0) {
         byte usertype = (byte) Integer.parseInt(fields.get(5));
@@ -124,7 +128,7 @@ public class User {
 
   public double settleTheBill() { return -1; }
 
-  public void order(final Order order) {}
+  public Order order(final Item item, final int qnt) { return null; }
 
   public int getOrdersQnt() { return -1; }
 

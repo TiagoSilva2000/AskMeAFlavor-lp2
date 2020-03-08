@@ -43,10 +43,13 @@ public class ClientController extends UserController{
         "SELECT * FROM Client " +
         "WHERE client_id = (?)");
       stm.setInt(1, id);
-      result = stm.executeQuery(); result.next();
-      maxFields = result.getMetaData().getColumnCount();
-      while (i <= maxFields)
-        fields.add(result.getString(i++));
+      result = stm.executeQuery();
+
+      while (result.next()) {
+        maxFields = result.getMetaData().getColumnCount();
+        while (i <= maxFields)
+          fields.add(result.getString(i++));
+      }
 
       stm.close();
       return fields;

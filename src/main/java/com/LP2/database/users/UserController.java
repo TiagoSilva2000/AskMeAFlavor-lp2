@@ -30,7 +30,7 @@ public class UserController {
     String salt = Encrypt.getSalt(Constants.getSaltLen());
 
     try {
-      int id;
+      int id = -1;
       ResultSet result = null;
       final PreparedStatement stm = connection.getCon()
       .prepareStatement(
@@ -47,8 +47,8 @@ public class UserController {
       stm.setString(6, salt);
       stm.executeUpdate();
       result = stm.getGeneratedKeys();
-      result.next();
-      id = Integer.parseInt(result.getString(1));
+      while (result.next())
+        id = Integer.parseInt(result.getString(1));
 
       stm.close();
       return id;
@@ -70,14 +70,15 @@ public class UserController {
       stm.setString(1, username);
       result = stm.executeQuery();
       maxFields = result.getMetaData().getColumnCount();
-      result.next();
-      passwordMatch = Encrypt.validatePBKDF(password, result.getString("password"),
-                      result.getString("salt"));
-      if (passwordMatch) {
-        while (i <= maxFields)
+      while (result.next()) {
+        passwordMatch = Encrypt.validatePBKDF(password, result.getString("password"),
+        result.getString("salt"));
+        if (passwordMatch) {
+          while (i <= maxFields)
           fields.add(result.getString(i++));
-      } else {
-        System.out.println("Authentication Failed!");
+        } else {
+          System.out.println("Authentication Failed!");
+        }
       }
 
       stm.close();
