@@ -9,5 +9,9 @@ public class Visit {
     this.id = VisitController.create(clientID);
   }
 
+  public Visit(final int visitID, boolean alreadyExists) {
+    this.id = visitID;
+  }
+
   public int getId() { return this.id; }
 }

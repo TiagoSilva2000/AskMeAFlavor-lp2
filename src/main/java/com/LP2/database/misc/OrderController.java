@@ -60,8 +60,9 @@ public class OrderController {
   }
 
   static private Order buildOrder(final ArrayList<String> fields) {
+    if (fields == null || fields.size() == 0)
+      return null;
     final int qnt = Integer.parseInt(fields.get(0));
-    // System.out.println(fields.get(1));
     final byte status = Byte.parseByte(fields.get(1));
     final int itemId = Integer.parseInt(fields.get(2));
     final int clientId = Integer.parseInt(fields.get(3));
@@ -74,9 +75,11 @@ public class OrderController {
 
   static private ArrayList<Order> buildOrders (final ArrayList<ArrayList<String>> fields) {
     ArrayList<Order> orders = new ArrayList<Order>();
-
+    Order tmp;
     for (int i = 0; i < fields.size(); i++) {
-      orders.add(buildOrder(fields.get(i)));
+      tmp = buildOrder(fields.get(i));
+      if (tmp != null)
+        orders.add(tmp);
     }
 
     return orders;
@@ -100,6 +103,7 @@ public class OrderController {
 
         while (rs.next()) {
           fields.add(new ArrayList<String>());
+          j = 1;
           while (j <= maxFields)
             fields.get(i).add(rs.getString(j++));
           i += 1;

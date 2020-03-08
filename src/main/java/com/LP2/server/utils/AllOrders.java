@@ -28,16 +28,39 @@ public class AllOrders {
 
   static public Order remOrder(final int id) {
     Order tmp = null;
-    for (int i = 0; i < orders.size(); i++) {
+    int i = 0;
+
+    while (i < orders.size()) {
       if (orders.get(i).getID() == id) {
+        orders.get(i).setStatus(Constants.getFinishedOrder());
         tmp = orders.get(i);
         orders.remove(tmp);
+        break;
       }
+      i++;
     }
 
-    tmp.setStatus(Constants.getFinishedOrder());
-    OrderController.update(tmp);
     return tmp;
+  }
+
+  static public int ordersQntFromUser(final int id) {
+    int counter = 0;
+    for (int i = 0; i < orders.size(); i++)
+      if (orders.get(i).getClientId() == id)
+        counter++;
+
+    return counter;
+  }
+
+  static public ArrayList<Order> ordersFromUser(final int id) {
+    ArrayList<Order> userOrders = new ArrayList<Order>();
+
+    for (int i = 0; i < orders.size(); i++) {
+      if (orders.get(i).getClientId() == id)
+        userOrders.add(orders.get(i));
+    }
+
+    return userOrders;
   }
 
   static public Order setPriority(byte orderCode) {
@@ -51,7 +74,8 @@ public class AllOrders {
   static public void listOrders() {
     for (byte i = 0; i < orders.size(); i++) {
       System.out.println(
-        orders.get(i).getOrderString() + " - Code: " + orders.get(i).getID()
+        orders.get(i).getOrderString() + " - Code: " + orders.get(i).getID() +
+        " - ClientID: " + orders.get(i).getClientId()
       );
     }
   }

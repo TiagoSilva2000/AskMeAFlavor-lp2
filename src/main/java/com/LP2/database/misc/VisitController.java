@@ -3,6 +3,7 @@ package com.LP2.database.misc;
 import java.security.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 
@@ -56,7 +57,45 @@ public class VisitController {
   }
 
 
-  static public void update() {}
+  static public int getOpenVisit(final int clientID) {
+    int openId = -1;
+    try {
+      ResultSet rs;
+      PreparedStatement stm = conn.getCon().prepareStatement(
+        "SELECT * FROM Visit " +
+        "WHERE client_id = (?)"
+      );
+      stm.setInt(1, clientID);
+      rs = stm.executeQuery();
+
+      if (rs != null)
+        while(rs.next())
+          openId = Integer.parseInt(rs.getString("id"));
+
+      return openId;
+    } catch(SQLException e) {
+      e.printStackTrace();
+      return openId;
+    }
+
+  }
+
+  static public void update(final int visitId, final double totalSpent) {
+    try {
+      PreparedStatement stm = conn.getCon().prepareStatement(
+        "UPDATE Visit " +
+        "SET exited_at = (?), total_spent = (?) " +
+        "WHERE id = (?)"
+      );
+      stm.setTimestamp(1, java.sql.Timestamp.valueOf(LocalDateTime.now()));
+      stm.setDouble(2, totalSpent);
+      stm.setInt(3, visitId);
+      stm.executeUpdate();
+      stm.close();
+    } catch(SQLException e) {
+      e.printStackTrace();
+    }
+  }
 
 
 }

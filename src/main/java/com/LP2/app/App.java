@@ -63,7 +63,13 @@ public class App {
   }
 
   public static void testBill() {
-
+    int id = Menu.getMenu().get(0).getID();
+    Session.login("ttiago", "12345");
+    // Session.order(id, 5);
+    // Session.closeOrder(11);
+    for (int i = 0; i < Session.getLoggedUser().getOrders().size(); i++)
+      Session.closeOrder(Session.getLoggedUser().getOrders().get(i).getID());
+    Session.processPayment();
   }
 
 
@@ -81,14 +87,16 @@ public class App {
     Menu.load(Constants.getPresent());
     AllOrders.load(Constants.getUnOrder());
     AllOrders.listOrders();
-    // Session.storeFood("pickles", 35, "assado", true);
-    // int id = Menu.getMenu().get(0).getID();
-    // Session.sigin("ttiago", "tiago10@", "12345", "8888");
-    // Session.order(id, 3);
-    updateOrder();
+    testBill();
     System.out.println("-----------------");
     AllOrders.listOrders();
 
+    // Session.storeFood("pickles", 35, "assado", true);
+    // Session.sigin("ttiago", "tiago10@", "12345", "8888");
+    // int id = Menu.getMenu().get(0).getID();
+    // Session.login("ttiago", "12345");
+    // Session.order(id, 5);
+    // testBill();
 
     // db.resetTables();
     // db.addColumnToTable("ALTER TABLE ClientOrder DROP COLUMN ordered_at");

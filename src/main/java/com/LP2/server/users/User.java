@@ -78,7 +78,12 @@ public class User {
 
   public byte getUsertype() {
     return this.usertype;
+
   }
+
+  public int getVisitId() { return -1; }
+
+  public ArrayList<Order> getOrders() { return null; }
 
   // mandar e-mail de confirmação aqui.
   public String setEmail(String nEmail) {

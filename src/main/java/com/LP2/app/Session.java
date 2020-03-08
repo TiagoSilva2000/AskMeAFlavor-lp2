@@ -3,6 +3,8 @@ package com.LP2.app;
 import java.util.ArrayList;
 
 import com.LP2.database.items.ItemController;
+import com.LP2.database.misc.OrderController;
+import com.LP2.database.misc.VisitController;
 import com.LP2.database.users.UserController;
 import com.LP2.server.feedback.Review;
 import com.LP2.server.items.Drink;
@@ -167,13 +169,27 @@ final public class Session {
     AllOrders.pushOrder(order);
   }
 
-  static public void closeOrder(final int id) { AllOrders.remOrder(id); }
+  static public void closeOrder(final int id) {
+    Order tmp = AllOrders.remOrder(id);
+    if (tmp != null) {
+      OrderController.update(tmp);
+      // atualizar pedidos do cliente também
+    }
+  }
 
-  static public double processPayment() {
+  static public void processPayment() {
+    int userOrdersQnt = AllOrders.ordersQntFromUser(loggedUser.getID());
+    if (userOrdersQnt == 0)
+      return;
+
+    if (userOrdersQnt > 0) {
+      System.out.println("Wait until all of orders be finished please");
+      return;
+    }
     double paidValue = loggedUser.settleTheBill();
-    finishVisit();
+    VisitController.update(loggedUser.getVisitId(), paidValue);
 
-    return paidValue;
+    logout();
   }
 
   static public void reloadMenu(boolean all) {

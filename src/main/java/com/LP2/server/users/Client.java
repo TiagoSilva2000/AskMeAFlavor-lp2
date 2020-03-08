@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.LP2.app.Reader;
+import com.LP2.database.misc.VisitController;
 import com.LP2.database.users.ClientController;
 import com.LP2.server.items.Item;
 import com.LP2.server.utils.AllOrders;
@@ -40,14 +41,21 @@ public class Client extends User {
 
   public void setExtraInfoById() {
     ArrayList<String> fields = ClientController.get(this.id);
-    lastBought = Double.parseDouble(fields.get(0));
+    final int openVisitId = VisitController.getOpenVisit(this.id);
+    this.orders = AllOrders.ordersFromUser(this.id);
+
+    if (openVisitId != -1)
+      this.visit = new Visit(openVisitId, true);
+
+    this.lastBought = Double.parseDouble(fields.get(0));
     if (fields.get(1) != null) {
       lastVisit = LocalDate.parse(fields.get(1));
     } else {
       lastVisit = null;
     }
-    this.orders = new ArrayList<Order>();
   }
+
+  public int getVisitId() { return this.visit.getId(); }
 
   private LocalDate setLastVisit(LocalDate currVisit) {
     this.lastVisit = currVisit;
@@ -76,7 +84,7 @@ public class Client extends User {
   }
 
   public Order order(final Item selectedItem, final int qnt) {
-    if (this.orders.size() == 0)
+    if (this.orders.size() == 0 && this.visit != null)
       this.visit = new Visit(this.id);
     Order order = new Order(selectedItem, qnt, this.id, this.visit.getId());
     this.orders.add(order);
