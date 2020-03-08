@@ -121,6 +121,28 @@ public class Client extends User {
     }
   }
 
+  public Object[][] getOrdersMatrix() {
+    ArrayList<Object[]> objs = new ArrayList<Object[]>();
+    for (int i = 0; i < orders.size(); i++) {
+      String status = "Preparando...";
+      if (orders.get(i).getStatus() == Constants.getFinishedOrder())
+        status = "Entregue.";
+      else if (orders.get(i).getStatus() == Constants.getCanceledOrder())
+        status = "Cancelado";
+
+      objs.add(new Object[]{
+        orders.get(i).getID(),
+        orders.get(i).getItem().getName(),
+        orders.get(i).getQnt(),
+        orders.get(i).getItem().getPrice(),
+        status
+      });
+    }
+    Object[][] ob = objs.toArray(new Object[0][]);
+    return ob;
+  }
+
+
   public void listOrders() {
     System.out.println("Pedidos até então: ");
     for (byte i = 0; i < orders.size(); i++) {
@@ -138,7 +160,8 @@ public class Client extends User {
   }
 
   public double getCashBack() {
-    return (cashBackAllowed() ? (10 / 100 * lastBought) : 0);
+    // return (cashBackAllowed() ? (10 / 100 * lastBought) : 0);
+    return (6.0 / 100 * this.lastBought);
   }
 
   public double getCurrentExpenses() {

@@ -9,6 +9,9 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
+import com.LP2.app.Session;
+import com.LP2.controllers.LoginVV;
+
 /**
  *
  * @author evelyn.ferreira
@@ -62,11 +65,10 @@ public class Cart extends javax.swing.JFrame {
         });
 
         cartTBL.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            LoginVV.getuser().getOrdersMatrix()
+            ,
             new String [] {
-                "PEDIDO", "QUANTIDADE", "PREÇO"
+                "CÓDIGO DO PEDIDO", "ITEM", "QUANTIDADE", "PREÇO", "STATUS"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -84,13 +86,19 @@ public class Cart extends javax.swing.JFrame {
             cartTBL.getColumnModel().getColumn(2).setPreferredWidth(2);
         }
 
+
         discountTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         discountTXT.setForeground(new java.awt.Color(255, 255, 255));
-        discountTXT.setText("Desconto:");
+        discountTXT.setText("Desconto: R$ " + String.valueOf(LoginVV.getuser().getCashBack()));
+
+
+        double total = (LoginVV.getuser().getCurrentExpenses()
+                - LoginVV.getuser().getCashBack());
+        total = total < 0 ? 0 : total;
 
         totalValueLBL.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         totalValueLBL.setForeground(new java.awt.Color(255, 255, 255));
-        totalValueLBL.setText("jLabel1");
+        totalValueLBL.setText("R$ " + String.valueOf(total));
 
         jButton1.setBackground(new java.awt.Color(38, 70, 27));
         jButton1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
@@ -108,7 +116,8 @@ public class Cart extends javax.swing.JFrame {
         debitRBTN.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         debitRBTN.setForeground(new java.awt.Color(255, 255, 255));
         debitRBTN.setText("Débito");
-
+        debitRBTN.setOpaque(false);
+        creditRBN.setOpaque(false);
         paymentBTNG.add(creditRBN);
         creditRBN.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         creditRBN.setForeground(new java.awt.Color(255, 255, 255));
@@ -253,22 +262,22 @@ public class Cart extends javax.swing.JFrame {
 
     private void confirmBTNMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBTNMouseEntered
         confirmBTN.setForeground(Color.decode("6554655"));
-        confirmBTN.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\hoverCheck24.png"));
+        confirmBTN.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/hoverCheck24.png"));
     }//GEN-LAST:event_confirmBTNMouseEntered
 
     private void confirmBTNMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBTNMouseExited
         confirmBTN.setForeground(Color.decode("6554655"));
-        confirmBTN.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\check24.png"));
+        confirmBTN.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/check24.png"));
     }//GEN-LAST:event_confirmBTNMouseExited
 
     private void cancelBTNMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelBTNMouseEntered
         cancelBTN.setForeground(Color.decode("6554655"));
-        cancelBTN.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\hoverCancel24.png"));
+        cancelBTN.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/hoverCancel24.png"));
     }//GEN-LAST:event_cancelBTNMouseEntered
 
     private void cancelBTNMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelBTNMouseExited
         cancelBTN.setForeground(Color.decode("6554655"));
-        cancelBTN.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\cancel24.png"));
+        cancelBTN.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/cancel24.png"));
     }//GEN-LAST:event_cancelBTNMouseExited
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -280,7 +289,8 @@ public class Cart extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelBTNMouseClicked
 
     private void confirmBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBTNMouseClicked
-        Payment paymentDialog = new Payment(this , true);
+        double value = LoginVV.processPayment();
+        Payment paymentDialog = new Payment(this , true, value);
         paymentDialog.setVisible(true);
     }//GEN-LAST:event_confirmBTNMouseClicked
 

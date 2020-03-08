@@ -9,6 +9,10 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
+
+import com.LP2.controllers.LoginVV;
+import com.LP2.controllers.UserVV;
+
 import static com.LP2.view.pages.Login.profileType;
 
 /**
@@ -247,17 +251,17 @@ public class EditProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_editBackBTNMouseClicked
 
     private void saveBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBTNMouseClicked
-        userNameTXT.getText();
-        userEmailTXT.getText();
-        userCpfTXT.getText();
-        userPhoneTXT.getText();
-//        mandar as coisaaaas pro bd
-//Se rolou tuto certo
-        Success successDialog = new Success(this , true);
-        successDialog.setVisible(true);
-// SE não
-        Error errorDialog = new Error(this , true);
-        errorDialog.setVisible(true);
+        int success = UserVV.update(userNameTXT.getText(),
+                    userEmailTXT.getText(),
+                    userCpfTXT.getText()
+        );
+        if (success == 1) {
+            Success successDialog = new Success(this , true);
+            successDialog.setVisible(true);
+        } else {
+            Error errorDialog = new Error(this , true);
+            errorDialog.setVisible(true);
+        }
     }//GEN-LAST:event_saveBTNMouseClicked
 
     private void logoutBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutBTNMouseClicked
@@ -301,9 +305,9 @@ public class EditProfile extends javax.swing.JFrame {
     private void fillUserFields() {
 
 //            pegar obj do banco, buscar pelo email do Login
-        userNameTXT.setText("string nome");
-        userEmailTXT.setText("string nome");
-        userCpfTXT.setText("86344792507");
+        userNameTXT.setText(LoginVV.getuser().getName());
+        userEmailTXT.setText(LoginVV.getuser().getEmail());
+        userCpfTXT.setText(LoginVV.getuser().getIDCode());
         userPhoneTXT.setText("(21)22222-2222");
     }
     /**
@@ -337,11 +341,8 @@ public class EditProfile extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                new EditProfile().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new EditProfile().setVisible(true);
         });
     }
 

@@ -8,6 +8,10 @@ package com.LP2.view.pages;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+
+import com.LP2.controllers.OrderVV;
+import com.LP2.server.utils.Constants;
+
 import static com.LP2.view.pages.CustomizeMenuBar.CustomizeMenuBar;
 
 /**
@@ -56,15 +60,14 @@ public class KitchenAccount extends javax.swing.JFrame {
 
         kitchenTBL.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         kitchenTBL.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            OrderVV.allObj(Constants.getUnOrder())
+            ,
             new String [] {
-                "MESA", "QUANTIDADE", "PEDIDO"
+                "CLIENTE", "PEDIDO", "ITEM", "QUANTIDADE"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -141,12 +144,12 @@ public class KitchenAccount extends javax.swing.JFrame {
 
     private void editProfileMENUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseEntered
         editProfileMENU.setForeground(Color.decode("6554655"));
-        editProfileMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\hoverProfileEdit.png"));
+        editProfileMENU.setIcon(new ImageIcon("/assets/hoverProfileEdit.png"));
     }//GEN-LAST:event_editProfileMENUMouseEntered
 
     private void editProfileMENUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseExited
         editProfileMENU.setForeground(Color.white);
-        editProfileMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\profileEdit16.png"));
+        editProfileMENU.setIcon(new ImageIcon("/assets/profileEdit16.png"));
     }//GEN-LAST:event_editProfileMENUMouseExited
 
     private void editProfileMENUMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseClicked
@@ -202,12 +205,8 @@ public class KitchenAccount extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable(){
-
-            @Override
-            public void run() {
-                new KitchenAccount().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new KitchenAccount().setVisible(true);
         });
     }
 

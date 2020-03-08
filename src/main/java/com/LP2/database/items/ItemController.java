@@ -112,6 +112,9 @@ public class ItemController {
   }
 
   static private Item buildItem (final ArrayList<String> fields) {
+    if (fields.size() == 0)
+      return null;
+
     final int id = Integer.parseInt(fields.get(0));
     final String name = fields.get(1);
     final double price = Double.parseDouble(fields.get(2));
@@ -125,6 +128,7 @@ public class ItemController {
   }
 
   static public Item getItem(final int id) {
+    System.out.println(id);
     try {
       final ArrayList<String> fields = new ArrayList<String>();
       ResultSet result = null;

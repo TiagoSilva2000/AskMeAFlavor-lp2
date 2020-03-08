@@ -5,6 +5,7 @@
  */
 package com.LP2.view.pages;
 
+import com.LP2.app.Session;
 import com.placeholder.PlaceHolder;
 import java.awt.Color;
 import java.awt.Font;
@@ -98,6 +99,16 @@ public class RegisterProducts extends javax.swing.JFrame {
         });
 
         registerProductsPNL.setOpaque(false);
+        // foodDescriptionTXT.setVisible(false);
+        // if (foodDescriptionTXT.isVisible()) {
+        //     foodDescriptionTXT.setVisible(false);
+        //     drinkProviderTXT.setVisible(true);
+        // } else {
+        //     foodDescriptionTXT.setVisible(true);
+        //     drinkProviderTXT.setVisible(false);
+        // }
+        // drinkProviderTXT.setVisible(true);
+        // foodDescriptionTXT.setVisible(true);
 
         Cadastrar.setBackground(new java.awt.Color(38, 70, 27));
         Cadastrar.setForeground(new java.awt.Color(255, 255, 255));
@@ -289,8 +300,8 @@ public class RegisterProducts extends javax.swing.JFrame {
     }//GEN-LAST:event_productsBackBTNMouseClicked
 
     private void productFoodRBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productFoodRBTNMouseClicked
-       foodDescriptionTXT.setVisible(true);
-       drinkProviderTXT.setVisible(false);
+        drinkProviderTXT.setVisible(false);
+        foodDescriptionTXT.setVisible(true);
     }//GEN-LAST:event_productFoodRBTNMouseClicked
 
     private void productDrinkRBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productDrinkRBTNMouseClicked
@@ -299,21 +310,37 @@ public class RegisterProducts extends javax.swing.JFrame {
     }//GEN-LAST:event_productDrinkRBTNMouseClicked
 
     private void CadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CadastrarMouseClicked
-        if((drinkProviderTXT.getText().trim().isEmpty() &&
-           foodDescriptionTXT.getText().trim().isEmpty()) ||
-           productNameTXT.getText().trim().isEmpty() ||
-           productPriceTXT.getText().trim().isEmpty()){
+        String provider = drinkProviderTXT.getText().trim();
+        String description = foodDescriptionTXT.getText().trim();
+        String name = productNameTXT.getText().trim();
+        String price = productPriceTXT.getText().trim();
+        int success = -1;
+
+
+        if((provider.isEmpty() &&
+           description.isEmpty()) ||
+           name.isEmpty() ||
+           price.isEmpty() || (!provider.isEmpty() && !description.isEmpty())){
 
             emptyDataLBL.setVisible(true);
             emptyData2LBL.setVisible(true);
         }
+        if (productDrinkRBTN.isSelected()) {
+            success = Session.storeDrink(name,
+                               Double.parseDouble(price),
+                                provider,
+                                true);
+        } else {
+            success = Session.storeFood(name, Double.parseDouble(price), description, true);
+        }
 
-        //Se rolou tuto certo
-        Success successDialog = new Success(this , true);
-        successDialog.setVisible(true);
-// SE não
-        Error errorDialog = new Error(this , true);
-        errorDialog.setVisible(true);
+        if (success == 1) {
+            Success successDialog = new Success(this , true);
+            successDialog.setVisible(true);
+        } else {
+            Error errorDialog = new Error(this , true);
+            errorDialog.setVisible(true);
+        }
 
     }//GEN-LAST:event_CadastrarMouseClicked
 
@@ -374,12 +401,8 @@ public class RegisterProducts extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable(){
-
-            @Override
-            public void run() {
-                new RegisterProducts().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new RegisterProducts().setVisible(true);
         });
     }
 

@@ -44,6 +44,8 @@ public class ManagerAccount extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        this.setResizable(false);
+
         managerBackBTN = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         productsTBL = new javax.swing.JTable();
@@ -65,16 +67,20 @@ public class ManagerAccount extends javax.swing.JFrame {
             }
         });
 
+        // productsTBL.setEditable(true);
+        productsTBL.setEnabled(true);
         productsTBL.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            // com.LP2.server.utils.Menu.getMatrixMenuToManager()
+            new Object[][] {
+                {"a", "b", "c", "d", "e", "f"}
+            }
+            ,
             new String [] {
                 "CÓDIGO", "ITEM", "PREÇO", "TIPO", "FORNECEDOR", "DESCRIÇÃO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -206,32 +212,32 @@ public class ManagerAccount extends javax.swing.JFrame {
 
     private void registerItensMENUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerItensMENUMouseEntered
         registerItensMENU.setForeground(Color.decode("6554655"));
-        registerItensMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\hoverFood16.png"));
+        registerItensMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/hoverFood16.png"));
     }//GEN-LAST:event_registerItensMENUMouseEntered
 
     private void registerItensMENUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerItensMENUMouseExited
         registerItensMENU.setForeground(Color.white);
-        registerItensMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\food16.png"));
+        registerItensMENU.setIcon(new ImageIcon(System.getProperty("user.dir") +  "/assets/food16.png"));
     }//GEN-LAST:event_registerItensMENUMouseExited
 
     private void employeeMENUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeMENUMouseEntered
         employeeMENU.setForeground(Color.decode("6554655"));
-        employeeMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\hoverFunc16.png"));
+        employeeMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/hoverFunc16.png"));
     }//GEN-LAST:event_employeeMENUMouseEntered
 
     private void employeeMENUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeeMENUMouseExited
         employeeMENU.setForeground(Color.white);
-        employeeMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\func16.png"));
+        employeeMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/func16.png"));
     }//GEN-LAST:event_employeeMENUMouseExited
 
     private void editProfileMENUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseEntered
         editProfileMENU.setForeground(Color.decode("6554655"));
-        editProfileMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\hoverProfileEdit.png"));
+        editProfileMENU.setIcon(new ImageIcon(System.getProperty("user.dir") +"/assets/hoverProfileEdit.png"));
     }//GEN-LAST:event_editProfileMENUMouseEntered
 
     private void editProfileMENUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseExited
         editProfileMENU.setForeground(Color.white);
-        editProfileMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\profileEdit16.png"));
+        editProfileMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/profileEdit16.png"));
     }//GEN-LAST:event_editProfileMENUMouseExited
 
     private void editProfileMENUMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseClicked
@@ -284,11 +290,8 @@ public class ManagerAccount extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                new ManagerAccount().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ManagerAccount().setVisible(true);
         });
     }
 

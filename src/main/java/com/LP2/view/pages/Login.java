@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package com.LP2.view.pages;
+import com.LP2.controllers.LoginVV;
+import com.LP2.server.utils.Constants;
 import com.placeholder.PlaceHolder;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
@@ -26,7 +28,7 @@ public class Login extends javax.swing.JFrame {
         this.getContentPane().setBackground(Color.decode("14027569"));
 
         PlaceHolder placeHolderLogin = new PlaceHolder(loginTXT, Color.white, Color.white, "Aqui vai seu email :D", false, "Verdana", 14);
-        PlaceHolder placeHolderPassword = new PlaceHolder(passwordTXT, Color.white, Color.white, "Sua senha shh..", false, "Verdana", 14);
+        PlaceHolder placeHolderPassword = new PlaceHolder(passwordTXT, Color.white, Color.white, "Aqui vai a sua senha :-)", false, "Verdana", 14);
 
         loginTXT.setFont(new Font("Verdana", 0, 14));
         loginTXT.setHorizontalAlignment(SwingConstants.CENTER);
@@ -35,7 +37,8 @@ public class Login extends javax.swing.JFrame {
         loginTXT.setForeground(Color.white);
         loginTXT.setCaretColor(Color.white);
 
-        passwordTXT.setEchoChar('°');
+        char value = (char)0;
+        passwordTXT.setEchoChar(value);
         passwordTXT.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white));
         passwordTXT.setFont(new Font("Verdana", 0, 14));
         passwordTXT.setBackground(Color.decode("14027569"));
@@ -107,6 +110,9 @@ public class Login extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 passwordTXTKeyPressed(evt);
             }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                passwordTXTKeyTyped(evt);
+            }
         });
 
         javax.swing.GroupLayout loginPNLLayout = new javax.swing.GroupLayout(loginPNL);
@@ -151,7 +157,7 @@ public class Login extends javax.swing.JFrame {
         loginBTN.setBackground(new java.awt.Color(38, 70, 27));
         loginBTN.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         loginBTN.setForeground(new java.awt.Color(255, 255, 255));
-        loginBTN.setText("Entrar");
+        loginBTN.setText("Login");
         loginBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 loginBTNMouseClicked(evt);
@@ -218,21 +224,29 @@ public class Login extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-         private boolean verifyLogin(String login,String password, String value){
-        return login.equals(value) && password.equals(value);
-    }
+
+    // private boolean verifyLogin(String login,String password, String value){
+    //     return login.equals(value) && password.equals(value);
+    // }
+
     private void selectScreen(){
-        if(this.verifyLogin(loginTXT.getText(), new String(passwordTXT.getPassword()), "admin")){
+        LoginVV.login(loginTXT.getText(), new String(passwordTXT.getPassword()));
+
+        if (LoginVV.getuser() == null) {
+            System.out.println("ERRO DE AUTENTICAÇÃO!");
+        }
+
+        if (LoginVV.getuser().getUsertype() == Constants.getManagerCode()){
             ManagerAccount screenManager = new ManagerAccount();
             screenManager.setVisible(true);
             this.dispose();
             profileType = 1;
-        }else if(this.verifyLogin(loginTXT.getText(), new String(passwordTXT.getPassword()), "user")){
+        }else if(LoginVV.getuser().getUsertype() == Constants.getClientCode()){
             UsersAccount screenUser = new UsersAccount();
             screenUser.setVisible(true);
             this.dispose();
             profileType = 3;
-        }else if(this.verifyLogin(loginTXT.getText(), new String(passwordTXT.getPassword()), "kitchen")){
+        }else if(LoginVV.getuser().getUsertype() == Constants.getCookCode()){
             KitchenAccount screenKitchen = new KitchenAccount();
             screenKitchen.setVisible(true);
             this.dispose();
@@ -242,6 +256,12 @@ public class Login extends javax.swing.JFrame {
     private void loginBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginBTNMouseClicked
         selectScreen();
     }//GEN-LAST:event_loginBTNMouseClicked
+
+    private void passwordTXTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordTXTKeyTyped
+        passwordTXT.setEchoChar('°');
+    }//GEN-LAST:event_passwordTXTKeyTyped
+
+
 
     private void showMenuLBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMenuLBLMouseClicked
         Menu menuScreen = new Menu();
@@ -319,11 +339,8 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                new Login().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Login().setVisible(true);
         });
     }
     public static int profileType;

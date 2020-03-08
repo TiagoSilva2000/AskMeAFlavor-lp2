@@ -18,6 +18,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.MenuElement;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 import javax.swing.table.DefaultTableModel;
+
+import com.LP2.controllers.ItemVV;
+import com.LP2.controllers.LoginVV;
+
 import static com.LP2.view.pages.CustomizeMenuBar.CustomizeMenuBar;
 
 /**
@@ -78,11 +82,8 @@ public class UsersAccount extends javax.swing.JFrame {
         menuTBL.setAutoCreateRowSorter(true);
         menuTBL.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         menuTBL.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
+            com.LP2.server.utils.Menu.getMatrixMenu()
+            ,
             new String [] {
                 "Código", "Prato", "Preço"
             }
@@ -118,11 +119,11 @@ public class UsersAccount extends javax.swing.JFrame {
 
         valueCashbackTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         valueCashbackTXT.setForeground(new java.awt.Color(255, 255, 255));
-        valueCashbackTXT.setText("value");
+        valueCashbackTXT.setText(String.valueOf(LoginVV.getuser().getCashBack()));
 
         cashbackTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         cashbackTXT.setForeground(new java.awt.Color(255, 255, 255));
-        cashbackTXT.setText("Cashback:");
+        cashbackTXT.setText("Cashback: R$ ");
 
         userMENU.setBackground(new java.awt.Color(214, 11, 49));
         userMENU.setForeground(new java.awt.Color(255, 255, 255));
@@ -246,33 +247,36 @@ public class UsersAccount extends javax.swing.JFrame {
 
     private void cartMENUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cartMENUMouseEntered
         cartMENU.setForeground(Color.decode("6554655"));
-        cartMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\hoverCart20.png"));
+        cartMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/hoverCart20.png"));
     }//GEN-LAST:event_cartMENUMouseEntered
 
     private void cartMENUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cartMENUMouseExited
         cartMENU.setForeground(Color.white);
-        cartMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\cart20.png"));
+        cartMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/cart20.png"));
     }//GEN-LAST:event_cartMENUMouseExited
 
     private void editProfileMENUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseEntered
         editProfileMENU.setForeground(Color.decode("6554655"));
-        editProfileMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\hoverProfileEdit.png"));
+        editProfileMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/hoverProfileEdit.png"));
     }//GEN-LAST:event_editProfileMENUMouseEntered
 
     private void editProfileMENUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseExited
         editProfileMENU.setForeground(Color.white);
-        editProfileMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\profileEdit16.png"));
+        editProfileMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/profileEdit16.png"));
     }//GEN-LAST:event_editProfileMENUMouseExited
 
     private void menuTBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuTBLMouseClicked
         //        Menu item = new Menu();
 //        MenuDAO dao = new MenuDao();
-
-        int index = menuTBL.getSelectedRow();
-        if(index > -1){
+        int rowIdx = menuTBL.getSelectedRow();
+        if(rowIdx > -1){
             this.dispose();
+            int id = Integer.parseInt(menuTBL.getValueAt(rowIdx, 0).toString());
+            // int id = com.LP2.server.utils.Menu.getMenu().get(rowIdx).getID();
+            ItemVV.setItemID(id);
             ItemDetailed itemScreen = new ItemDetailed();
             itemScreen.setVisible(true);
+
 
 //            item = dao.Listar().get(index);
         }
@@ -280,19 +284,16 @@ public class UsersAccount extends javax.swing.JFrame {
 
     private void foodTypeCBOXMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foodTypeCBOXMouseClicked
         String type = (String) foodTypeCBOX.getSelectedItem();
-
-            ///Trazer todos que tenham Type
-            loadTable();
     }//GEN-LAST:event_foodTypeCBOXMouseClicked
 
     private void feedbackMENUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_feedbackMENUMouseEntered
         feedbackMENU.setForeground(Color.decode("6554655"));
-        feedbackMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\hoverFeedback20.png"));
+        feedbackMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/hoverFeedback20.png"));
     }//GEN-LAST:event_feedbackMENUMouseEntered
 
     private void feedbackMENUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_feedbackMENUMouseExited
         feedbackMENU.setForeground(Color.white);
-        feedbackMENU.setIcon(new ImageIcon("C:\\Users\\evelyn.ferreira\\Desktop\\laCocina-master\\src\\assets\\feedback20.png"));
+        feedbackMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/feedback20.png"));
     }//GEN-LAST:event_feedbackMENUMouseExited
 
     private void feedbackMENUMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_feedbackMENUMouseClicked
@@ -361,12 +362,8 @@ public class UsersAccount extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable(){
-
-            @Override
-            public void run() {
-                new UsersAccount().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new UsersAccount().setVisible(true);
         });
     }
 

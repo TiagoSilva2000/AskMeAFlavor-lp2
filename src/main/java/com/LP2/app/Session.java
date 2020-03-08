@@ -25,7 +25,7 @@ final public class Session {
   static private Menu menu;
   static private AllOrders currentOrders;
 
-  static public void load() {
+  static public void open() {
     loggedUser = null;
     menu = new Menu();
     currentOrders = new AllOrders();
@@ -57,33 +57,40 @@ final public class Session {
 
   static public User getLoggedUser() { return loggedUser; }
 
-  static public void storeFood(String name, double price, String description,
+  static public int storeFood(String name, double price, String description,
                               boolean isPresent) {
     Food food = new Food(name, price, description, isPresent);
     if (food.isPresent())
       Menu.pushNewItem(food);
+    return 1;
   }
 
-  static public void storeFood(String name, double price, String description,
-                              boolean isPresent, Image img) {
+  static public int storeFood(String name, double price, String description,
+  boolean isPresent, Image img) {
     Food food = new Food(name, price, description, isPresent, img);
     if (food.isPresent())
       Menu.pushNewItem(food);
+
+    return 1;
   }
 
-  static public void storeDrink(String name, double price, String provider,
+  static public int storeDrink(String name, double price, String provider,
                               boolean isPresent, Image img) {
     Drink drink = new Drink(name, price, provider, isPresent, img);
     if (drink.isPresent())
       Menu.pushNewItem(drink);
+
+    return 1;
   }
 
 
-  static public void storeDrink(String name, double price, String provider, boolean isPresent) {
+  static public int storeDrink(String name, double price, String provider, boolean isPresent) {
     Drink drink = new Drink(name, price, provider, isPresent);
 
     if (drink.isPresent())
-    Menu.pushNewItem(drink);
+      Menu.pushNewItem(drink);
+
+    return 1;
   }
 
   static public void updateFood(final int oldId, final String uName, final double uPrice,

@@ -18,11 +18,12 @@ public class Payment extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public Payment(java.awt.Frame parent, boolean modal) {
+    static private double value;
+    public Payment(java.awt.Frame parent, boolean modal, final double v) {
         super(parent, modal);
+        value = v;
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
-
     }
 
     /**
@@ -41,16 +42,24 @@ public class Payment extends javax.swing.JDialog {
 
         jLabel4.setText("realizado com successo.");
 
+        if (value < 0) {
+            PaymentMsgTXT.setText("Aguarde até que todos os seus pedidos sejam fechados pelos chefs!");
+            paymentValueTXT.setVisible(false);
+            paymentMsg2TXT.setVisible(false);
+        } else {
+            setTitle("Pagamento realizado La cocina Bistrô");
+            PaymentMsgTXT.setText("Pagamento de ");
+        }
+
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Pagamento realizado La cocina Bistrô");
 
         PaymentMsgTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         PaymentMsgTXT.setForeground(new java.awt.Color(255, 255, 255));
-        PaymentMsgTXT.setText("Pagamento de ");
 
         paymentValueTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         paymentValueTXT.setForeground(new java.awt.Color(255, 255, 255));
-        paymentValueTXT.setText("value");
+        paymentValueTXT.setText(String.valueOf(value));
 
         paymentMsg2TXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         paymentMsg2TXT.setForeground(new java.awt.Color(255, 255, 255));
@@ -113,19 +122,15 @@ public class Payment extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable(){
-
-            @Override
-            public void run() {
-                Payment dialog = new Payment(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            Payment dialog = new Payment(new javax.swing.JFrame(), true, value);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 

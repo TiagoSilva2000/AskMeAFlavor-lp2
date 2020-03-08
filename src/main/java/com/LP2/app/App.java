@@ -5,9 +5,11 @@ import com.LP2.database.Connect;
 import com.LP2.database.items.ItemController;
 import com.LP2.server.items.Food;
 import com.LP2.server.resources.Image;
+import com.LP2.server.users.Manager;
 import com.LP2.server.utils.AllOrders;
 import com.LP2.server.utils.Constants;
 import com.LP2.server.utils.Menu;
+import com.LP2.view.pages.Login;
 
 // import javax.imageio.ImageIO;
 // import javax.swing.JComponent;
@@ -28,7 +30,7 @@ public class App {
 
 
   public static void foodCreation() {
-    Image img = new Image("assets/tmp/", "b", ".jpg");
+    Image img = new Image("/assets/tmp/", "b", ".jpg");
     Session.storeFood("pickles", 44, "em conserva", false, img);
 
   }
@@ -38,7 +40,7 @@ public class App {
   }
 
   public static void drinkUpdate() {
-    Image img = new Image("assets/tmp/", "cat", ".jpg");
+    Image img = new Image("/assets/tmp/", "cat", ".jpg");
     Session.updateDrink(31, "água fria", 20,
                       true, "serasa", img);
   }
@@ -86,55 +88,9 @@ public class App {
     Loader.loadControllers(db);
     Menu.load(Constants.getPresent());
     AllOrders.load(Constants.getUnOrder());
-    AllOrders.listOrders();
-    testBill();
-    System.out.println("-----------------");
-    AllOrders.listOrders();
+    Session.open();
 
-    // Session.storeFood("pickles", 35, "assado", true);
-    // Session.sigin("ttiago", "tiago10@", "12345", "8888");
-    // int id = Menu.getMenu().get(0).getID();
-    // Session.login("ttiago", "12345");
-    // Session.order(id, 5);
-    // testBill();
-
-    // db.resetTables();
-    // db.addColumnToTable("ALTER TABLE ClientOrder DROP COLUMN ordered_at");
-    // db.addColumnToTable("ALTER TABLE ClientOrder ADD COLUMN ordered_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP");
-    // testMenu();
-    // testMenu();
-    // updateOrder();
-
-    // System.out.println(ItemController.getItem(31).getName());
-  // Session.storeCook("Cozinheiro1", "coz1", "12345", "1111");
-
-  // Session.login("Cozinheiro1", "12345");
-  // System.out.println(Session.getLoggedUser().getEmail());
-  // Session.updateDrink(31, "chá verde", 64, "fsfes", null);
-  // System.out.println("-------------");
-    // Session.storeFood("carne", 45.7, "muito bem temperada, obrigado", true);
-    // Session.storeDrink("água quente", 10, "embrapa", false);
-    // System.out.println("Menu2: ");
-    //   for (int i = 0; i < Menu.getMenu().size(); i++)
-    //     System.out.println(Menu.getMenu().get(i).getItsString());
-
-
-    // Drink drink = new Drink("refri", 10, "coca-cola");
-
-    // img = new Image(System.getProperty("user.dir") + "/public/", "img1", ".svg");
-    // Food food = new Food("arroz", 4, "temperada com sal a gosto e azeite", img);
-    // db.addColumnToTable("ALTER TABLE Item ADD COLUMN present BOOLEAN NOT NULL DEFAULT TRUE");
-
-    // Drink drink = new Drink("refri", 80, "Coca-cola");
-
-    // db.addColumnToTable("DELETE FROM Food");
-    // db.addColumnToTable("DELETE FROM Drink");
-    // db.addColumnToTable("DELETE FROM Item");
-    // db.addColumnToTable("DELETE FROM Image");
-
-    // Login.main(args);
-    // Session = new Session(db);
-    // Login.main(args);
+    Login.main(args);
 
     Session.close();
     Loader.unloadStreams();

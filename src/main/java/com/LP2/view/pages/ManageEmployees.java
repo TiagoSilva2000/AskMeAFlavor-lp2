@@ -7,6 +7,8 @@ package com.LP2.view.pages;
 
 import java.awt.Color;
 
+import com.LP2.controllers.CookVV;
+
 /**
  *
  * @author evelyn.ferreira
@@ -39,11 +41,10 @@ public class ManageEmployees extends javax.swing.JFrame {
         setResizable(false);
 
         employeesTBL.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
+            CookVV.allObj()
+            ,
             new String [] {
-                "NOME", "CPF"
+                "CÓDIGO", "NOME", "E-MAIL", "CPF"
             }
         ));
         jScrollPane1.setViewportView(employeesTBL);
@@ -132,11 +133,8 @@ public class ManageEmployees extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                new ManageEmployees().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ManageEmployees().setVisible(true);
         });
     }
 

@@ -6,6 +6,7 @@ import com.LP2.server.items.Food;
 import com.LP2.server.items.Item;
 import com.LP2.server.resources.Image;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Menu {
   static private ArrayList<Item> items;
@@ -149,6 +150,48 @@ public class Menu {
     return true;
   }
 
+  static public Object[][] getMatrixMenu() {
+    ArrayList<Object[]> objs = new ArrayList<Object[]>();
+    for (int i = 0; i < items.size(); i++) {
+      objs.add(new Object[]{
+        items.get(i).getID(),
+        items.get(i).getName(),
+        items.get(i).getPrice()
+      });
+    }
+    Object[][] ob = objs.toArray(new Object[0][]);
+
+    return ob;
+  }
+
+  static public Object[][] getMatrixMenuToManager() {
+    ArrayList<Object[]> objs = new ArrayList<Object[]>();
+    String type, desc, prov;
+    for (int i = 0; i < items.size(); i++) {
+      if (items.get(i) instanceof Food) {
+        type = "comida";
+        desc = items.get(i).getExtra();
+        prov = null;
+      } else {
+        type = "bebida";
+        prov = items.get(i).getExtra();
+        desc = null;
+      }
+
+      objs.add(new Object[]{
+        items.get(i).getID(),
+        items.get(i).getName(),
+        items.get(i).getPrice(),
+        type,
+        prov,
+        desc
+      });
+    }
+    Object[][] ob = objs.toArray(new Object[0][]);
+    System.out.println(ob.length);
+    return ob;
+  }
+
   static public boolean rmItem(final String name) {
     boolean success = rmFromMenu(name);
 
@@ -160,7 +203,6 @@ public class Menu {
 
     return success;
   }
-
 
   static public ArrayList<Item> getMenu() {
     return items;

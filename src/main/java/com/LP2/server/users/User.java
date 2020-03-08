@@ -14,6 +14,16 @@ public class User {
 
   public User() {}
 
+  public User(final int id, final String name, final String email,
+              final String idCode, final byte usertype) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.idCode = idCode;
+    this.usertype = usertype;
+    this.password = null;
+  }
+
   public User(User user) {
     this.email = user.getEmail();
     this.password = user.getPassword();
@@ -81,9 +91,15 @@ public class User {
 
   }
 
+  public double getCurrentExpenses() { return -1; }
+
+  public double getCashBack() { return -1; }
+
   public int getVisitId() { return -1; }
 
   public ArrayList<Order> getOrders() { return null; }
+
+  public Object[][] getOrdersMatrix() { return null; }
 
   // mandar e-mail de confirmação aqui.
   public String setEmail(String nEmail) {

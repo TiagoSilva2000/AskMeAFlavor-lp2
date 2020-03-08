@@ -5,25 +5,18 @@
  */
 package com.LP2.view.pages;
 
-import java.awt.Color;
-
 /**
  *
- * @author evelyn.ferreira
+ * @author Blueevee
  */
-public class Success extends javax.swing.JDialog {
+public class managerAcount extends javax.swing.JFrame {
 
     /**
-     * Creates new form success
-     * @param parent
-     * @param modal
+     * Creates new form managerAcount
      */
-    public Success(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public managerAcount() {
         initComponents();
-        this.getContentPane().setBackground(Color.decode("14027569"));
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,36 +27,29 @@ public class Success extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        msgTXT = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        registerItensMENU = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Sucesso");
-        setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        setForeground(new java.awt.Color(255, 255, 255));
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("La Cocina");
 
-        msgTXT.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
-        msgTXT.setForeground(new java.awt.Color(255, 255, 255));
-        msgTXT.setText("Dados Salvos com sucesso!");
+        registerItensMENU.setText("Cadastrar itens");
+        jMenuBar1.add(registerItensMENU);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(msgTXT)
-                .addContainerGap(52, Short.MAX_VALUE))
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(104, 104, 104)
-                .addComponent(msgTXT)
-                .addContainerGap(113, Short.MAX_VALUE))
+            .addGap(0, 279, Short.MAX_VALUE)
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -82,28 +68,27 @@ public class Success extends javax.swing.JDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Success.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(managerAcount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(managerAcount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(managerAcount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(managerAcount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(() -> {
-            Success dialog = new Success(new javax.swing.JFrame(), true);
-            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    System.exit(0);
-                }
-            });
-            dialog.setVisible(true);
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new managerAcount().setVisible(true);
+            }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel msgTXT;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu registerItensMENU;
     // End of variables declaration//GEN-END:variables
 }

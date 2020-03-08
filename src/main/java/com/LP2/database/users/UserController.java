@@ -2,6 +2,7 @@ package com.LP2.database.users;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -58,6 +59,26 @@ public class UserController {
     }
   }
 
+  static private User buildUser(final ArrayList<String> fields) {
+    final int id = Integer.parseInt(fields.get(0));
+    final String name = fields.get(1);
+    final String email = fields.get(2);
+    final String idCode = fields.get(3);
+    final byte userType = Byte.parseByte(fields.get(4));
+
+
+    return new User(id, name, email, idCode, userType);
+  }
+
+  static private ArrayList<User> buildUsers(final ArrayList<ArrayList<String>> fields) {
+    ArrayList<User> users = new ArrayList<User>();
+
+    for (int i = 0; i < fields.size(); i++) {
+      users.add(buildUser(fields.get(i)));
+    }
+    return users;
+  }
+
   static public ArrayList<String> get(final String username, final String password) {
     ResultSet result = null;
     ArrayList<String> fields = new ArrayList<String>();
@@ -65,31 +86,70 @@ public class UserController {
     boolean passwordMatch = false;
     try {
       final PreparedStatement stm = connection.getCon().prepareStatement(
-        "SELECT * from Person " +
+        "SELECT *" +
+        "FROM Person " +
         "WHERE name = (?);");
       stm.setString(1, username);
       result = stm.executeQuery();
       maxFields = result.getMetaData().getColumnCount();
-      while (result.next()) {
-        passwordMatch = Encrypt.validatePBKDF(password, result.getString("password"),
-        result.getString("salt"));
-        if (passwordMatch) {
-          while (i <= maxFields)
-          fields.add(result.getString(i++));
-        } else {
-          System.out.println("Authentication Failed!");
+      if (result != null) {
+
+        while (result.next()) {
+          passwordMatch = Encrypt.validatePBKDF(password, result.getString("password"),
+          result.getString("salt"));
+          if (passwordMatch) {
+            while (i <= maxFields)
+            fields.add(result.getString(i++));
+          } else {
+            System.out.println("Authentication Failed!");
+          }
         }
       }
 
       stm.close();
       return fields;
     } catch (final Exception e) {
-      System.out.println("Hallo!");
       e.printStackTrace();
       System.exit(2);
       return null;
     }
   }
+
+  public static ArrayList<User> all(final byte category) {
+    try {
+      int i, j, maxFields;
+      ResultSet rs;
+      ArrayList<ArrayList<String>> fields = new ArrayList<ArrayList<String>>();
+      PreparedStatement stm = connection.getCon().prepareStatement(
+        "SELECT Person.id, Person.name, Person.email, Person.idcode, Person.usertype " +
+        "FROM Person " +
+        "WHERE usertype = (?)"
+      );
+      stm.setByte(1, category);
+      rs = stm.executeQuery();
+
+      i = 0;
+      maxFields = rs.getMetaData().getColumnCount();
+      if (rs != null) {
+        j = 1;
+        while (rs.next()) {
+          fields.add(new ArrayList<String>());
+          while (j <= maxFields) {
+            fields.get(i).add(rs.getString(j));
+            j++;
+          }
+          i++;
+        }
+      }
+
+      return buildUsers(fields);
+    } catch(SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+
+  }
+
 
   public static boolean update(final User user) {
     try {

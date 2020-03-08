@@ -47,7 +47,6 @@ public class Loader {
   static public boolean preLoad() {
     loadVariables();
     loadStreams();
-    loadSession();
 
     return true;
   }
@@ -72,12 +71,6 @@ public class Loader {
 
   static public boolean unloadStreams() {
     Reader.unloadStream();
-    return true;
-  }
-
-  static public boolean loadSession() {
-    Session.load();
-
     return true;
   }
 
