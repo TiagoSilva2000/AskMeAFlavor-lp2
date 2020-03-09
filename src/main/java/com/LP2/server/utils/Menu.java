@@ -54,6 +54,7 @@ public class Menu {
         img = new Image(imgId, filepath, filename, filetype, content);
       }
       if (fields.get(i).get(lastPos).equals("food")) {
+        System.out.println("Comida");
         items.add(new Food(id, name, price, extra, img));
       } else {
         items.add(new Drink(id, name, price, extra, img));
@@ -153,10 +154,11 @@ public class Menu {
   static public Object[][] getMatrixMenu() {
     ArrayList<Object[]> objs = new ArrayList<Object[]>();
     for (int i = 0; i < items.size(); i++) {
+      String out = String.format("%.2f", items.get(i).getPrice());
       objs.add(new Object[]{
         items.get(i).getID(),
         items.get(i).getName(),
-        items.get(i).getPrice()
+        out
       });
     }
     Object[][] ob = objs.toArray(new Object[0][]);
@@ -166,25 +168,27 @@ public class Menu {
 
   static public Object[][] getMatrixMenuToManager() {
     ArrayList<Object[]> objs = new ArrayList<Object[]>();
-    String type, desc, prov;
+    String type, desc, prov, extra;
     for (int i = 0; i < items.size(); i++) {
       if (items.get(i) instanceof Food) {
         type = "comida";
         desc = items.get(i).getExtra();
         prov = null;
+        extra = items.get(i).getExtra();
       } else {
         type = "bebida";
         prov = items.get(i).getExtra();
+        extra = items.get(i).getExtra();
         desc = null;
       }
 
+      String out = String.format("%.2f", items.get(i).getPrice());
       objs.add(new Object[]{
         items.get(i).getID(),
         items.get(i).getName(),
-        items.get(i).getPrice(),
+        out,
         type,
-        prov,
-        desc
+        extra
       });
     }
     Object[][] ob = objs.toArray(new Object[0][]);

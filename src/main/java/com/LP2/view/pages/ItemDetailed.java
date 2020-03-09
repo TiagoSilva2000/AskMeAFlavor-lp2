@@ -31,7 +31,7 @@ public class ItemDetailed extends javax.swing.JFrame {
      */
     private int qnt;
     public ItemDetailed() {
-        this.qnt = 0;
+        this.qnt = 1;
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
         quantityTXT.setDocument(new JustNumbers());
@@ -78,11 +78,12 @@ public class ItemDetailed extends javax.swing.JFrame {
 
         imageItemIMG.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         imageItemIMG.setForeground(new java.awt.Color(255, 255, 255));
-        imageItemIMG.setText("imagem");
+        imageItemIMG.setText(loadedItem.getExtra());
+        imageItemIMG.setVisible(false);
 
         priceItemTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         priceItemTXT.setForeground(new java.awt.Color(255, 255, 255));
-        priceItemTXT.setText(String.valueOf(loadedItem.getPrice()));
+        priceItemTXT.setText(String.format("%.2f", loadedItem.getPrice()));
 
         descriptionItemTXT1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         descriptionItemTXT1.setForeground(new java.awt.Color(255, 255, 255));
@@ -113,6 +114,7 @@ public class ItemDetailed extends javax.swing.JFrame {
         feedBackBTN.setForeground(new java.awt.Color(255, 255, 255));
         feedBackBTN.setText("Feedback");
 
+        feedBackBTN.setVisible(false);
         plusBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/plus20.png"))); // NOI18N
         plusBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

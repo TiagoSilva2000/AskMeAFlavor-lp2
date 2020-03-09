@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 
 import com.LP2.app.ErrorCodes;
 import com.LP2.database.Connect;
+import com.LP2.server.utils.Constants;
 import com.LP2.server.utils.Order;
 
 import org.apache.log4j.spi.ErrorCode;
@@ -46,7 +47,7 @@ public class OrderController {
 
       if (rs != null) {
         while (rs.next())
-          id = rs.getInt(1);
+          id = rs.getInt(6);
       }
 
       stm.close();
@@ -90,10 +91,21 @@ public class OrderController {
       ResultSet rs = null;
       ArrayList<ArrayList<String>> fields = new ArrayList<ArrayList<String>>();
       PreparedStatement stm = conn.getCon().prepareStatement(
-        "SELECT * FROM ClientOrder " +
-        "WHERE state = (?)"
+        "SELECT ClientOrder.quantity, ClientOrder.state, ClientOrder.item_id," +
+                "ClientOrder.client_id, ClientOrder.visit_id, ClientOrder.id, " +
+                "ClientOrder.ordered_at " +
+        "FROM ClientOrder " +
+        "WHERE state = (?) " +
+        "UNION " +
+        "SELECT ClientOrder.quantity, ClientOrder.state, ClientOrder.item_id, " +
+                "ClientOrder.client_id, ClientOrder.visit_id, ClientOrder.id, " +
+                "ClientOrder.ordered_at " +
+        "FROM ClientOrder " +
+        "FULL OUTER JOIN Visit ON (ClientOrder.visit_id = Visit.id) " +
+        "WHERE ClientOrder.state = (?) AND Visit.exited_at IS NULL;"
         );
       stm.setInt(1, status);
+      stm.setInt(2, Constants.getFinishedOrder());
       rs = stm.executeQuery();
 
       if (rs != null) {
@@ -128,6 +140,26 @@ public class OrderController {
       );
       stm.setByte(1, order.getStatus());
       stm.setInt(2, order.getID());
+      stm.executeUpdate();
+
+      stm.close();
+      return 1;
+    } catch(SQLException e) {
+      e.printStackTrace();
+      return -1;
+    }
+  }
+
+  static public int update(final int visitId) {
+    try {
+      PreparedStatement stm = conn.getCon().prepareStatement(
+        "UPDATE ClientOrder " +
+        "SET state = (?) " +
+        "WHERE visit_id = (?)"
+      );
+
+      stm.setByte(1, Constants.getPaidOrder());
+      stm.setInt(2, visitId);
       stm.executeUpdate();
 
       stm.close();

@@ -7,6 +7,10 @@ package com.LP2.view.pages;
 
 import java.awt.Color;
 
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+
+import com.LP2.app.Session;
 import com.LP2.controllers.CookVV;
 
 /**
@@ -18,7 +22,9 @@ public class ManageEmployees extends javax.swing.JFrame {
     /**
      * Creates new form manageEmployees
      */
+    static private String action;
     public ManageEmployees() {
+        action = "";
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
     }
@@ -40,13 +46,64 @@ public class ManageEmployees extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
+
         employeesTBL.setModel(new javax.swing.table.DefaultTableModel(
             CookVV.allObj()
             ,
             new String [] {
                 "CÓDIGO", "NOME", "E-MAIL", "CPF"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        }
+        );
+
+        employeesTBL.getModel().addTableModelListener(new TableModelListener(){
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int rowIdx = e.getFirstRow();
+                if (rowIdx > -1) {
+                    Object idObject = employeesTBL.getValueAt(rowIdx, 0);
+                    Object nameObj = employeesTBL.getValueAt(rowIdx, 1);
+                    Object emailObj = employeesTBL.getValueAt(rowIdx, 2);
+                    Object codeObj = employeesTBL.getValueAt(rowIdx, 3);
+
+                    if (nameObj != null && emailObj != null
+                        && codeObj != null) {
+
+                        if (idObject == null) {
+                            String password = nameObj.toString() + "12345";
+                            System.out.println("Stored.");
+                            Session.storeCook(nameObj.toString(), emailObj.toString(),
+                            password, codeObj.toString());
+                            action = "stored";
+                        } else {
+                            System.out.println("Updated.");
+                            String password = nameObj.toString() + "12345";
+                            Session.updateCook(Integer.parseInt(idObject.toString()),
+                                nameObj.toString(), emailObj.toString(),
+                                password, codeObj.toString());
+                            action = "updated";
+                        }
+                    }
+                }
+                System.out.println("Editada!");
+            }
+        });
+        employeesTBL.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                employeesTBLMouseClicked(evt);
+            }
+        });
+
+
         jScrollPane1.setViewportView(employeesTBL);
         if (employeesTBL.getColumnModel().getColumnCount() > 0) {
             employeesTBL.getColumnModel().getColumn(1).setResizable(false);
@@ -97,6 +154,15 @@ public class ManageEmployees extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void employeesTBLMouseClicked(java.awt.event.MouseEvent evt) {
+        int rowIdx = employeesTBL.getSelectedRow();
+        int columnIdx = employeesTBL.getSelectedColumn();
+        if(rowIdx > -1 && columnIdx == 0){
+            int id = Integer.parseInt(employeesTBL.getValueAt(rowIdx, 0).toString());
+            Session.deleteCook(id);
+        }
+    }
 
     private void employeesBackBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeesBackBTNMouseClicked
        this.dispose();

@@ -60,6 +60,8 @@ public class UserController {
   }
 
   static private User buildUser(final ArrayList<String> fields) {
+    if (fields.size() == 0) return null;
+
     final int id = Integer.parseInt(fields.get(0));
     final String name = fields.get(1);
     final String email = fields.get(2);
@@ -74,7 +76,9 @@ public class UserController {
     ArrayList<User> users = new ArrayList<User>();
 
     for (int i = 0; i < fields.size(); i++) {
-      users.add(buildUser(fields.get(i)));
+      User tmp = buildUser(fields.get(i));
+      if (tmp != null)
+        users.add(tmp);
     }
     return users;
   }
@@ -131,9 +135,9 @@ public class UserController {
       i = 0;
       maxFields = rs.getMetaData().getColumnCount();
       if (rs != null) {
-        j = 1;
         while (rs.next()) {
           fields.add(new ArrayList<String>());
+          j = 1;
           while (j <= maxFields) {
             fields.get(i).add(rs.getString(j));
             j++;
@@ -155,13 +159,13 @@ public class UserController {
     try {
       final PreparedStatement stm = connection.getCon().prepareStatement(
           "UPDATE Person " +
-          "SET name = (?), email = (?), password = (?), idcode = (?) " +
+          "SET name = (?), email = (?), idcode = (?) " +
           "WHERE id = (?)");
       stm.setString(1, user.getName());
       stm.setString(2, user.getEmail());
-      stm.setString(3, user.getPassword());
-      stm.setString(4, user.getIDCode());
-      stm.setInt(5, user.getID());
+      // stm.setString(3, user.getPassword());
+      stm.setString(3, user.getIDCode());
+      stm.setInt(4, user.getID());
 
       stm.executeUpdate();
       stm.close();

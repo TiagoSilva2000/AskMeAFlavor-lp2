@@ -143,8 +143,7 @@ final public class Session {
   }
 
   static public void deleteCook(final int id) {
-    if (loggedUser.getUsertype() == Constants.getManagerCode())
-      UserController.remove(id);
+    UserController.remove(id);
   }
 
   static private void startVisit() {
@@ -179,6 +178,7 @@ final public class Session {
   static public void closeOrder(final int id) {
     Order tmp = AllOrders.remOrder(id);
     if (tmp != null) {
+      System.out.println("Here");
       OrderController.update(tmp);
       // atualizar pedidos do cliente também
     }

@@ -22,7 +22,7 @@ public class Order {
     this.status = Constants.getUnOrder();
     this.clientId = clientId;
     this.visitId = visitId;
-    id = OrderController.create(this);
+    this.id = OrderController.create(this);
   }
 
   public Order(final int id, final int visitId, final int clientId,

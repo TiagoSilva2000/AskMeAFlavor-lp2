@@ -16,7 +16,7 @@ public class Manager extends User {
     String idCode,
     String secret
   ) {
-    super(email, pass, name, idCode, Constants.getManagerCode());
+    super(name, email, pass, idCode, Constants.getManagerCode());
   }
 
   public Manager(User user) {

@@ -9,6 +9,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
+import com.LP2.app.Session;
 import com.LP2.controllers.OrderVV;
 import com.LP2.server.utils.Constants;
 
@@ -74,6 +75,13 @@ public class KitchenAccount extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        kitchenTBL.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                kitchenTBLMouseClicked(evt);
+            }
+
+        });
+
         jScrollPane1.setViewportView(kitchenTBL);
         if (kitchenTBL.getColumnModel().getColumnCount() > 0) {
             kitchenTBL.getColumnModel().getColumn(0).setPreferredWidth(2);
@@ -136,6 +144,21 @@ public class KitchenAccount extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void kitchenTBLMouseClicked(java.awt.event.MouseEvent evt) {
+        int rowIdx = kitchenTBL.getSelectedRow();
+
+        if (rowIdx > -1) {
+            int id = Integer.parseInt(kitchenTBL.getValueAt(rowIdx, 1).toString());
+            Session.closeOrder(id);
+            this.dispose();
+            KitchenAccount ka = new KitchenAccount();
+            ka.setVisible(true);
+        }
+
+
+
+    }
+
     private void kitchenBackBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kitchenBackBTNMouseClicked
         this.dispose();
         Login loginScreen = new Login();
@@ -144,7 +167,7 @@ public class KitchenAccount extends javax.swing.JFrame {
 
     private void editProfileMENUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseEntered
         editProfileMENU.setForeground(Color.decode("6554655"));
-        editProfileMENU.setIcon(new ImageIcon("/assets/hoverProfileEdit.png"));
+        editProfileMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/hoverProfileEdit.png"));
     }//GEN-LAST:event_editProfileMENUMouseEntered
 
     private void editProfileMENUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseExited

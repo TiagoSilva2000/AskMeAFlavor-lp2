@@ -5,6 +5,9 @@
  */
 package com.LP2.view.pages;
 
+import com.LP2.app.Session;
+import com.LP2.controllers.LoginVV;
+import com.LP2.database.users.ClientController;
 import com.placeholder.PlaceHolder;
 import java.awt.Color;
 import java.awt.Font;
@@ -327,16 +330,29 @@ public class Register extends javax.swing.JFrame {
         if(!new String(registerPasswordTXT.getPassword()).equals(new String(registerConfirmPasswordTXT.getPassword()))){
             wrongPasswordLBL.setVisible(true);
         }
-        if(registerNameTXT.getText().trim().isEmpty() ||
-           registerEmailTXT.getText().trim().isEmpty() ||
-           registerCodeTXT.getText().trim().isEmpty() ||
-           registerPhoneTXT.getText().trim().isEmpty() ||
-           new String(registerPasswordTXT.getPassword()).trim().isEmpty() ||
-           new String(registerConfirmPasswordTXT.getPassword()).trim().isEmpty()){
+        final String name = registerNameTXT.getText().trim();
+        final String email = registerEmailTXT.getText().trim();
+        final String pass = new String(registerPasswordTXT.getPassword()).trim();
+        final String passConfirm = new String(registerConfirmPasswordTXT.getPassword()).trim();
+        final String phone = registerPhoneTXT.getText().trim();
+        final String idCode = registerCodeTXT.getText().trim();
+
+
+        if(name.isEmpty() ||
+           email.isEmpty() ||
+           idCode.isEmpty() ||
+           phone.isEmpty() ||
+           pass.isEmpty() ||
+           passConfirm.isEmpty()){
                 emptyDataLBL.setVisible(true);
-        }else{
+        } else {
+            Session.sigin(name, email, pass, idCode);
+            LoginVV.login(name, pass);
             wrongPasswordLBL.setVisible(false);
             emptyDataLBL.setVisible(false);
+            this.dispose();
+            UsersAccount ua = new UsersAccount();
+            ua.setVisible(true);
         }
     }//GEN-LAST:event_registerBTNMouseClicked
 

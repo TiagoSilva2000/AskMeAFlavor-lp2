@@ -80,10 +80,6 @@ public class Item {
     this.presentInMenu = item.presentInMenu;
   }
 
-  public Item(String name) {
-
-  }
-
 
   public Image getImage() { return this.img; }
 
@@ -91,7 +87,7 @@ public class Item {
 
   public void changePresence(boolean presentInMenu) { this.presentInMenu = presentInMenu; }
 
-  public String getExtra() { return ""; };
+  public String getExtra() { return "HAHAHA"; };
 
   public String setExtra(String extra) { return ""; };
 

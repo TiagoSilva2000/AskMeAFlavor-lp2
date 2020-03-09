@@ -24,6 +24,13 @@ public class CookVV {
         users.get(i).getIDCode()
       });
     }
+    objs.add(new Object[]{
+      null,
+      null,
+      null,
+      null
+    });
+
     Object[][] ob = objs.toArray(new Object[0][]);
     System.out.println(ob.length);
     return ob;

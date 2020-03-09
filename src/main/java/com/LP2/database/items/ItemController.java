@@ -7,6 +7,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 
 import com.LP2.database.Connect;
+import com.LP2.server.items.Food;
 import com.LP2.server.items.Item;
 import com.LP2.server.resources.Image;
 import com.LP2.server.utils.Constants;
@@ -124,7 +125,13 @@ public class ItemController {
     if (fields.get(4) != null)
       img = new Image(Integer.parseInt(fields.get(4)));
 
-    return new Item(id, name, price, present, img);
+    if (fields.get(5) == null) {
+      return new Food(id, name, price, fields.get(6), null);
+    } else {
+      return new Food(id, name, price, fields.get(5), null);
+    }
+
+    // return new Item(id, name, price, present, img);
   }
 
   static public Item getItem(final int id) {
@@ -134,16 +141,33 @@ public class ItemController {
       ResultSet result = null;
       int i, maxFields = 0;
       final PreparedStatement stm = connection.getCon()
-        .prepareStatement("SELECT * FROM Item " +
-                          "WHERE id = (?)");
+        .prepareStatement("SELECT " +
+                            "Item.id, Item.name, Item.price, " +
+                            "Item.present, Item.img_id, Food.description " +
+                          "FROM Item " +
+                          "INNER JOIN Food ON (Food.food_id = Item.id) " +
+                          "WHERE id = (?) " +
+                          "UNION " +
+                          "SELECT " +
+                            "Item.id, Item.name, Item.price, " +
+                            "Item.present, Item.img_id, Drink.provider " +
+                          "FROM Item " +
+                          "INNER JOIN Drink ON (Drink.drink_id = Item.id) " +
+                          "WHERE id = (?)"
+                          );
       stm.setInt(1, id);
+      stm.setInt(2, id);
       result = stm.executeQuery();
 
       i = 1;
       while (result.next()) {
         maxFields = result.getMetaData().getColumnCount();
-        while (i <= maxFields)
-          fields.add(result.getString(i++));
+        i = 1;
+        while (i <= maxFields) {
+          fields.add(result.getString(i));
+          // System.out.println(fields.get(i-1));
+          i++;
+        }
       }
 
       stm.close();
@@ -165,7 +189,11 @@ public class ItemController {
       stm.setString(1, item.getName());
       stm.setDouble(2, item.getPrice());
       stm.setBoolean(3, isPresent);
-      stm.setInt(4, item.getImage().getID());
+      if (item.getImage() == null) {
+        stm.setNull(4, Types.INTEGER);
+      } else {
+        stm.setInt(4, item.getImage().getID());
+      }
       stm.setInt(5, item.getID());
       stm.executeUpdate();
 

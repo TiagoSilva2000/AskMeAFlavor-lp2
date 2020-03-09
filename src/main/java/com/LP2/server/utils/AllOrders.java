@@ -34,7 +34,23 @@ public class AllOrders {
       if (orders.get(i).getID() == id) {
         orders.get(i).setStatus(Constants.getFinishedOrder());
         tmp = orders.get(i);
-        orders.remove(tmp);
+        break;
+      }
+      i++;
+    }
+
+    return tmp;
+  }
+
+  static public Order removeFromList(final int id) {
+    Order tmp = null;
+    int i = 0;
+
+    while (i < orders.size()) {
+      if (orders.get(i).getID() == id) {
+        orders.get(i).setStatus(Constants.getPaidOrder());
+        tmp = orders.get(i);
+        orders.remove(i);
         break;
       }
       i++;
@@ -46,7 +62,7 @@ public class AllOrders {
   static public int ordersQntFromUser(final int id) {
     int counter = 0;
     for (int i = 0; i < orders.size(); i++)
-      if (orders.get(i).getClientId() == id)
+      if (orders.get(i).getClientId() == id && orders.get(i).getStatus() == Constants.getUnOrder())
         counter++;
 
     return counter;

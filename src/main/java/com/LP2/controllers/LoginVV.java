@@ -1,5 +1,6 @@
 package com.LP2.controllers;
 
+import com.LP2.database.misc.OrderController;
 import com.LP2.database.misc.VisitController;
 import com.LP2.server.users.Client;
 import com.LP2.server.users.Cook;
@@ -27,7 +28,7 @@ public class LoginVV {
 
   static public double processPayment() {
     int userOrdersQnt = AllOrders.ordersQntFromUser(user.getID());
-    if (userOrdersQnt == 0)
+    if (userOrdersQnt == 0 && user.getOrders().size() == 0)
       return -1;
 
     if (userOrdersQnt > 0) {
@@ -36,6 +37,12 @@ public class LoginVV {
     }
     double paidValue = user.settleTheBill();
     VisitController.update(user.getVisitId(), paidValue);
+    OrderController.update(user.getVisitId());
+
+    for (int i = 0; i < user.getOrders().size(); i++) {
+      user.getOrders().get(i).setStatus(Constants.getPaidOrder());
+      AllOrders.removeFromList(user.getOrders().get(i).getID());
+    }
 
     // logout();
     return paidValue;

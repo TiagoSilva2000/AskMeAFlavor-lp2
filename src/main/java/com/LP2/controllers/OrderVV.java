@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.LP2.database.misc.OrderController;
 import com.LP2.server.items.Item;
 import com.LP2.server.utils.AllOrders;
+import com.LP2.server.utils.Constants;
 import com.LP2.server.utils.Menu;
 import com.LP2.server.utils.Order;
 
@@ -19,6 +20,7 @@ public class OrderVV {
       System.out.println("Erro...");
       System.exit(343);
     }
+    System.out.println("OrderID: " + order.getID());
     AllOrders.pushOrder(order);
   }
 
@@ -28,15 +30,17 @@ public class OrderVV {
     ArrayList<Object[]> objs = new ArrayList<Object[]>();
 
     for (int i = 0; i < orders.size(); i++) {
-      objs.add(new Object[]{
-        orders.get(i).getClientId(),
-        orders.get(i).getID(),
-        orders.get(i).getItem().getName(),
-        orders.get(i).getQnt(),
-      });
+      if (orders.get(i).getStatus() == Constants.getUnOrder()) {
+        objs.add(new Object[]{
+          orders.get(i).getClientId(),
+          orders.get(i).getID(),
+          orders.get(i).getItem().getName(),
+          orders.get(i).getQnt(),
+        });
+      }
     }
     Object[][] ob = objs.toArray(new Object[0][]);
-    System.out.println(ob.length);
+    // System.out.println(ob.length);
 
     return ob;
   }
@@ -50,6 +54,7 @@ public class OrderVV {
   static public Object[][] allObj(final byte state) {
     ArrayList<Order> orders = OrderController.all(state);
 
+    // System.out.println(orders.size());
     return allObjMatrix(orders);
   }
 

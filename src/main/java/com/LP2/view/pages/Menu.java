@@ -56,6 +56,7 @@ public class Menu extends javax.swing.JFrame {
         valueCashbackTXT = new javax.swing.JLabel();
         foodTypeCBOX = new javax.swing.JComboBox<>();
 
+        foodTypeCBOX.setVisible(false);
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -204,6 +205,7 @@ public class Menu extends javax.swing.JFrame {
             this.dispose();
             int id = Integer.parseInt(menuTBL.getValueAt(rowIdx, 0).toString());
             // int id = com.LP2.server.utils.Menu.getMenu().get(rowIdx).getID();
+            System.out.println("ID: " + id);
             ItemVV.setItemID(id);
             ItemDetailed itemScreen = new ItemDetailed();
             itemScreen.setVisible(true);

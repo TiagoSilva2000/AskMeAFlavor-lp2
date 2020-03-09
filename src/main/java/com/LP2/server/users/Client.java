@@ -44,6 +44,7 @@ public class Client extends User {
     final int openVisitId = VisitController.getOpenVisit(this.id);
     this.orders = AllOrders.ordersFromUser(this.id);
 
+
     if (openVisitId != -1)
       this.visit = new Visit(openVisitId, true);
 
@@ -85,6 +86,8 @@ public class Client extends User {
 
   public Order order(final Item selectedItem, final int qnt) {
     if (this.orders.size() == 0 && this.visit != null)
+      this.visit = new Visit(this.id);
+    else if (this.visit == null)
       this.visit = new Visit(this.id);
     Order order = new Order(selectedItem, qnt, this.id, this.visit.getId());
     this.orders.add(order);
@@ -129,12 +132,16 @@ public class Client extends User {
         status = "Entregue.";
       else if (orders.get(i).getStatus() == Constants.getCanceledOrder())
         status = "Cancelado";
+      else if (orders.get(i).getStatus() == Constants.getPaidOrder())
+        status = "Pago";
 
+      String out = String.format("%.2f", orders.get(i).getItem().getPrice());
+      if (status.equals("Entregue.") || status.equals("Preparando..."))
       objs.add(new Object[]{
         orders.get(i).getID(),
         orders.get(i).getItem().getName(),
         orders.get(i).getQnt(),
-        orders.get(i).getItem().getPrice(),
+        out,
         status
       });
     }
@@ -177,16 +184,16 @@ public class Client extends User {
     double theBill = getCurrentExpenses() - getCashBack();
     byte choice = 0;
 
-    // Retirar parte de validação quando implementarmos a interface.
-    do {
-      System.out.println("Selecione um método de pagamento, por favor:\n");
-      System.out.println("1 - Crédito\t2 - Débito\n");
-      choice = (byte) Integer.parseInt(Reader.getScanner().nextLine());
+    // // Retirar parte de validação quando implementarmos a interface.
+    // do {
+    //   System.out.println("Selecione um método de pagamento, por favor:\n");
+    //   System.out.println("1 - Crédito\t2 - Débito\n");
+    //   choice = (byte) Integer.parseInt(Reader.getScanner().nextLine());
 
-      if (choice != 1 && choice != 2) {
-        System.out.println("Selecione as opções corretas, por favor!");
-      }
-    } while (choice != 1 && choice != 2);
+    //   if (choice != 1 && choice != 2) {
+    //     System.out.println("Selecione as opções corretas, por favor!");
+    //   }
+    // } while (choice != 1 && choice != 2);
 
     // Adicionar algo interativo e legal sobre o pagamento.
     return theBill;

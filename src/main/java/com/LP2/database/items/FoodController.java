@@ -84,7 +84,7 @@ public class FoodController extends ItemController {
   static public boolean update(final Food food) {
     try {
       final PreparedStatement stm = connection.getCon()
-          .prepareStatement("UPDATE Food " + "SET descritpion = (?) " + "WHERE food_id = (?)");
+          .prepareStatement("UPDATE Food " + "SET description = (?) " + "WHERE food_id = (?)");
       stm.setString(1, food.getDesc());
       stm.setInt(2, food.getID());
       stm.executeUpdate();

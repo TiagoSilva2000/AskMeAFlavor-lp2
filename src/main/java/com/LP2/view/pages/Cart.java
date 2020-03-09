@@ -87,18 +87,20 @@ public class Cart extends javax.swing.JFrame {
         }
 
 
+        String out = String.format("%.2f", LoginVV.getuser().getCashBack());
         discountTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         discountTXT.setForeground(new java.awt.Color(255, 255, 255));
-        discountTXT.setText("Desconto: R$ " + String.valueOf(LoginVV.getuser().getCashBack()));
+        discountTXT.setText("Desconto: R$ " + out);
 
 
         double total = (LoginVV.getuser().getCurrentExpenses()
-                - LoginVV.getuser().getCashBack());
+        - LoginVV.getuser().getCashBack());
         total = total < 0 ? 0 : total;
 
+        out = String.format("%.2f", total);
         totalValueLBL.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         totalValueLBL.setForeground(new java.awt.Color(255, 255, 255));
-        totalValueLBL.setText("R$ " + String.valueOf(total));
+        totalValueLBL.setText("R$ " + out);
 
         jButton1.setBackground(new java.awt.Color(38, 70, 27));
         jButton1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N

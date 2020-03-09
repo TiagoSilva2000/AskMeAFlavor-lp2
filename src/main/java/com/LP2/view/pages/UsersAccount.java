@@ -68,6 +68,7 @@ public class UsersAccount extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cliente La Cocina Bistrô");
         setResizable(false);
+        foodTypeCBOX.setVisible(false);
 
         userBackBTN.setBackground(new java.awt.Color(38, 70, 27));
         userBackBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
@@ -117,11 +118,12 @@ public class UsersAccount extends javax.swing.JFrame {
             }
         });
 
-        valueCashbackTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        String out = String.format("%.2f", LoginVV.getuser().getCashBack());
+        valueCashbackTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         valueCashbackTXT.setForeground(new java.awt.Color(255, 255, 255));
-        valueCashbackTXT.setText(String.valueOf(LoginVV.getuser().getCashBack()));
+        valueCashbackTXT.setText(out);
 
-        cashbackTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        cashbackTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         cashbackTXT.setForeground(new java.awt.Color(255, 255, 255));
         cashbackTXT.setText("Cashback: R$ ");
 
@@ -175,7 +177,8 @@ public class UsersAccount extends javax.swing.JFrame {
                 feedbackMENUMouseExited(evt);
             }
         });
-        userMENU.add(feedbackMENU);
+        // userMENU.add(feedbackMENU);
+        feedbackMENU.setVisible(false);
 
         setJMenuBar(userMENU);
 
@@ -273,10 +276,10 @@ public class UsersAccount extends javax.swing.JFrame {
             this.dispose();
             int id = Integer.parseInt(menuTBL.getValueAt(rowIdx, 0).toString());
             // int id = com.LP2.server.utils.Menu.getMenu().get(rowIdx).getID();
+            System.out.println("ID: " + id);
             ItemVV.setItemID(id);
             ItemDetailed itemScreen = new ItemDetailed();
             itemScreen.setVisible(true);
-
 
 //            item = dao.Listar().get(index);
         }

@@ -84,6 +84,8 @@ public class EditProfile extends javax.swing.JFrame {
         setTitle("Editar cadastro La Cocina Bistrô");
         setResizable(false);
 
+        // userPhoneTXT.setVisible(false);
+
         editBackBTN.setBackground(new java.awt.Color(38, 70, 27));
         editBackBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
         editBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -251,10 +253,10 @@ public class EditProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_editBackBTNMouseClicked
 
     private void saveBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBTNMouseClicked
-        int success = UserVV.update(userNameTXT.getText(),
+        int success = UserVV.update(LoginVV.getuser().getID(), userNameTXT.getText(),
                     userEmailTXT.getText(),
                     userCpfTXT.getText()
-        );
+                    );
         if (success == 1) {
             Success successDialog = new Success(this , true);
             successDialog.setVisible(true);

@@ -7,7 +7,8 @@ public class Constants {
               clientCode = 3;
   static private byte canceledOrder = -1,
                       unfinishedOrder = 0,
-                      finishedOrder = 1;
+                      finishedOrder = 1,
+                      paidOrder = 2;
   static private short noCodeminPassLen = 8,
                       minPassLen = 15,
                       maxPassLen = 256,
@@ -20,6 +21,8 @@ public class Constants {
   static public byte getNotPresent() { return notPresent; }
 
   static public byte getPresent() { return present; }
+
+  static public byte getPaidOrder() { return paidOrder; }
 
   static public byte getPresentAndNotPresent() { return all; }
 

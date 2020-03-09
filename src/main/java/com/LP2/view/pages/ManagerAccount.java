@@ -15,8 +15,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.MenuElement;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 import javax.swing.table.DefaultTableModel;
+
+import com.LP2.app.Session;
+import com.LP2.server.utils.Constants;
+
 import static com.LP2.view.pages.CustomizeMenuBar.CustomizeMenuBar;
 
 /**
@@ -32,7 +38,7 @@ public class ManagerAccount extends javax.swing.JFrame {
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
         CustomizeMenuBar(managerMENU, Color.decode("14027569"), Color.white );
-        loadTable();
+        // loadTable();
     }
 
     /**
@@ -67,34 +73,51 @@ public class ManagerAccount extends javax.swing.JFrame {
             }
         });
 
-        // productsTBL.setEditable(true);
+
         productsTBL.setEnabled(true);
         productsTBL.setModel(new javax.swing.table.DefaultTableModel(
-            // com.LP2.server.utils.Menu.getMatrixMenuToManager()
-            new Object[][] {
-                {"a", "b", "c", "d", "e", "f"}
-            }
+            com.LP2.server.utils.Menu.getMatrixMenuToManager()
             ,
             new String [] {
-                "CÓDIGO", "ITEM", "PREÇO", "TIPO", "FORNECEDOR", "DESCRIÇÃO"
+                "CÓDIGO", "ITEM", "PREÇO", "TIPO", "FORNECEDOR/DESCRIÇÃO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, true, true, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        productsTBL.getModel().addTableModelListener(new TableModelListener(){
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int rowIdx = e.getFirstRow();
+                if (rowIdx > -1) {
+                    int id = Integer.parseInt(productsTBL.getValueAt(rowIdx, 0).toString());
+                    String name = productsTBL.getValueAt(rowIdx, 1).toString();
+                    double price = Double.parseDouble(productsTBL.getValueAt(rowIdx, 2).toString());
+                    String type = productsTBL.getValueAt(rowIdx, 3).toString();
+                    String extra = productsTBL.getValueAt(rowIdx, 4).toString();
+
+                    if (type.equals("comida"))
+                        Session.updateFood(id, name, price, true, extra, null);
+                    else
+                        Session.updateDrink(id, name, price, true, extra, null);
+                }
+            }
+        });
+
         jScrollPane1.setViewportView(productsTBL);
         if (productsTBL.getColumnModel().getColumnCount() > 0) {
             productsTBL.getColumnModel().getColumn(0).setPreferredWidth(2);
             productsTBL.getColumnModel().getColumn(1).setPreferredWidth(80);
             productsTBL.getColumnModel().getColumn(2).setPreferredWidth(2);
             productsTBL.getColumnModel().getColumn(3).setPreferredWidth(10);
-            productsTBL.getColumnModel().getColumn(4).setPreferredWidth(20);
-            productsTBL.getColumnModel().getColumn(5).setPreferredWidth(60);
+            productsTBL.getColumnModel().getColumn(4).setPreferredWidth(80);
+            // productsTBL.getColumnModel().getColumn(5).setPreferredWidth(60);
         }
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
