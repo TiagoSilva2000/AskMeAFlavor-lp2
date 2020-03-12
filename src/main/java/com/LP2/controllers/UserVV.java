@@ -10,11 +10,12 @@ public class UserVV {
 
   static public void all() {}
 
-  static public int update(final int id, final String name, final String email, final String cpf
-                          ) {
+  static public int update(final int id, final String name, final String email,
+                          final String cpf, final String phone) {
     LoginVV.getuser().setEmail(email);
     LoginVV.getuser().setName(name);
     LoginVV.getuser().setIDCode(cpf);
+    LoginVV.getuser().setPhone(phone);
     UserController.update(LoginVV.getuser());
     return 1;
   }

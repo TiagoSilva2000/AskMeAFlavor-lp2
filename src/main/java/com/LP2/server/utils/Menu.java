@@ -11,55 +11,8 @@ import java.util.List;
 public class Menu {
   static private ArrayList<Item> items;
 
-  // public Menu() {
-  //   items = new ArrayList<Item>();
-  //   load();
-  // }
-
-
-  // public byte getFromDatabase() {
-  //   ArrayList<ArrayList<String>> fields = ItemController.all();
-  //   return 1;
-  // }
-
   static public void load(final byte presenceCode) {
-    items = new ArrayList<Item>();
-    ArrayList<ArrayList<String>> fields = ItemController.all(presenceCode);
-    int lastPos;
-    Image img = null;
-    String name, extra, filename, filepath, filetype;
-    double price;
-    int imgId, id;
-    byte[] content = null;
-
-    img = null;
-    filename = null;
-    filepath= null;
-    filetype = null;
-
-    for (int i = 0; i < fields.size(); i++) {
-      lastPos = fields.get(i).size() - 1;
-      filepath = filename = filetype = null; imgId = -1; img = null; content = null;
-      id = Integer.parseInt(fields.get(i).get(0));
-      name = fields.get(i).get(1);
-      price = Double.parseDouble(fields.get(i).get(2));
-      extra = fields.get(i).get(4);
-
-      if (!fields.get(i).get(3).equals("null")) {
-        imgId = Integer.parseInt(fields.get(i).get(3));
-        filepath = fields.get(i).get(5);
-        filename = fields.get(i).get(6);
-        filetype = fields.get(i).get(7);
-        content = fields.get(i).get(8).getBytes();
-        img = new Image(imgId, filepath, filename, filetype, content);
-      }
-      if (fields.get(i).get(lastPos).equals("food")) {
-        System.out.println("Comida");
-        items.add(new Food(id, name, price, extra, img));
-      } else {
-        items.add(new Drink(id, name, price, extra, img));
-      }
-    }
+    items = ItemController.all(presenceCode);
   }
 
   static public void updateItem(final int id, final Item item) {

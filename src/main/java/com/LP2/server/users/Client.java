@@ -20,8 +20,8 @@ public class Client extends User {
   private double lastBought;
   private Visit visit;
 
-  public Client(String name, String email, String password, String idCode) {
-    super(name, email, password, idCode, Constants.getClientCode());
+  public Client(String name, String email, String password, String idCode, String phone) {
+    super(name, email, password, idCode, phone, Constants.getClientCode());
     this.orders = new ArrayList<Order>();
     this.lastVisit = null;
     this.lastBought = 0;
@@ -40,7 +40,7 @@ public class Client extends User {
   }
 
   public void setExtraInfoById() {
-    ArrayList<String> fields = ClientController.get(this.id);
+    ArrayList<String> fields = ClientController.read(this.id);
     final int openVisitId = VisitController.getOpenVisit(this.id);
     this.orders = AllOrders.ordersFromUser(this.id);
 

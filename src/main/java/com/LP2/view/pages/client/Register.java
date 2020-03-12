@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.LP2.view.pages;
+package com.LP2.view.pages.client;
 
 import com.LP2.app.Session;
 import com.LP2.controllers.LoginVV;
-import com.LP2.database.users.ClientController;
 import com.placeholder.PlaceHolder;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
-
+import com.LP2.view.pages.Login;
 /**
  *
  * @author evelyn.ferreira
@@ -27,10 +26,10 @@ public class Register extends javax.swing.JFrame {
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
 
-        PlaceHolder placeHolderName = new PlaceHolder(registerNameTXT, Color.white, Color.white, "Aqui vai seu nome:D", false, "Verdana", 14);
-        PlaceHolder placeHolderPassword = new PlaceHolder(registerPasswordTXT, Color.white, Color.white, "Aqui vai a sua senha :-)", false, "Verdana", 14);
-        PlaceHolder placeHolderConfirmPassword = new PlaceHolder(registerConfirmPasswordTXT, Color.white, Color.white, "E aqui é só repetir a senha :))", false, "Verdana", 14);
-        PlaceHolder placeHolderEmail = new PlaceHolder(registerEmailTXT, Color.white, Color.white, "E aqui seu melhor endereço de Email :P", false, "Verdana", 14);
+        PlaceHolder placeHolderName = new PlaceHolder(registerNameTXT, Color.white, Color.white, "Nome de Usuário", false, "Verdana", 14);
+        PlaceHolder placeHolderPassword = new PlaceHolder(registerPasswordTXT, Color.white, Color.white, "Senha", false, "Verdana", 14);
+        PlaceHolder placeHolderConfirmPassword = new PlaceHolder(registerConfirmPasswordTXT, Color.white, Color.white, "Confirmação de Senha", false, "Verdana", 14);
+        PlaceHolder placeHolderEmail = new PlaceHolder(registerEmailTXT, Color.white, Color.white, "Email", false, "Verdana", 14);
 
         registerNameTXT.setFont(new Font("Verdana", 0, 14));
         registerNameTXT.setHorizontalAlignment(SwingConstants.CENTER);
@@ -96,8 +95,8 @@ public class Register extends javax.swing.JFrame {
         registerNameTXT = new javax.swing.JTextField();
         registerPhoneTXT = new javax.swing.JFormattedTextField();
         registerCodeTXT = new javax.swing.JFormattedTextField();
-        registerPasswordTXT = new javax.swing.JPasswordField();
         registerConfirmPasswordTXT = new javax.swing.JPasswordField();
+        registerPasswordTXT = new javax.swing.JPasswordField();
         registerEmailTXT = new javax.swing.JTextField();
         wrongPasswordLBL = new javax.swing.JLabel();
         emptyDataLBL = new javax.swing.JLabel();
@@ -111,7 +110,7 @@ public class Register extends javax.swing.JFrame {
         registerBackBTN.setBackground(new java.awt.Color(38, 70, 27));
         registerBackBTN.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         registerBackBTN.setForeground(new java.awt.Color(255, 255, 255));
-        registerBackBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
+        registerBackBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/back16.png"))); // NOI18N
         registerBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 registerBackBTNMouseClicked(evt);
@@ -163,6 +162,23 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
+        registerConfirmPasswordTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        registerConfirmPasswordTXT.setToolTipText("Confirmar senha");
+        registerConfirmPasswordTXT.setSelectionColor(new java.awt.Color(214, 11, 49));
+        registerConfirmPasswordTXT.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                registerConfirmPasswordTXTFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                registerConfirmPasswordTXTFocusLost(evt);
+            }
+        });
+        registerConfirmPasswordTXT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                registerConfirmPasswordTXTKeyTyped(evt);
+            }
+        });
+
         registerPasswordTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         registerPasswordTXT.setToolTipText("Sua senha");
         registerPasswordTXT.setDisabledTextColor(new java.awt.Color(255, 0, 0));
@@ -177,26 +193,10 @@ public class Register extends javax.swing.JFrame {
         });
         registerPasswordTXT.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                           registerPasswordTXTKeyTyped(evt);
-                       }
-        });
-        registerConfirmPasswordTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
-        registerConfirmPasswordTXT.setToolTipText("Confirmar senha");
-        registerConfirmPasswordTXT.setSelectionColor(new java.awt.Color(214, 11, 49));
-        registerConfirmPasswordTXT.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                registerConfirmPasswordTXTFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                registerConfirmPasswordTXTFocusLost(evt);
+                registerPasswordTXTKeyTyped(evt);
             }
         });
 
-        registerConfirmPasswordTXT.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                           registerConfirmPasswordTXTKeyTyped(evt);
-                       }
-        });
         registerEmailTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         registerEmailTXT.setSelectionColor(new java.awt.Color(214, 11, 49));
         registerEmailTXT.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -275,7 +275,7 @@ public class Register extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -312,14 +312,6 @@ public class Register extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void registerPasswordTXTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordTXTKeyTyped
-        registerPasswordTXT.setEchoChar('°');
-    }//GEN-LAST:event_registerPasswordTXTKeyTyped
-
-    private void registerConfirmPasswordTXTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordTXTKeyTyped
-        registerConfirmPasswordTXT.setEchoChar('°');
-    }//GEN-LAST:event_registerConfirmPasswordTXTKeyTyped
-
     private void registerBackBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerBackBTNMouseClicked
         this.dispose();
         Login loginScreen = new Login();
@@ -346,7 +338,7 @@ public class Register extends javax.swing.JFrame {
            passConfirm.isEmpty()){
                 emptyDataLBL.setVisible(true);
         } else {
-            Session.sigin(name, email, pass, idCode);
+            Session.sigin(name, email, pass, idCode, phone);
             LoginVV.login(name, pass);
             wrongPasswordLBL.setVisible(false);
             emptyDataLBL.setVisible(false);
@@ -366,7 +358,6 @@ public class Register extends javax.swing.JFrame {
 
     private void registerPasswordTXTFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_registerPasswordTXTFocusGained
         registerPasswordTXT.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.decode("6554655")));
-
     }//GEN-LAST:event_registerPasswordTXTFocusGained
 
     private void registerPasswordTXTFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_registerPasswordTXTFocusLost
@@ -404,6 +395,14 @@ public class Register extends javax.swing.JFrame {
     private void registerPhoneTXTFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_registerPhoneTXTFocusLost
         registerPhoneTXT.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white));
     }//GEN-LAST:event_registerPhoneTXTFocusLost
+
+    private void registerConfirmPasswordTXTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerConfirmPasswordTXTKeyTyped
+        registerConfirmPasswordTXT.setEchoChar('°');
+    }//GEN-LAST:event_registerConfirmPasswordTXTKeyTyped
+
+    private void registerPasswordTXTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_registerPasswordTXTKeyTyped
+        registerPasswordTXT.setEchoChar('°');
+    }//GEN-LAST:event_registerPasswordTXTKeyTyped
 
     /**
      * @param args the command line arguments

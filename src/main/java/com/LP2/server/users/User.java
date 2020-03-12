@@ -8,18 +8,19 @@ import com.LP2.server.items.Item;
 import com.LP2.server.utils.Order;
 
 public class User {
-  protected String email, password, name, idCode;
+  protected String email, password, name, idCode, phone;
   protected int id;
   protected byte usertype;
 
   public User() {}
 
   public User(final int id, final String name, final String email,
-              final String idCode, final byte usertype) {
+              final String idCode, final String phone, final byte usertype) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.idCode = idCode;
+    this.phone = phone;
     this.usertype = usertype;
     this.password = null;
   }
@@ -30,43 +31,47 @@ public class User {
     this.name = user.getName();
     this.idCode = user.getIDCode();
     this.id = user.getID();
+    this.phone = user.phone;
     this.usertype = user.getUsertype();
   }
 
-  protected User(String name, String email, String password, String idCode, byte userType) {
-    setAll(name, email, password, idCode, userType);
+  protected User(final String name, final String email, final String password,
+                final String idCode, final String phone, final byte userType) {
+    setAll(name, email, password, idCode, phone, userType);
     this.id = create();
   }
 
   public User (final String username, final String password) {
     this.name = username; this.password = password;
-    ArrayList<String> fields = read();
-    if (fields.size() == 0) {
+
+    User tmp = read();
+    if (tmp == null) {
       return;
     }
     try {
-      if (fields.size() != 0) {
-        byte usertype = (byte) Integer.parseInt(fields.get(5));
-        setAll(fields.get(1), fields.get(2), fields.get(3), fields.get(4), usertype);
-      }
-      this.id = Integer.parseInt(fields.get(0));
+      setAll(tmp.name, tmp.email, tmp.password, tmp.idCode, tmp.phone, tmp.usertype);
+
+      this.id = tmp.getID();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  public void setExtraInfoById() {
+  public void setExtraInfoById() {}
 
-  }
-
-  private void setAll(String name, String email, String password, String idCode,
-  byte userType) {
+  private void setAll(final String name, final String email, final String password,
+                      final String idCode, final String phone, final byte userType) {
     this.email = email;
     this.name = name;
-    this.password = password; // aplicar hash aqui.
-    this.idCode = idCode; // aplicar hash aqui.
+    this.phone = phone;
+    this.password = password;
+    this.idCode = idCode;
     this.usertype = userType;
   }
+
+  public String getPhone() { return this.phone; }
+
+  public void setPhone(final String phone) { this.phone = phone; }
 
   public String getEmail() {
     return this.email;
@@ -163,19 +168,20 @@ public class User {
 
   protected int create() { return UserController.create(this); }
 
-  protected ArrayList<String> read() { return UserController.get(this.name, this.password); }
+  protected User read() { return UserController.read(this.name, this.password); }
 
   public void update() { UserController.update(this); }
 
   public void update(final String name, final String password, final String email,
-                    final String idCode) {
+                    final String idCode, final String phone) {
     this.setEmail(email);
     this.setPassword(password);
     this.setIDCode(idCode);
     this.setName(name);
+    this.setPhone(phone);
     UserController.update(this);
   }
 
-  protected void delete() { UserController.remove(this.id); }
+  protected void delete() { UserController.delete(this.id); }
 
 }

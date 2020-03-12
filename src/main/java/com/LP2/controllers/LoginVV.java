@@ -30,9 +30,9 @@ public class LoginVV {
     int userOrdersQnt = AllOrders.ordersQntFromUser(user.getID());
     if (userOrdersQnt == 0 && user.getOrders().size() == 0)
       return -1;
+      System.out.println("Wait until all of orders be finished please");
 
     if (userOrdersQnt > 0) {
-      System.out.println("Wait until all of orders be finished please");
       return -1;
     }
     double paidValue = user.settleTheBill();

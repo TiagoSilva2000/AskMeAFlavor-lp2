@@ -12,13 +12,6 @@ import com.LP2.server.users.User;
 import com.LP2.server.utils.Constants;
 
 public class UserController {
-  static protected Connect connection;
-
-  public UserController(Connect conn) { connection = conn; }
-
-  static public void setConnection(final Connect conn) {
-    connection = conn;
-  }
 
   static protected boolean matchPassword(final String dbPassword,
                                         final String inPassword) {
@@ -33,11 +26,11 @@ public class UserController {
     try {
       int id = -1;
       ResultSet result = null;
-      final PreparedStatement stm = connection.getCon()
+      final PreparedStatement stm = Connect.getCon()
       .prepareStatement(
         "INSERT INTO Person" +
-        "(name, email, password, idcode, usertype, salt)" +
-        "VALUES (?,?,?,?,?, ?)"
+        "(name, email, password, idcode, usertype, salt, phone)" +
+        "VALUES (?,?,?,?,?, ?, ?)"
         , Statement.RETURN_GENERATED_KEYS);
 
       stm.setString(1, user.getName());
@@ -46,6 +39,7 @@ public class UserController {
       stm.setString(4, user.getIDCode());
       stm.setInt(5, user.getUsertype());
       stm.setString(6, salt);
+      stm.setString(7, user.getPhone());
       stm.executeUpdate();
       result = stm.getGeneratedKeys();
       while (result.next())
@@ -59,38 +53,16 @@ public class UserController {
     }
   }
 
-  static private User buildUser(final ArrayList<String> fields) {
-    if (fields.size() == 0) return null;
-
-    final int id = Integer.parseInt(fields.get(0));
-    final String name = fields.get(1);
-    final String email = fields.get(2);
-    final String idCode = fields.get(3);
-    final byte userType = Byte.parseByte(fields.get(4));
-
-
-    return new User(id, name, email, idCode, userType);
-  }
-
-  static private ArrayList<User> buildUsers(final ArrayList<ArrayList<String>> fields) {
-    ArrayList<User> users = new ArrayList<User>();
-
-    for (int i = 0; i < fields.size(); i++) {
-      User tmp = buildUser(fields.get(i));
-      if (tmp != null)
-        users.add(tmp);
-    }
-    return users;
-  }
-
-  static public ArrayList<String> get(final String username, final String password) {
+  static public User read(final String username, final String password) {
     ResultSet result = null;
     ArrayList<String> fields = new ArrayList<String>();
     int i = 1, maxFields;
     boolean passwordMatch = false;
+    String colName;
     try {
-      final PreparedStatement stm = connection.getCon().prepareStatement(
-        "SELECT *" +
+      final PreparedStatement stm = Connect.getCon().prepareStatement(
+        "SELECT Person.id, Person.name, Person.email, Person.password, Person.salt, " +
+        "Person.idcode, Person.usertype, Person.phone " +
         "FROM Person " +
         "WHERE name = (?);");
       stm.setString(1, username);
@@ -101,9 +73,14 @@ public class UserController {
         while (result.next()) {
           passwordMatch = Encrypt.validatePBKDF(password, result.getString("password"),
           result.getString("salt"));
+
           if (passwordMatch) {
-            while (i <= maxFields)
-            fields.add(result.getString(i++));
+            while (i <= maxFields) {
+              colName = result.getMetaData().getColumnName(i);
+              if (!colName.equals("password") && !colName.equals("salt"))
+                fields.add(result.getString(i));
+              i += 1;
+            }
           } else {
             System.out.println("Authentication Failed!");
           }
@@ -111,7 +88,7 @@ public class UserController {
       }
 
       stm.close();
-      return fields;
+      return buildUser(fields);
     } catch (final Exception e) {
       e.printStackTrace();
       System.exit(2);
@@ -124,8 +101,9 @@ public class UserController {
       int i, j, maxFields;
       ResultSet rs;
       ArrayList<ArrayList<String>> fields = new ArrayList<ArrayList<String>>();
-      PreparedStatement stm = connection.getCon().prepareStatement(
-        "SELECT Person.id, Person.name, Person.email, Person.idcode, Person.usertype " +
+      PreparedStatement stm = Connect.getCon().prepareStatement(
+        "SELECT Person.id, Person.name, Person.email, Person.idcode, " +
+        "Person.usertype, Person.phone " +
         "FROM Person " +
         "WHERE usertype = (?)"
       );
@@ -154,18 +132,17 @@ public class UserController {
 
   }
 
-
   public static boolean update(final User user) {
     try {
-      final PreparedStatement stm = connection.getCon().prepareStatement(
+      final PreparedStatement stm = Connect.getCon().prepareStatement(
           "UPDATE Person " +
-          "SET name = (?), email = (?), idcode = (?) " +
+          "SET name = (?), email = (?), idcode = (?), phone = (?) " +
           "WHERE id = (?)");
       stm.setString(1, user.getName());
       stm.setString(2, user.getEmail());
-      // stm.setString(3, user.getPassword());
       stm.setString(3, user.getIDCode());
       stm.setInt(4, user.getID());
+      stm.setString(5, user.getPhone());
 
       stm.executeUpdate();
       stm.close();
@@ -177,9 +154,9 @@ public class UserController {
     }
   }
 
-  public static boolean remove(final int id) {
+  public static boolean delete(final int id) {
     try {
-      final PreparedStatement stm = connection.getCon().prepareStatement(
+      final PreparedStatement stm = Connect.getCon().prepareStatement(
         "DELETE FROM Person " +
         "WHERE id = (?)");
       stm.setInt(1, id);
@@ -191,5 +168,30 @@ public class UserController {
       e.printStackTrace();
       return false;
     }
+  }
+
+  static private User buildUser(final ArrayList<String> fields) {
+    if (fields.size() == 0) return null;
+
+    final int id = Integer.parseInt(fields.get(0));
+    final String name = fields.get(1);
+    final String email = fields.get(2);
+    final String idCode = fields.get(3);
+    final byte userType = Byte.parseByte(fields.get(4));
+    final String phone = fields.get(5);
+
+
+    return new User(id, name, email, idCode, phone, userType);
+  }
+
+  static private ArrayList<User> buildUsers(final ArrayList<ArrayList<String>> fields) {
+    ArrayList<User> users = new ArrayList<User>();
+
+    for (int i = 0; i < fields.size(); i++) {
+      User tmp = buildUser(fields.get(i));
+      if (tmp != null)
+        users.add(tmp);
+    }
+    return users;
   }
 }

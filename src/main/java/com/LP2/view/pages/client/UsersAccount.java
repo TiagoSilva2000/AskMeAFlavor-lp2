@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.LP2.view.pages;
+package com.LP2.view.pages.client;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -19,8 +19,11 @@ import javax.swing.MenuElement;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 import javax.swing.table.DefaultTableModel;
 
+
 import com.LP2.controllers.ItemVV;
-import com.LP2.controllers.LoginVV;
+import com.LP2.view.pages.EditProfile;
+import com.LP2.view.pages.Login;
+import com.LP2.view.pages.ItemDetailed;
 
 import static com.LP2.view.pages.CustomizeMenuBar.CustomizeMenuBar;
 
@@ -39,6 +42,7 @@ public class UsersAccount extends javax.swing.JFrame {
         CustomizeMenuBar(userMENU, Color.decode("14027569"), Color.white );
         foodTypeCBOX.setModel(modelCBOX);
         addItem();
+        loadTable();
         foodTypeCBOX.setBackground(Color.decode("2508315"));
         foodTypeCBOX.setForeground(Color.white);
 
@@ -68,23 +72,25 @@ public class UsersAccount extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cliente La Cocina Bistrô");
         setResizable(false);
-        foodTypeCBOX.setVisible(false);
 
         userBackBTN.setBackground(new java.awt.Color(38, 70, 27));
-        userBackBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
+        userBackBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/back16.png"))); // NOI18N
         userBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 userBackBTNMouseClicked(evt);
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
 
         menuTBL.setAutoCreateRowSorter(true);
         menuTBL.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         menuTBL.setModel(new javax.swing.table.DefaultTableModel(
-            com.LP2.server.utils.Menu.getMatrixMenu()
-            ,
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
             new String [] {
                 "Código", "Prato", "Preço"
             }
@@ -117,20 +123,24 @@ public class UsersAccount extends javax.swing.JFrame {
                 foodTypeCBOXMouseClicked(evt);
             }
         });
+        foodTypeCBOX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                foodTypeCBOXActionPerformed(evt);
+            }
+        });
 
-        String out = String.format("%.2f", LoginVV.getuser().getCashBack());
-        valueCashbackTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        valueCashbackTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         valueCashbackTXT.setForeground(new java.awt.Color(255, 255, 255));
-        valueCashbackTXT.setText(out);
+        valueCashbackTXT.setText("value");
 
-        cashbackTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        cashbackTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         cashbackTXT.setForeground(new java.awt.Color(255, 255, 255));
-        cashbackTXT.setText("Cashback: R$ ");
+        cashbackTXT.setText("Cashback:");
 
         userMENU.setBackground(new java.awt.Color(214, 11, 49));
         userMENU.setForeground(new java.awt.Color(255, 255, 255));
 
-        cartMENU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/cart20.png"))); // NOI18N
+        cartMENU.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/cart20.png"))); // NOI18N
         cartMENU.setText("Carrinho");
         cartMENU.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         cartMENU.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -146,7 +156,7 @@ public class UsersAccount extends javax.swing.JFrame {
         });
         userMENU.add(cartMENU);
 
-        editProfileMENU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/profileEdit16.png"))); // NOI18N
+        editProfileMENU.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/profileEdit16.png"))); // NOI18N
         editProfileMENU.setText("Perfil");
         editProfileMENU.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         editProfileMENU.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -163,7 +173,7 @@ public class UsersAccount extends javax.swing.JFrame {
         userMENU.add(editProfileMENU);
 
         feedbackMENU.setForeground(new java.awt.Color(255, 255, 255));
-        feedbackMENU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/feedback20.png"))); // NOI18N
+        feedbackMENU.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/feedback20.png"))); // NOI18N
         feedbackMENU.setText("Meus feedbacks");
         feedbackMENU.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         feedbackMENU.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -177,8 +187,7 @@ public class UsersAccount extends javax.swing.JFrame {
                 feedbackMENUMouseExited(evt);
             }
         });
-        // userMENU.add(feedbackMENU);
-        feedbackMENU.setVisible(false);
+        userMENU.add(feedbackMENU);
 
         setJMenuBar(userMENU);
 
@@ -269,24 +278,22 @@ public class UsersAccount extends javax.swing.JFrame {
     }//GEN-LAST:event_editProfileMENUMouseExited
 
     private void menuTBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuTBLMouseClicked
-        //        Menu item = new Menu();
-//        MenuDAO dao = new MenuDao();
         int rowIdx = menuTBL.getSelectedRow();
         if(rowIdx > -1){
             this.dispose();
             int id = Integer.parseInt(menuTBL.getValueAt(rowIdx, 0).toString());
-            // int id = com.LP2.server.utils.Menu.getMenu().get(rowIdx).getID();
             System.out.println("ID: " + id);
             ItemVV.setItemID(id);
             ItemDetailed itemScreen = new ItemDetailed();
             itemScreen.setVisible(true);
-
-//            item = dao.Listar().get(index);
         }
     }//GEN-LAST:event_menuTBLMouseClicked
 
     private void foodTypeCBOXMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_foodTypeCBOXMouseClicked
         String type = (String) foodTypeCBOX.getSelectedItem();
+
+            ///Trazer todos que tenham Type
+            loadTable();
     }//GEN-LAST:event_foodTypeCBOXMouseClicked
 
     private void feedbackMENUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_feedbackMENUMouseEntered
@@ -303,23 +310,23 @@ public class UsersAccount extends javax.swing.JFrame {
         //Tela meus feedbacks
     }//GEN-LAST:event_feedbackMENUMouseClicked
 
+    private void foodTypeCBOXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_foodTypeCBOXActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_foodTypeCBOXActionPerformed
+
       private void loadTable(){
 
         DefaultTableModel model = (DefaultTableModel) menuTBL.getModel();
         model.setNumRows(0);
+        Object[][] items = com.LP2.server.utils.Menu.getMatrixMenu();
+
 
         menuTBL.getColumnModel().getColumn(0).setPreferredWidth(2);
         menuTBL.getColumnModel().getColumn(1).setPreferredWidth(96);
         menuTBL.getColumnModel().getColumn(2).setPreferredWidth(2);
 
-//        MenuDao dao = new MenuDao();
-//        for(Menu item: dao.List()){
-//            model.addRow(new Object[]{
-//                item.getId(),
-//                item.getName,
-//                item.getPrice
-//            });
-//        }
+        for (Object[] item : items)
+            model.addRow(item);
 
     }
       private void addItem(){

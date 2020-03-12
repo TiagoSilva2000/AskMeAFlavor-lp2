@@ -3,20 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.LP2.view.pages;
+package com.LP2.view.pages.warnings;
+
+import java.awt.Color;
 
 /**
  *
- * @author Blueevee
+ * @author evelyn.ferreira
  */
-public class managerAcount extends javax.swing.JFrame {
+public class Success extends javax.swing.JDialog {
 
     /**
-     * Creates new form managerAcount
+     * Creates new form success
+     * @param parent
+     * @param modal
      */
-    public managerAcount() {
+    public Success(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
+        this.getContentPane().setBackground(Color.decode("14027569"));
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,29 +34,36 @@ public class managerAcount extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        registerItensMENU = new javax.swing.JMenu();
+        msgTXT = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("La Cocina");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Sucesso");
+        setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        setForeground(new java.awt.Color(255, 255, 255));
 
-        registerItensMENU.setText("Cadastrar itens");
-        jMenuBar1.add(registerItensMENU);
-
-        setJMenuBar(jMenuBar1);
+        msgTXT.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
+        msgTXT.setForeground(new java.awt.Color(255, 255, 255));
+        msgTXT.setText("Dados Salvos com sucesso!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(msgTXT)
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(104, 104, 104)
+                .addComponent(msgTXT)
+                .addContainerGap(113, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -68,27 +82,28 @@ public class managerAcount extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(managerAcount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(managerAcount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(managerAcount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(managerAcount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Success.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new managerAcount().setVisible(true);
-            }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(() -> {
+            Success dialog = new Success(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu registerItensMENU;
+    private javax.swing.JLabel msgTXT;
     // End of variables declaration//GEN-END:variables
 }

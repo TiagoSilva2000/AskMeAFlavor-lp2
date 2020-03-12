@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.LP2.view.pages;
+package com.LP2.view.pages.manager;
 
 import com.LP2.app.Session;
+import com.LP2.view.pages.warnings.Error;
+import com.LP2.view.pages.warnings.Success;
+
 import com.placeholder.PlaceHolder;
 import java.awt.Color;
 import java.awt.Font;
@@ -59,9 +62,11 @@ public class RegisterProducts extends javax.swing.JFrame {
         foodDescriptionTXT.setForeground(Color.white);
         foodDescriptionTXT.setCaretColor(Color.white);
 
+
         emptyDataLBL.setVisible(false);
         emptyData2LBL.setVisible(false);
-
+        productDrinkRBTN.setBackground(Color.decode("14027569"));
+        productFoodRBTN.setBackground(Color.decode("14027569"));
     }
 
     /**
@@ -91,7 +96,7 @@ public class RegisterProducts extends javax.swing.JFrame {
         setResizable(false);
 
         productsBackBTN.setBackground(new java.awt.Color(38, 70, 27));
-        productsBackBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
+        productsBackBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/back16.png"))); // NOI18N
         productsBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 productsBackBTNMouseClicked(evt);
@@ -99,16 +104,6 @@ public class RegisterProducts extends javax.swing.JFrame {
         });
 
         registerProductsPNL.setOpaque(false);
-        // foodDescriptionTXT.setVisible(false);
-        // if (foodDescriptionTXT.isVisible()) {
-        //     foodDescriptionTXT.setVisible(false);
-        //     drinkProviderTXT.setVisible(true);
-        // } else {
-        //     foodDescriptionTXT.setVisible(true);
-        //     drinkProviderTXT.setVisible(false);
-        // }
-        // drinkProviderTXT.setVisible(true);
-        // foodDescriptionTXT.setVisible(true);
 
         Cadastrar.setBackground(new java.awt.Color(38, 70, 27));
         Cadastrar.setForeground(new java.awt.Color(255, 255, 255));
@@ -134,7 +129,6 @@ public class RegisterProducts extends javax.swing.JFrame {
         productFoodRBTN.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         productFoodRBTN.setForeground(new java.awt.Color(255, 255, 255));
         productFoodRBTN.setText("Comida");
-        productFoodRBTN.setOpaque(false);
         productFoodRBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 productFoodRBTNMouseClicked(evt);
@@ -145,7 +139,6 @@ public class RegisterProducts extends javax.swing.JFrame {
         productDrinkRBTN.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         productDrinkRBTN.setForeground(new java.awt.Color(255, 255, 255));
         productDrinkRBTN.setText("Bebida");
-        productDrinkRBTN.setOpaque(false);
         productDrinkRBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 productDrinkRBTNMouseClicked(evt);
@@ -256,7 +249,7 @@ public class RegisterProducts extends javax.swing.JFrame {
 
         emptyData2LBL1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         emptyData2LBL1.setForeground(new java.awt.Color(255, 255, 255));
-        emptyData2LBL1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        emptyData2LBL1.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -278,9 +271,7 @@ public class RegisterProducts extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(productsBackBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(productsBackBTN)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(emptyData2LBL1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -299,11 +290,6 @@ public class RegisterProducts extends javax.swing.JFrame {
         managerScreen.setVisible(true);
     }//GEN-LAST:event_productsBackBTNMouseClicked
 
-    private void productFoodRBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productFoodRBTNMouseClicked
-        drinkProviderTXT.setVisible(false);
-        foodDescriptionTXT.setVisible(true);
-    }//GEN-LAST:event_productFoodRBTNMouseClicked
-
     private void productDrinkRBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productDrinkRBTNMouseClicked
         drinkProviderTXT.setVisible(true);
         foodDescriptionTXT.setVisible(false);
@@ -316,6 +302,7 @@ public class RegisterProducts extends javax.swing.JFrame {
         String price = productPriceTXT.getText().trim();
         int success = -1;
 
+        System.out.println(provider + "-" + description + "-" + name + "-" + price + "-");
 
         if((provider.isEmpty() &&
            description.isEmpty()) ||
@@ -324,16 +311,17 @@ public class RegisterProducts extends javax.swing.JFrame {
 
             emptyDataLBL.setVisible(true);
             emptyData2LBL.setVisible(true);
-        }
-        if (productDrinkRBTN.isSelected()) {
-            success = Session.storeDrink(name,
-                               Double.parseDouble(price),
-                                provider,
-                                true);
         } else {
-            success = Session.storeFood(name, Double.parseDouble(price), description, true);
-        }
 
+            if (productDrinkRBTN.isSelected()) {
+                success = Session.storeDrink(name,
+                                   Double.parseDouble(price),
+                                    provider,
+                                    true);
+            } else {
+                success = Session.storeFood(name, Double.parseDouble(price), description, true);
+            }
+        }
         if (success == 1) {
             Success successDialog = new Success(this , true);
             successDialog.setVisible(true);
@@ -341,7 +329,6 @@ public class RegisterProducts extends javax.swing.JFrame {
             Error errorDialog = new Error(this , true);
             errorDialog.setVisible(true);
         }
-
     }//GEN-LAST:event_CadastrarMouseClicked
 
     private void productNameTXTFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_productNameTXTFocusGained
@@ -375,6 +362,11 @@ public class RegisterProducts extends javax.swing.JFrame {
     private void foodDescriptionTXTFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_foodDescriptionTXTFocusLost
         productNameTXT.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white));
     }//GEN-LAST:event_foodDescriptionTXTFocusLost
+
+    private void productFoodRBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productFoodRBTNMouseClicked
+        drinkProviderTXT.setVisible(false);
+        foodDescriptionTXT.setVisible(true);
+    }//GEN-LAST:event_productFoodRBTNMouseClicked
 
     /**
      * @param args the command line arguments

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.LP2.view.pages;
+package com.LP2.view.pages.warnings;
 
 import java.awt.Color;
 

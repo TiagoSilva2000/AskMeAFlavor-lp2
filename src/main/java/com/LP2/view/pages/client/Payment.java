@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.LP2.view.pages;
+package com.LP2.view.pages.client;
 
 import java.awt.Color;
 
@@ -13,17 +13,18 @@ import java.awt.Color;
  */
 public class Payment extends javax.swing.JDialog {
 
+    private static double value;
     /**
      * Creates new form payment
      * @param parent
      * @param modal
      */
-    static private double value;
-    public Payment(java.awt.Frame parent, boolean modal, final double v) {
+    public Payment(java.awt.Frame parent, boolean modal, double nValue) {
         super(parent, modal);
-        value = v;
         initComponents();
+        value = nValue;
         this.getContentPane().setBackground(Color.decode("14027569"));
+        loadProps();
     }
 
     /**
@@ -42,24 +43,16 @@ public class Payment extends javax.swing.JDialog {
 
         jLabel4.setText("realizado com successo.");
 
-        if (value < 0) {
-            PaymentMsgTXT.setText("Aguarde até que todos os seus pedidos sejam fechados pelos chefs!");
-            paymentValueTXT.setVisible(false);
-            paymentMsg2TXT.setVisible(false);
-        } else {
-            setTitle("Pagamento realizado La cocina Bistrô");
-            PaymentMsgTXT.setText("Pagamento de ");
-        }
-
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pagamento realizado La cocina Bistrô");
 
         PaymentMsgTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         PaymentMsgTXT.setForeground(new java.awt.Color(255, 255, 255));
+        PaymentMsgTXT.setText("Pagamento de ");
 
         paymentValueTXT.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         paymentValueTXT.setForeground(new java.awt.Color(255, 255, 255));
-        paymentValueTXT.setText(String.valueOf(value));
+        paymentValueTXT.setText("value");
 
         paymentMsg2TXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         paymentMsg2TXT.setForeground(new java.awt.Color(255, 255, 255));
@@ -93,6 +86,19 @@ public class Payment extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+
+    private void loadProps() {
+        String out = String.format("%.2f", value);
+        if (value < 0) {
+            PaymentMsgTXT.setText("Aguarde até que todos os seus pedidos sejam fechados pelos chefs!");
+            paymentValueTXT.setVisible(false);
+            paymentMsg2TXT.setVisible(false);
+        } else {
+            setTitle("Pagamento realizado La cocina Bistrô");
+            PaymentMsgTXT.setText("Pagamento de ");
+        }
+        paymentValueTXT.setText(out);
+    }
     /**
      * @param args the command line arguments
      */

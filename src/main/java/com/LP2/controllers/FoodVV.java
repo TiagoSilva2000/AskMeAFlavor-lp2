@@ -46,7 +46,7 @@ public class FoodVV {
 
   static public void delete(final int id) {
     Menu.rmItem(id);
-    ItemController.remove(id);
+    ItemController.delete(id);
   }
 
 }

@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.LP2.view.pages;
+package com.LP2.view.pages.manager;
 
 import java.awt.Color;
 
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 
 import com.LP2.app.Session;
 import com.LP2.controllers.CookVV;
@@ -22,11 +23,41 @@ public class ManageEmployees extends javax.swing.JFrame {
     /**
      * Creates new form manageEmployees
      */
-    static private String action;
     public ManageEmployees() {
-        action = "";
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
+        loadTable();
+        employeesTBL.getModel().addTableModelListener(new TableModelListener(){
+
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int rowIdx = e.getFirstRow();
+                if (rowIdx > -1) {
+                    Object idObject = employeesTBL.getValueAt(rowIdx, 0);
+                    Object nameObj = employeesTBL.getValueAt(rowIdx, 1);
+                    Object emailObj = employeesTBL.getValueAt(rowIdx, 2);
+                    Object codeObj = employeesTBL.getValueAt(rowIdx, 3);
+
+                    if (nameObj != null && emailObj != null
+                        && codeObj != null) {
+
+                        if (idObject == null) {
+                            String password = nameObj.toString() + "12345";
+                            System.out.println("Stored.");
+                            Session.storeCook(nameObj.toString(), emailObj.toString(),
+                            password, codeObj.toString(), null);
+                        } else {
+                            System.out.println("Updated.");
+                            String password = nameObj.toString() + "12345";
+                            Session.updateCook(Integer.parseInt(idObject.toString()),
+                                nameObj.toString(), emailObj.toString(),
+                                password, codeObj.toString(), null);
+                        }
+                    }
+                }
+                System.out.println("Editada!");
+            }
+        });
     }
 
     /**
@@ -46,12 +77,12 @@ public class ManageEmployees extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-
         employeesTBL.setModel(new javax.swing.table.DefaultTableModel(
-            CookVV.allObj()
-            ,
+            new Object [][] {
+
+            },
             new String [] {
-                "CÓDIGO", "NOME", "E-MAIL", "CPF"
+                "CÓDIGO", "NOME", "EMAIL", "CPF"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -61,84 +92,41 @@ public class ManageEmployees extends javax.swing.JFrame {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
-        }
-        );
-
-        employeesTBL.getModel().addTableModelListener(new TableModelListener(){
-
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                int rowIdx = e.getFirstRow();
-                if (rowIdx > -1) {
-                    Object idObject = employeesTBL.getValueAt(rowIdx, 0);
-                    Object nameObj = employeesTBL.getValueAt(rowIdx, 1);
-                    Object emailObj = employeesTBL.getValueAt(rowIdx, 2);
-                    Object codeObj = employeesTBL.getValueAt(rowIdx, 3);
-
-                    if (nameObj != null && emailObj != null
-                        && codeObj != null) {
-
-                        if (idObject == null) {
-                            String password = nameObj.toString() + "12345";
-                            System.out.println("Stored.");
-                            Session.storeCook(nameObj.toString(), emailObj.toString(),
-                            password, codeObj.toString());
-                            action = "stored";
-                        } else {
-                            System.out.println("Updated.");
-                            String password = nameObj.toString() + "12345";
-                            Session.updateCook(Integer.parseInt(idObject.toString()),
-                                nameObj.toString(), emailObj.toString(),
-                                password, codeObj.toString());
-                            action = "updated";
-                        }
-                    }
-                }
-                System.out.println("Editada!");
-            }
         });
-        employeesTBL.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                employeesTBLMouseClicked(evt);
-            }
-        });
-
-
         jScrollPane1.setViewportView(employeesTBL);
         if (employeesTBL.getColumnModel().getColumnCount() > 0) {
-            employeesTBL.getColumnModel().getColumn(1).setResizable(false);
+            employeesTBL.getColumnModel().getColumn(0).setResizable(false);
         }
 
         employeesBackBTN.setBackground(new java.awt.Color(38, 70, 27));
-        employeesBackBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
+        employeesBackBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir")  + "/assets/back16.png"))); // NOI18N
         employeesBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeesBackBTNMouseClicked(evt);
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir")  + "/assets/logo.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 22, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(employeesBackBTN)
-                        .addGap(58, 58, 58)
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(0, 0, 0)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -146,29 +134,38 @@ public class ManageEmployees extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(jLabel1)))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void employeesTBLMouseClicked(java.awt.event.MouseEvent evt) {
-        int rowIdx = employeesTBL.getSelectedRow();
-        int columnIdx = employeesTBL.getSelectedColumn();
-        if(rowIdx > -1 && columnIdx == 0){
-            int id = Integer.parseInt(employeesTBL.getValueAt(rowIdx, 0).toString());
-            Session.deleteCook(id);
-        }
-    }
-
     private void employeesBackBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_employeesBackBTNMouseClicked
        this.dispose();
        ManagerAccount managerAccountScreen = new ManagerAccount();
        managerAccountScreen.setVisible(true);
     }//GEN-LAST:event_employeesBackBTNMouseClicked
+
+    private void loadTable() {
+        DefaultTableModel model = (DefaultTableModel) employeesTBL.getModel();
+        model.setNumRows(0);
+        Object[][] items = CookVV.allObj();
+
+        employeesTBL.getColumnModel().getColumn(0).setPreferredWidth(5);
+        employeesTBL.getColumnModel().getColumn(1).setPreferredWidth(50);
+        employeesTBL.getColumnModel().getColumn(2).setPreferredWidth(10);
+        employeesTBL.getColumnModel().getColumn(3).setPreferredWidth(30);
+
+//        pegar do bd e preencher as linhas
+        for (int i = 0; i < items.length; i++) {
+            model.addRow(items[i]);
+        }
+
+
+    }
 
     /**
      * @param args the command line arguments
@@ -203,6 +200,7 @@ public class ManageEmployees extends javax.swing.JFrame {
             new ManageEmployees().setVisible(true);
         });
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton employeesBackBTN;

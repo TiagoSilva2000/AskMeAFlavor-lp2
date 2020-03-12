@@ -72,7 +72,7 @@ public class Item {
   }
 
   public Item(final int id) {
-    Item item = ItemController.getItem(id);
+    Item item = ItemController.read(id);
     this.id = item.id;
     this.name = item.name;
     this.price = item.price;

@@ -37,7 +37,7 @@ public class Food extends Item {
 
   public Food(final int id) {
     super(id);
-    Food food = FoodController.getFood(this);
+    Food food = FoodController.read(this);
     this.description = food.description;
   }
 

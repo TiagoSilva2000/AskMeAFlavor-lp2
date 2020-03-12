@@ -20,28 +20,30 @@ import com.LP2.server.items.Item;
 import com.LP2.server.utils.Constants;
 
 import static com.LP2.view.pages.Login.profileType;
+import com.LP2.view.pages.client.UsersAccount;
 
 /**
  *
  * @author evelyn.ferreira
  */
 public class ItemDetailed extends javax.swing.JFrame {
+
     /**
      * Creates new form ItemDeatailed
      */
     private int qnt;
     public ItemDetailed() {
-        this.qnt = 1;
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
         quantityTXT.setDocument(new JustNumbers());
         quantityTXT.setText("1");
+        this.qnt = 1;
         quantityTXT.setFont(new Font("Verdana",0, 14));
         quantityTXT.setHorizontalAlignment(SwingConstants.CENTER);
         quantityTXT.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white));
         quantityTXT.setBackground(Color.decode("14027569"));
         quantityTXT.setForeground(Color.white);
-
+        loadProps();
     }
 
     /**
@@ -64,35 +66,33 @@ public class ItemDetailed extends javax.swing.JFrame {
         plusBTN = new javax.swing.JLabel();
         minusBTN = new javax.swing.JLabel();
         quantityTXT = new javax.swing.JTextField();
-        Item loadedItem = ItemVV.read();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Detalhes do item");
         setResizable(false);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
 
         NameitemTXT.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         NameitemTXT.setForeground(new java.awt.Color(255, 255, 255));
-        NameitemTXT.setText(loadedItem.getName());
+        NameitemTXT.setText("nome");
 
         imageItemIMG.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         imageItemIMG.setForeground(new java.awt.Color(255, 255, 255));
-        imageItemIMG.setText(loadedItem.getExtra());
-        imageItemIMG.setVisible(false);
+        imageItemIMG.setText("imagem");
 
         priceItemTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         priceItemTXT.setForeground(new java.awt.Color(255, 255, 255));
-        priceItemTXT.setText(String.format("%.2f", loadedItem.getPrice()));
+        priceItemTXT.setText("price");
 
         descriptionItemTXT1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         descriptionItemTXT1.setForeground(new java.awt.Color(255, 255, 255));
-        descriptionItemTXT1.setText(loadedItem.getExtra());
+        descriptionItemTXT1.setText("desc");
 
         backDetailedItemBTN.setBackground(new java.awt.Color(38, 70, 27));
         backDetailedItemBTN.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         backDetailedItemBTN.setForeground(new java.awt.Color(255, 255, 255));
-        backDetailedItemBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
+        backDetailedItemBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/back16.png"))); // NOI18N
         backDetailedItemBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 backDetailedItemBTNMouseClicked(evt);
@@ -102,7 +102,7 @@ public class ItemDetailed extends javax.swing.JFrame {
         addCartBTN.setBackground(new java.awt.Color(38, 70, 27));
         addCartBTN.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         addCartBTN.setForeground(new java.awt.Color(255, 255, 255));
-        addCartBTN.setText("Adicionar");
+        addCartBTN.setText("Adcionar");
         addCartBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addCartBTNMouseClicked(evt);
@@ -114,8 +114,7 @@ public class ItemDetailed extends javax.swing.JFrame {
         feedBackBTN.setForeground(new java.awt.Color(255, 255, 255));
         feedBackBTN.setText("Feedback");
 
-        feedBackBTN.setVisible(false);
-        plusBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/plus20.png"))); // NOI18N
+        plusBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/plus20.png"))); // NOI18N
         plusBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 plusBTNMouseClicked(evt);
@@ -128,7 +127,7 @@ public class ItemDetailed extends javax.swing.JFrame {
             }
         });
 
-        minusBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/minus20.png"))); // NOI18N
+        minusBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/minus20.png"))); // NOI18N
         minusBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 minusBTNMouseClicked(evt);
@@ -140,7 +139,6 @@ public class ItemDetailed extends javax.swing.JFrame {
                 minusBTNMouseExited(evt);
             }
         });
-
 
         quantityTXT.setEditable(false);
         quantityTXT.setText("1");
@@ -205,10 +203,9 @@ public class ItemDetailed extends javax.swing.JFrame {
                 .addComponent(descriptionItemTXT1)
                 .addGap(88, 88, 88)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(addCartBTN)
-                        .addComponent(minusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(plusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(minusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(plusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addCartBTN)
                     .addComponent(quantityTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
         );
@@ -219,28 +216,22 @@ public class ItemDetailed extends javax.swing.JFrame {
 
     private void backDetailedItemBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backDetailedItemBTNMouseClicked
         this.dispose();
-        if (LoginVV.getuser().getUsertype() == Constants.getClientCode()) {
-            UsersAccount usrAcc = new UsersAccount();
-            usrAcc.setVisible(true);
-        } else {
-            Menu menu = new Menu();
-            menu.setVisible(true);
-        }
-
+        Menu menuScreen = new Menu();
+        menuScreen.setVisible(true);
     }//GEN-LAST:event_backDetailedItemBTNMouseClicked
 
     private void addCartBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addCartBTNMouseClicked
         if (profileType > 3 || profileType < 1) {
-            this.dispose();
-            Login loginScreen = new Login();
-            loginScreen.setVisible(true);
-        } else if (LoginVV.getuser().getUsertype() == Constants.getClientCode()) {
-            // Adcionar ao carrinho
-            OrderVV.create(ItemVV.getItemID(), this.qnt);
-            this.dispose();
-            UsersAccount usrAcc = new UsersAccount();
-            usrAcc.setVisible(true);
-        }
+             this.dispose();
+             Login loginScreen = new Login();
+             loginScreen.setVisible(true);
+         } else if (LoginVV.getuser().getUsertype() == Constants.getClientCode()) {
+             // Adcionar ao carrinho
+             OrderVV.create(ItemVV.getItemID(), this.qnt);
+             this.dispose();
+             UsersAccount usrAcc = new UsersAccount();
+             usrAcc.setVisible(true);
+         }
     }//GEN-LAST:event_addCartBTNMouseClicked
 
     private void plusBTNMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plusBTNMouseEntered
@@ -267,13 +258,22 @@ public class ItemDetailed extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_minusBTNMouseClicked
 
+
     private void plusBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_plusBTNMouseClicked
-        if (this.qnt < 40){
+        if (this.qnt < 999){
             this.qnt += 1;
             String quantity = Integer.toString(this.qnt);
             quantityTXT.setText(quantity);
         }
     }//GEN-LAST:event_plusBTNMouseClicked
+
+    private void loadProps() {
+        Item loadedItem = com.LP2.server.utils.Menu.selectItem(ItemVV.getItemID());
+        String out = String.format("%.2f", loadedItem.getPrice());
+        NameitemTXT.setText(loadedItem.getName());
+        descriptionItemTXT1.setText(loadedItem.getExtra());
+        priceItemTXT.setText(out);
+    }
 
     /**
      * @param args the command line arguments
@@ -302,6 +302,7 @@ public class ItemDetailed extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new ItemDetailed().setVisible(true);

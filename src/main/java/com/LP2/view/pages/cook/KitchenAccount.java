@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.LP2.view.pages;
+package com.LP2.view.pages.cook;
 
 import java.awt.Color;
 import javax.swing.ImageIcon;
@@ -12,6 +12,9 @@ import javax.swing.table.DefaultTableModel;
 import com.LP2.app.Session;
 import com.LP2.controllers.OrderVV;
 import com.LP2.server.utils.Constants;
+import com.LP2.view.pages.EditProfile;
+import com.LP2.view.pages.Login;
+
 
 import static com.LP2.view.pages.CustomizeMenuBar.CustomizeMenuBar;
 
@@ -28,6 +31,7 @@ public class KitchenAccount extends javax.swing.JFrame {
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
         CustomizeMenuBar(kitchenMENU, Color.decode("14027569"), Color.white );
+        loadTable();
     }
 
     /**
@@ -52,7 +56,7 @@ public class KitchenAccount extends javax.swing.JFrame {
         setResizable(false);
 
         kitchenBackBTN.setBackground(new java.awt.Color(38, 70, 27));
-        kitchenBackBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
+        kitchenBackBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/back16.png"))); // NOI18N
         kitchenBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 kitchenBackBTNMouseClicked(evt);
@@ -61,8 +65,9 @@ public class KitchenAccount extends javax.swing.JFrame {
 
         kitchenTBL.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         kitchenTBL.setModel(new javax.swing.table.DefaultTableModel(
-            OrderVV.allObj(Constants.getUnOrder())
-            ,
+            new Object [][] {
+
+            },
             new String [] {
                 "CLIENTE", "PEDIDO", "ITEM", "QUANTIDADE"
             }
@@ -79,19 +84,17 @@ public class KitchenAccount extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 kitchenTBLMouseClicked(evt);
             }
-
         });
-
         jScrollPane1.setViewportView(kitchenTBL);
         if (kitchenTBL.getColumnModel().getColumnCount() > 0) {
             kitchenTBL.getColumnModel().getColumn(0).setPreferredWidth(2);
-            kitchenTBL.getColumnModel().getColumn(1).setPreferredWidth(2);
-            kitchenTBL.getColumnModel().getColumn(2).setPreferredWidth(96);
+            kitchenTBL.getColumnModel().getColumn(1).setPreferredWidth(96);
+            kitchenTBL.getColumnModel().getColumn(3).setPreferredWidth(2);
         }
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
 
-        editProfileMENU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/profileEdit16.png"))); // NOI18N
+        editProfileMENU.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/profileEdit16.png"))); // NOI18N
         editProfileMENU.setText("Perfil");
         editProfileMENU.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -129,7 +132,7 @@ public class KitchenAccount extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(26, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
@@ -144,21 +147,6 @@ public class KitchenAccount extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void kitchenTBLMouseClicked(java.awt.event.MouseEvent evt) {
-        int rowIdx = kitchenTBL.getSelectedRow();
-
-        if (rowIdx > -1) {
-            int id = Integer.parseInt(kitchenTBL.getValueAt(rowIdx, 1).toString());
-            Session.closeOrder(id);
-            this.dispose();
-            KitchenAccount ka = new KitchenAccount();
-            ka.setVisible(true);
-        }
-
-
-
-    }
-
     private void kitchenBackBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kitchenBackBTNMouseClicked
         this.dispose();
         Login loginScreen = new Login();
@@ -172,7 +160,7 @@ public class KitchenAccount extends javax.swing.JFrame {
 
     private void editProfileMENUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseExited
         editProfileMENU.setForeground(Color.white);
-        editProfileMENU.setIcon(new ImageIcon("/assets/profileEdit16.png"));
+        editProfileMENU.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/profileEdit16.png"));
     }//GEN-LAST:event_editProfileMENUMouseExited
 
     private void editProfileMENUMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editProfileMENUMouseClicked
@@ -180,22 +168,30 @@ public class KitchenAccount extends javax.swing.JFrame {
         EditProfile editProfileScreen = new EditProfile();
         editProfileScreen.setVisible(true);
     }//GEN-LAST:event_editProfileMENUMouseClicked
+
+    private void kitchenTBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kitchenTBLMouseClicked
+        int rowIdx = kitchenTBL.getSelectedRow();
+        if (rowIdx > -1) {
+            int id = Integer.parseInt(kitchenTBL.getValueAt(rowIdx, 1).toString());
+            Session.closeOrder(id);
+            this.dispose();
+            KitchenAccount ka = new KitchenAccount();
+            ka.setVisible(true);
+        }
+    }//GEN-LAST:event_kitchenTBLMouseClicked
     private void loadTable(){
 
         DefaultTableModel model = (DefaultTableModel) kitchenTBL.getModel();
+        Object[][] orders = OrderVV.allObj(Constants.getUnOrder());
         model.setNumRows(0);
 
         kitchenTBL.getColumnModel().getColumn(0).setPreferredWidth(2);
         kitchenTBL.getColumnModel().getColumn(1).setPreferredWidth(2);
-        kitchenTBL.getColumnModel().getColumn(2).setPreferredWidth(96);
+        kitchenTBL.getColumnModel().getColumn(2).setPreferredWidth(76);
+        kitchenTBL.getColumnModel().getColumn(2).setPreferredWidth(20);
 
-//        pegar do bd e preencher as linhas
-        model.addRow(new Object[]{
-
-
-        });
-
-
+        for (Object[] order : orders)
+            model.addRow(order);
     }
     /**
      * @param args the command line arguments

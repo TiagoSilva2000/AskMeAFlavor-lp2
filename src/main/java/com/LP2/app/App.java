@@ -2,10 +2,6 @@ package com.LP2.app;
 
 import com.LP2.app.loader.Loader;
 import com.LP2.database.Connect;
-import com.LP2.database.items.ItemController;
-import com.LP2.server.items.Food;
-import com.LP2.server.resources.Image;
-import com.LP2.server.users.Manager;
 import com.LP2.server.utils.AllOrders;
 import com.LP2.server.utils.Constants;
 import com.LP2.server.utils.Menu;
@@ -23,72 +19,16 @@ import com.LP2.view.pages.Login;
 
 public class App {
 
-  public static void testMenu() {
-    for (int i = 0; i < Menu.getMenu().size(); i++)
-      System.out.println(Menu.getMenu().get(i).getItsString());
-  }
-
-
-  public static void foodCreation() {
-    Image img = new Image("/assets/tmp/", "b", ".jpg");
-    Session.storeFood("pickles", 44, "em conserva", false, img);
-
-  }
-
-  public static void drinkCreation() {
-    Session.storeDrink("refri", 4, "coca-cola", true, null);
-  }
-
-  public static void drinkUpdate() {
-    Image img = new Image("/assets/tmp/", "cat", ".jpg");
-    Session.updateDrink(31, "água fria", 20,
-                      true, "serasa", img);
-  }
-
-  public static void foodUpdate() {
-    Session.updateFood(31, "água fria", 20,
-                      true, "apimentado", null);
-  }
-
-  public static void itemDelete() {
-    Session.deleteItem(33);
-  }
-
-
-  public static void testOrder() {
-    Session.login("ttiago", "12345");
-    Session.order(31, 2);
-  }
-
-  public static void updateOrder() {
-    Session.closeOrder(8);
-  }
-
-  public static void testBill() {
-    int id = Menu.getMenu().get(0).getID();
-    Session.login("ttiago", "12345");
-    // Session.order(id, 5);
-    // Session.closeOrder(11);
-    for (int i = 0; i < Session.getLoggedUser().getOrders().size(); i++)
-      Session.closeOrder(Session.getLoggedUser().getOrders().get(i).getID());
-    Session.processPayment();
-  }
-
-
-  public static void checkImage() {
-    // String [] args = null;
-    // ImageTest.main(args);
-  }
-
   public static void main(String[] args) {
-    Connect db = null;
 
     Loader.preLoad();
-    db = new Connect();
-    Loader.loadControllers(db);
+
+    Connect.connect();
     Menu.load(Constants.getPresent());
     AllOrders.load(Constants.getUnOrder());
     Session.open();
+
+    // db.addColumnToTable("ALTER TABLE Person ADD COLUMN phone varchar(20) NOT NULL DEFAULT '(21)22222-2222'");
 
     Login.main(args);
 

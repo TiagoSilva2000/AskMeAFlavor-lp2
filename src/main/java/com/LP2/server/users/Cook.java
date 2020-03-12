@@ -5,8 +5,8 @@ import com.LP2.server.utils.Constants;;
 
 public class Cook extends User {
 
-  public Cook(String email, String pass, String name, String idCode) {
-    super(name, email, pass, idCode, Constants.getCookCode());
+  public Cook(String email, String pass, String name, String idCode, String phone) {
+    super(name, email, pass, idCode, phone, Constants.getCookCode());
   }
 
   public Cook(String username, String password) {

@@ -14,6 +14,11 @@ import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
 
+import com.LP2.view.pages.client.UsersAccount;
+import com.LP2.view.pages.cook.KitchenAccount;
+import com.LP2.view.pages.manager.ManagerAccount;
+import com.LP2.view.pages.client.Register;
+
 /**
  *
  * @author evelyn.ferreira
@@ -27,8 +32,8 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
 
-        PlaceHolder placeHolderLogin = new PlaceHolder(loginTXT, Color.white, Color.white, "Aqui vai seu email :D", false, "Verdana", 14);
-        PlaceHolder placeHolderPassword = new PlaceHolder(passwordTXT, Color.white, Color.white, "Aqui vai a sua senha :-)", false, "Verdana", 14);
+        PlaceHolder placeHolderLogin = new PlaceHolder(loginTXT, Color.white, Color.white, "Nome de Usuário", false, "Verdana", 14);
+        PlaceHolder placeHolderPassword = new PlaceHolder(passwordTXT, Color.white, Color.white, "Senha", false, "Verdana", 14);
 
         loginTXT.setFont(new Font("Verdana", 0, 14));
         loginTXT.setHorizontalAlignment(SwingConstants.CENTER);
@@ -79,10 +84,9 @@ public class Login extends javax.swing.JFrame {
         loginTXT.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         loginTXT.setBorder(null);
         loginTXT.setCaretColor(new java.awt.Color(255, 255, 255));
-        loginTXT.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        loginTXT.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         loginTXT.setDisabledTextColor(new java.awt.Color(153, 153, 153));
         loginTXT.setMargin(new java.awt.Insets(5, 2, 2, 2));
-        loginTXT.setOpaque(false);
         loginTXT.setSelectionColor(new java.awt.Color(214, 11, 49));
         loginTXT.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -107,11 +111,11 @@ public class Login extends javax.swing.JFrame {
             }
         });
         passwordTXT.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                passwordTXTKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 passwordTXTKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                passwordTXTKeyPressed(evt);
             }
         });
 
@@ -135,13 +139,13 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        iconIMG.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        iconIMG.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
 
         showMenuLBL.setFont(new java.awt.Font("Verdana", 1, 12)); // NOI18N
         showMenuLBL.setForeground(new java.awt.Color(255, 255, 255));
         showMenuLBL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         showMenuLBL.setText("Ver cardápio");
-        showMenuLBL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        showMenuLBL.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         showMenuLBL.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 showMenuLBLMouseClicked(evt);
@@ -167,7 +171,7 @@ public class Login extends javax.swing.JFrame {
         registerLBL.setFont(new java.awt.Font("Verdana", 2, 12)); // NOI18N
         registerLBL.setForeground(new java.awt.Color(255, 255, 255));
         registerLBL.setText("Não tem uma conta? Crie aqui");
-        registerLBL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        registerLBL.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         registerLBL.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 registerLBLMouseClicked(evt);
@@ -224,18 +228,14 @@ public class Login extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    // private boolean verifyLogin(String login,String password, String value){
-    //     return login.equals(value) && password.equals(value);
-    // }
-
+         private boolean verifyLogin(String login,String password, String value){
+        return login.equals(value) && password.equals(value);
+    }
     private void selectScreen(){
         LoginVV.login(loginTXT.getText(), new String(passwordTXT.getPassword()));
-
         if (LoginVV.getuser() == null) {
             System.out.println("ERRO DE AUTENTICAÇÃO!");
         }
-
         if (LoginVV.getuser().getUsertype() == Constants.getManagerCode()){
             ManagerAccount screenManager = new ManagerAccount();
             screenManager.setVisible(true);
@@ -256,12 +256,6 @@ public class Login extends javax.swing.JFrame {
     private void loginBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginBTNMouseClicked
         selectScreen();
     }//GEN-LAST:event_loginBTNMouseClicked
-
-    private void passwordTXTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordTXTKeyTyped
-        passwordTXT.setEchoChar('°');
-    }//GEN-LAST:event_passwordTXTKeyTyped
-
-
 
     private void showMenuLBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMenuLBLMouseClicked
         Menu menuScreen = new Menu();
@@ -313,6 +307,10 @@ public class Login extends javax.swing.JFrame {
     private void passwordTXTFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordTXTFocusLost
         passwordTXT.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white));
     }//GEN-LAST:event_passwordTXTFocusLost
+
+    private void passwordTXTKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordTXTKeyTyped
+        passwordTXT.setEchoChar('°');
+    }//GEN-LAST:event_passwordTXTKeyTyped
 
     /**
      * @param args the command line arguments

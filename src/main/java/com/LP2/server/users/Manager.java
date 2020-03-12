@@ -10,44 +10,36 @@ public class Manager extends User {
 
   // vai carregar, do banco, as informações do admin e chamar o super.
   public Manager(
-    String email,
-    String pass,
-    String name,
-    String idCode,
-    String secret
+    final String email,
+    final String pass,
+    final String name,
+    final String idCode,
+    final String phone
   ) {
-    super(name, email, pass, idCode, Constants.getManagerCode());
+    super(name, email, pass, idCode, phone, Constants.getManagerCode());
   }
 
-  public Manager(User user) {
+  public Manager(final User user) {
     super(user);
     this.secret = "secret";
   }
 
   // comparar os hashes de cada um.
-  public boolean isSecret(String inSecret) {
+  public boolean isSecret(final String inSecret) {
     return this.secret.equals(inSecret);
   }
 
-  public Drink registerDrink(
-    Menu menu,
-    String name,
-    double price,
-    String provider
-  ) {
-    Drink drink = new Drink(name, price, provider);
+  public Drink registerDrink(final Menu menu, final String name, final double price,
+                            final String provider) {
+    final Drink drink = new Drink(name, price, provider);
     Menu.pushNewItem(drink);
 
     return drink;
   }
 
-  public Food registerFood(
-    Menu menu,
-    String name,
-    double price,
-    String description
-  ) {
-    Food food = new Food(name, price, description);
+  public Food registerFood(final Menu menu, final String name, final double price,
+                          final String description) {
+    final Food food = new Food(name, price, description);
     Menu.pushNewItem(food);
 
     return food;

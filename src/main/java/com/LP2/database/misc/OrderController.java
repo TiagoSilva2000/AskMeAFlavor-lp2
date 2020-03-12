@@ -18,21 +18,12 @@ import java.util.ArrayList;
 
 
 public class OrderController {
-  static protected Connect conn;
-
-  public OrderController(final Connect connection) {
-    conn = connection;
-  }
-
-  static public void setConnection(final Connect connection) {
-    conn = connection;
-  }
 
   static public int create(final Order order) {
     try {
       int id = -1;
       ResultSet rs;
-      PreparedStatement stm = conn.getCon().prepareStatement(
+      PreparedStatement stm = Connect.getCon().prepareStatement(
         "INSERT INTO ClientOrder " +
         "(quantity, state, item_id, client_id, visit_id) " +
         "VALUES (?, ?, ?, ?, ?)"
@@ -60,37 +51,11 @@ public class OrderController {
     }
   }
 
-  static private Order buildOrder(final ArrayList<String> fields) {
-    if (fields == null || fields.size() == 0)
-      return null;
-    final int qnt = Integer.parseInt(fields.get(0));
-    final byte status = Byte.parseByte(fields.get(1));
-    final int itemId = Integer.parseInt(fields.get(2));
-    final int clientId = Integer.parseInt(fields.get(3));
-    final int visitId = Integer.parseInt(fields.get(4));
-    final int id = Integer.parseInt(fields.get(5));
-    final Timestamp ordered_at = Timestamp.valueOf(fields.get(6));
-
-    return new Order(id, visitId, clientId, itemId, status, ordered_at, qnt);
-  }
-
-  static private ArrayList<Order> buildOrders (final ArrayList<ArrayList<String>> fields) {
-    ArrayList<Order> orders = new ArrayList<Order>();
-    Order tmp;
-    for (int i = 0; i < fields.size(); i++) {
-      tmp = buildOrder(fields.get(i));
-      if (tmp != null)
-        orders.add(tmp);
-    }
-
-    return orders;
-  }
-
-  static public ArrayList<Order> all(final int status) {
+  static public ArrayList<Order> read(final int status) {
     try {
       ResultSet rs = null;
       ArrayList<ArrayList<String>> fields = new ArrayList<ArrayList<String>>();
-      PreparedStatement stm = conn.getCon().prepareStatement(
+      PreparedStatement stm = Connect.getCon().prepareStatement(
         "SELECT ClientOrder.quantity, ClientOrder.state, ClientOrder.item_id," +
                 "ClientOrder.client_id, ClientOrder.visit_id, ClientOrder.id, " +
                 "ClientOrder.ordered_at " +
@@ -133,7 +98,7 @@ public class OrderController {
 
   static public int update(final Order order) {
     try {
-      PreparedStatement stm = conn.getCon().prepareStatement(
+      PreparedStatement stm = Connect.getCon().prepareStatement(
         "UPDATE ClientOrder " +
         "SET state = (?) " +
         "WHERE id = (?)"
@@ -152,7 +117,7 @@ public class OrderController {
 
   static public int update(final int visitId) {
     try {
-      PreparedStatement stm = conn.getCon().prepareStatement(
+      PreparedStatement stm = Connect.getCon().prepareStatement(
         "UPDATE ClientOrder " +
         "SET state = (?) " +
         "WHERE visit_id = (?)"
@@ -170,39 +135,29 @@ public class OrderController {
     }
   }
 
-  static public ArrayList<ArrayList<String>> readByStatus(byte status) {
-    if (status < -1 || status > 1)
+  static private Order buildOrder(final ArrayList<String> fields) {
+    if (fields == null || fields.size() == 0)
       return null;
-    try {
-      ArrayList<ArrayList<String>> fields = new ArrayList<ArrayList<String>>();
-      ResultSet rs;
-      int i, j, maxFields;
-      PreparedStatement stm = conn.getCon().prepareStatement(
-        "SELECT * FROM ClientOrder WHERE status = (?)"
-      );
-      stm.setInt(1, status);
-      rs = stm.executeQuery();
+    final int qnt = Integer.parseInt(fields.get(0));
+    final byte status = Byte.parseByte(fields.get(1));
+    final int itemId = Integer.parseInt(fields.get(2));
+    final int clientId = Integer.parseInt(fields.get(3));
+    final int visitId = Integer.parseInt(fields.get(4));
+    final int id = Integer.parseInt(fields.get(5));
+    final Timestamp ordered_at = Timestamp.valueOf(fields.get(6));
 
+    return new Order(id, visitId, clientId, itemId, status, ordered_at, qnt);
+  }
 
-      i = 0;
-      j = 1;
-      maxFields = rs.getMetaData().getColumnCount();
-      while (rs.next()) {
-        j = 1;
-        fields.add(new ArrayList<String>());
-        while (j <= maxFields)
-          fields.get(i).add(rs.getString(j++));
-        i += 1;
-      }
-      stm.close();
-      return fields;
-    } catch(final SQLException e) {
-      e.printStackTrace();
-      System.out.println(ErrorCodes.READERROR());
-
-      return null;
+  static private ArrayList<Order> buildOrders (final ArrayList<ArrayList<String>> fields) {
+    ArrayList<Order> orders = new ArrayList<Order>();
+    Order tmp;
+    for (int i = 0; i < fields.size(); i++) {
+      tmp = buildOrder(fields.get(i));
+      if (tmp != null)
+        orders.add(tmp);
     }
 
-
+    return orders;
   }
 }

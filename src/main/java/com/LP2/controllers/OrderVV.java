@@ -20,7 +20,6 @@ public class OrderVV {
       System.out.println("Erro...");
       System.exit(343);
     }
-    System.out.println("OrderID: " + order.getID());
     AllOrders.pushOrder(order);
   }
 
@@ -40,19 +39,18 @@ public class OrderVV {
       }
     }
     Object[][] ob = objs.toArray(new Object[0][]);
-    // System.out.println(ob.length);
 
     return ob;
   }
 
   static public ArrayList<Order> all(final byte state) {
-    ArrayList<Order> orders = OrderController.all(state);
+    ArrayList<Order> orders = OrderController.read(state);
 
     return orders;
   }
 
   static public Object[][] allObj(final byte state) {
-    ArrayList<Order> orders = OrderController.all(state);
+    ArrayList<Order> orders = OrderController.read(state);
 
     // System.out.println(orders.size());
     return allObjMatrix(orders);

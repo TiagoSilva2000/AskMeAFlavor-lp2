@@ -32,7 +32,6 @@ public class CookVV {
     });
 
     Object[][] ob = objs.toArray(new Object[0][]);
-    System.out.println(ob.length);
     return ob;
   }
 

@@ -7,20 +7,20 @@ import java.sql.Statement;
 import com.LP2.app.loader.Dataset;
 
 public class Connect {
-  private String url;
-  private String username;
-  private String password;
-  private Connection conn;
+  private static String url;
+  private static String username;
+  private static String password;
+  private static Connection conn;
 
-  public Connect() {
-    this.url = Dataset.getValue("CONNECTION_URL");
-    this.username = Dataset.getValue("DB_USER");
-    this.password = Dataset.getValue("DB_PASS");
+  public static void connect() {
+    url = Dataset.getValue("CONNECTION_URL");
+    username = Dataset.getValue("DB_USER");
+    password = Dataset.getValue("DB_PASS");
 
     try {
-      Class.forName("org.postgresql.Driver");
-      this.conn =
-        DriverManager.getConnection(this.url, this.username, this.password);
+      Class.forName(Dataset.getValue("DRIVER_NAME"));
+      conn =
+        DriverManager.getConnection(url, username, password);
     } catch (Exception e) {
       e.printStackTrace();
       System.exit(1);
@@ -28,9 +28,9 @@ public class Connect {
     System.out.println("Conexão sucedida");
   }
 
-  public Connection getCon() { return this.conn; }
+  public static Connection getCon() { return conn; }
 
-  public void rebuildTables() {
+  public static void rebuildTables() {
     createClientTable();
     createDrinkTable();
     createImageTable();
@@ -40,21 +40,21 @@ public class Connect {
     createUserTable();
   }
 
-  public void resetTables() {
-    this.addColumnToTable("DELETE FROM Client");
-    this.addColumnToTable("DELETE FROM ClientOrder");
-    this.addColumnToTable("DELETE FROM Food");
-    this.addColumnToTable("DELETE FROM Drink");
-    this.addColumnToTable("DELETE FROM Image");
-    this.addColumnToTable("DELETE FROM Review");
-    this.addColumnToTable("DELETE FROM Visit");
-    this.addColumnToTable("DELETE FROM Item");
-    this.addColumnToTable("DELETE FROM Person");
+  public static void resetTables() {
+    addColumnToTable("DELETE FROM Client");
+    addColumnToTable("DELETE FROM ClientOrder");
+    addColumnToTable("DELETE FROM Food");
+    addColumnToTable("DELETE FROM Drink");
+    addColumnToTable("DELETE FROM Image");
+    addColumnToTable("DELETE FROM Review");
+    addColumnToTable("DELETE FROM Visit");
+    addColumnToTable("DELETE FROM Item");
+    addColumnToTable("DELETE FROM Person");
   }
 
-  public boolean createUserTable() {
+  public static boolean createUserTable() {
     try  {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate("CREATE TABLE Person (" +
                         "id SERIAL NOT NULL PRIMARY KEY," +
                         "name varchar(80) UNIQUE," +
@@ -71,9 +71,9 @@ public class Connect {
     return true;
   }
 
-  public boolean createItemTable() {
+  public static boolean createItemTable() {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate("CREATE TABLE Item (" +
                         "id SERIAL NOT NULL PRIMARY KEY," +
                         "name varchar(100) UNIQUE," +
@@ -90,9 +90,9 @@ public class Connect {
     return true;
   }
 
-  public boolean createFoodTable () {
+  public static boolean createFoodTable () {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate("CREATE TABLE Food (" +
                         "food_id integer NOT NULL," + // colocar como foreign key de item.
                         "description varchar(240)," +
@@ -107,9 +107,9 @@ public class Connect {
     return true;
   }
 
-  public boolean createDrinkTable() {
+  public static boolean createDrinkTable() {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate("CREATE TABLE Drink (" +
                         "drink_id integer NOT NULL," + // colocar como foreign key de item.
                         "provider varchar(80)," +
@@ -124,9 +124,9 @@ public class Connect {
     return true;
   }
 
-  public boolean createClientTable() {
+  public static boolean createClientTable() {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate("CREATE TABLE Client (" +
                         "client_id INTEGER NOT NULL," +
                         "lastBought REAL," +
@@ -141,9 +141,9 @@ public class Connect {
     }
   }
 
-  public boolean createOrderTable() {
+  public static boolean createOrderTable() {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate(
         "CREATE TABLE ClientOrder (" +
           "client_id INTEGER NOT NULL, " +
@@ -163,9 +163,9 @@ public class Connect {
   }
 
 
-  public boolean createImageTable() {
+  public static boolean createImageTable() {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate(
         "CREATE TABLE Image (" +
         "id SERIAL NOT NULL PRIMARY KEY, " +
@@ -184,9 +184,9 @@ public class Connect {
     }
   }
 
-  public boolean createVisitTable() {
+  public static boolean createVisitTable() {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate(
         "CREATE TABLE Visit (" +
         "id SERIAL NOT NULL PRIMARY KEY, " +
@@ -205,9 +205,9 @@ public class Connect {
     }
   }
 
-  public boolean createReviewTable() {
+  public static boolean createReviewTable() {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate(
         "CREATE TABLE Review (" +
         "id SERIAL NOT NULL PRIMARY KEY, " +
@@ -228,9 +228,9 @@ public class Connect {
     }
   }
 
-  public boolean createFavouritesTable() {
+  public static boolean createFavouritesTable() {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate(
         "CREATE TABLE Favourite (" +
         "client_id INTEGER NOT NULL, " +
@@ -249,9 +249,9 @@ public class Connect {
     }
   }
 
-  public boolean addColumnToTable(String query) {
+  public static boolean addColumnToTable(String query) {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate(
         query
       );
@@ -266,9 +266,9 @@ public class Connect {
 
   }
 
-  public boolean deleteTable(String tableName) {
+  public static boolean deleteTable(String tableName) {
     try {
-      Statement stm = this.conn.createStatement();
+      Statement stm = conn.createStatement();
       stm.executeUpdate("DROP TABLE " + tableName);
 
       stm.close();

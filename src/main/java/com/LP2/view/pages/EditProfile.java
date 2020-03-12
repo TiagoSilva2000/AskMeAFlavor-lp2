@@ -15,6 +15,12 @@ import com.LP2.controllers.UserVV;
 
 import static com.LP2.view.pages.Login.profileType;
 
+import com.LP2.view.pages.client.UsersAccount;
+import com.LP2.view.pages.cook.KitchenAccount;
+import com.LP2.view.pages.manager.ManagerAccount;
+import com.LP2.view.pages.warnings.Success;
+import com.LP2.view.pages.warnings.Error;
+
 /**
  *
  * @author evelyn.ferreira
@@ -84,10 +90,8 @@ public class EditProfile extends javax.swing.JFrame {
         setTitle("Editar cadastro La Cocina Bistrô");
         setResizable(false);
 
-        // userPhoneTXT.setVisible(false);
-
         editBackBTN.setBackground(new java.awt.Color(38, 70, 27));
-        editBackBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
+        editBackBTN.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")  + "/assets/back16.png")); // NOI18N
         editBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 editBackBTNMouseClicked(evt);
@@ -189,10 +193,10 @@ public class EditProfile extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")  + "/assets/logo.png")); // NOI18N
 
         logoutBTN.setBackground(new java.awt.Color(38, 70, 27));
-        logoutBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logout24.png"))); // NOI18N
+        logoutBTN.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")  + "/assets/logout24.png")); // NOI18N
         logoutBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoutBTNMouseClicked(evt);
@@ -255,7 +259,7 @@ public class EditProfile extends javax.swing.JFrame {
     private void saveBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBTNMouseClicked
         int success = UserVV.update(LoginVV.getuser().getID(), userNameTXT.getText(),
                     userEmailTXT.getText(),
-                    userCpfTXT.getText()
+                    userCpfTXT.getText(), userPhoneTXT.getText()
                     );
         if (success == 1) {
             Success successDialog = new Success(this , true);
@@ -305,12 +309,10 @@ public class EditProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_userPhoneTXTFocusLost
 
     private void fillUserFields() {
-
-//            pegar obj do banco, buscar pelo email do Login
         userNameTXT.setText(LoginVV.getuser().getName());
         userEmailTXT.setText(LoginVV.getuser().getEmail());
         userCpfTXT.setText(LoginVV.getuser().getIDCode());
-        userPhoneTXT.setText("(21)22222-2222");
+        userPhoneTXT.setText(LoginVV.getuser().getPhone());
     }
     /**
      * @param args the command line arguments

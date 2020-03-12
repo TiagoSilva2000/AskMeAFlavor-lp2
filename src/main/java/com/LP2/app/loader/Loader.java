@@ -74,13 +74,5 @@ public class Loader {
     return true;
   }
 
-  static public boolean loadControllers(Connect db) {
-    UserController.setConnection(db);
-    ItemController.setConnection(db);
-    ImageController.setConnection(db);
-    OrderController.setConnection(db);
-    VisitController.setConnection(db);
-    return true;
-  }
 
 }

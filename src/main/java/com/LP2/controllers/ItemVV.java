@@ -13,8 +13,7 @@ public class ItemVV {
   static public void create() {}
 
   static public Item read() {
-    System.out.println(itemID);
-    return ItemController.getItem(itemID);
+    return ItemController.read(itemID);
   }
 
   static public void all() {}

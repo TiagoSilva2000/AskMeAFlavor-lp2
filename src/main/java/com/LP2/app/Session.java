@@ -47,8 +47,9 @@ final public class Session {
       loggedUser = new Cook(loggedUser);
   }
 
-  static public void sigin(final String name, final String email, final String password, final String idCode) {
-    loggedUser = new Client(name, email, password, idCode);
+  static public void sigin(final String name, final String email, final String password,
+                        final String idCode, final String phone) {
+    loggedUser = new Client(name, email, password, idCode, phone);
   }
 
   static public void logout() {
@@ -129,21 +130,21 @@ final public class Session {
 
   static public void deleteItem(final int id) {
     Menu.rmItem(id);
-    ItemController.remove(id);
+    ItemController.delete(id);
   }
 
   static public void storeCook(final String name, final String email,
-                        final String password, final String idCode) {
-    new Cook(email, password, name, idCode);
+                        final String password, final String idCode, final String phone) {
+    new Cook(email, password, name, idCode, phone);
   }
 
   static public void updateCook(final int id, final String name, final String email,
-                        final String password, final String idCode) {
-    new Cook(id).update(name, password, email, idCode);
+                        final String password, final String idCode, final String phone) {
+    new Cook(id).update(name, password, email, idCode, phone);
   }
 
   static public void deleteCook(final int id) {
-    UserController.remove(id);
+    UserController.delete(id);
   }
 
   static private void startVisit() {

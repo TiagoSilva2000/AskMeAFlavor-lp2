@@ -46,7 +46,7 @@ public class Image {
   }
 
   public Image(final int id) {
-    Image holder = ImageController.getImage(id);
+    Image holder = ImageController.read(id);
     this.id = holder.id;
     this.filePath = holder.filePath;
     this.fileName = holder.fileName;

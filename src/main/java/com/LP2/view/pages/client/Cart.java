@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.LP2.view.pages;
+package com.LP2.view.pages.client;
 
 import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
-import com.LP2.app.Session;
 import com.LP2.controllers.LoginVV;
 
 /**
@@ -26,6 +25,10 @@ public class Cart extends javax.swing.JFrame {
         this.getContentPane().setBackground(Color.decode("14027569"));
         paymentPANE.setVisible(false);
         debitRBTN.setSelected(true);
+        loadTable();
+        loadProps();
+        creditRBN.setBackground(Color.decode("14027569"));
+        debitRBTN.setBackground(Color.decode("14027569"));
     }
 
     /**
@@ -57,7 +60,7 @@ public class Cart extends javax.swing.JFrame {
         setResizable(false);
 
         cartBackBTN.setBackground(new java.awt.Color(38, 70, 27));
-        cartBackBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/back16.png"))); // NOI18N
+        cartBackBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/back16.png"))); // NOI18N
         cartBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cartBackBTNMouseClicked(evt);
@@ -65,14 +68,15 @@ public class Cart extends javax.swing.JFrame {
         });
 
         cartTBL.setModel(new javax.swing.table.DefaultTableModel(
-            LoginVV.getuser().getOrdersMatrix()
-            ,
+            new Object [][] {
+
+            },
             new String [] {
-                "CÓDIGO DO PEDIDO", "ITEM", "QUANTIDADE", "PREÇO", "STATUS"
+                "CÓDIGO", "PEDIDO", "QUANTIDADE", "PREÇO", "STATUS"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, true, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -82,25 +86,17 @@ public class Cart extends javax.swing.JFrame {
         jScrollPane1.setViewportView(cartTBL);
         if (cartTBL.getColumnModel().getColumnCount() > 0) {
             cartTBL.getColumnModel().getColumn(0).setPreferredWidth(96);
-            cartTBL.getColumnModel().getColumn(1).setPreferredWidth(2);
             cartTBL.getColumnModel().getColumn(2).setPreferredWidth(2);
+            cartTBL.getColumnModel().getColumn(3).setPreferredWidth(2);
         }
 
-
-        String out = String.format("%.2f", LoginVV.getuser().getCashBack());
         discountTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         discountTXT.setForeground(new java.awt.Color(255, 255, 255));
-        discountTXT.setText("Desconto: R$ " + out);
+        discountTXT.setText("Desconto:");
 
-
-        double total = (LoginVV.getuser().getCurrentExpenses()
-        - LoginVV.getuser().getCashBack());
-        total = total < 0 ? 0 : total;
-
-        out = String.format("%.2f", total);
         totalValueLBL.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         totalValueLBL.setForeground(new java.awt.Color(255, 255, 255));
-        totalValueLBL.setText("R$ " + out);
+        totalValueLBL.setText("jLabel1");
 
         jButton1.setBackground(new java.awt.Color(38, 70, 27));
         jButton1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
@@ -112,14 +108,13 @@ public class Cart extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
 
         paymentBTNG.add(debitRBTN);
         debitRBTN.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         debitRBTN.setForeground(new java.awt.Color(255, 255, 255));
         debitRBTN.setText("Débito");
-        debitRBTN.setOpaque(false);
-        creditRBN.setOpaque(false);
+
         paymentBTNG.add(creditRBN);
         creditRBN.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         creditRBN.setForeground(new java.awt.Color(255, 255, 255));
@@ -127,7 +122,7 @@ public class Cart extends javax.swing.JFrame {
 
         cancelBTN.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         cancelBTN.setForeground(new java.awt.Color(255, 255, 255));
-        cancelBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/cancel24.png"))); // NOI18N
+        cancelBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/cancel24.png"))); // NOI18N
         cancelBTN.setToolTipText("Cancelar");
         cancelBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -143,7 +138,7 @@ public class Cart extends javax.swing.JFrame {
 
         confirmBTN.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         confirmBTN.setForeground(new java.awt.Color(255, 255, 255));
-        confirmBTN.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/check24.png"))); // NOI18N
+        confirmBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/check24.png"))); // NOI18N
         confirmBTN.setToolTipText("Confirmar");
         confirmBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -256,6 +251,17 @@ public class Cart extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadProps() {
+        String out = String.format("%.2f", LoginVV.getuser().getCashBack());
+        double total = (LoginVV.getuser().getCurrentExpenses()
+        - LoginVV.getuser().getCashBack());
+
+        discountTXT.setText("Desconto: R$ " + out);
+        total = total < 0 ? 0 : total;
+        out = String.format("%.2f", total);
+        totalValueLBL.setText("R$ " + out);
+    }
+
     private void cartBackBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cartBackBTNMouseClicked
         this.dispose();
         UsersAccount usersScreen = new UsersAccount();
@@ -301,21 +307,16 @@ public class Cart extends javax.swing.JFrame {
      */
 
     private void loadTable(){
-
         DefaultTableModel model = (DefaultTableModel) cartTBL.getModel();
         model.setNumRows(0);
+        Object[][] orders = LoginVV.getuser().getOrdersMatrix();
 
         cartTBL.getColumnModel().getColumn(0).setPreferredWidth(5);
         cartTBL.getColumnModel().getColumn(1).setPreferredWidth(5);
         cartTBL.getColumnModel().getColumn(2).setPreferredWidth(80);
 
-//        pegar do bd e preencher as linhas
-        model.addRow(new Object[]{
-
-
-        });
-
-
+        for (Object[] order : orders)
+            model.addRow(order);
     }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

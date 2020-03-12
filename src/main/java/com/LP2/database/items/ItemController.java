@@ -7,29 +7,19 @@ import java.sql.Types;
 import java.util.ArrayList;
 
 import com.LP2.database.Connect;
+import com.LP2.server.items.Drink;
 import com.LP2.server.items.Food;
 import com.LP2.server.items.Item;
 import com.LP2.server.resources.Image;
 import com.LP2.server.utils.Constants;
 
 public class ItemController {
-  static protected Connect connection;
-
-  public ItemController(final Connect conn) {
-    connection = conn;
-  }
-
-  static public void setConnection(final Connect conn) {
-    connection = conn;
-  }
 
   static public int create(final Item item) {
-
-
     try {
       ResultSet result;
       int id = -1;
-      final PreparedStatement stm = connection.getCon()
+      final PreparedStatement stm = Connect.getCon()
           .prepareStatement("INSERT INTO Item" +
                             "(name, price, img_id, present) " +
                             "VALUES (?, ?, ?, ?)",
@@ -54,8 +44,49 @@ public class ItemController {
     }
   }
 
+  static public Item read(final int id) {
+    try {
+      final ArrayList<String> fields = new ArrayList<String>();
+      ResultSet result = null;
+      int i, maxFields = 0;
+      final PreparedStatement stm = Connect.getCon()
+        .prepareStatement("SELECT " +
+                            "Item.id, Item.name, Item.price, " +
+                            "Item.present, Item.img_id, Food.description " +
+                          "FROM Item " +
+                          "INNER JOIN Food ON (Food.food_id = Item.id) " +
+                          "WHERE id = (?) " +
+                          "UNION " +
+                          "SELECT " +
+                            "Item.id, Item.name, Item.price, " +
+                            "Item.present, Item.img_id, Drink.provider " +
+                          "FROM Item " +
+                          "INNER JOIN Drink ON (Drink.drink_id = Item.id) " +
+                          "WHERE id = (?)"
+                          );
+      stm.setInt(1, id);
+      stm.setInt(2, id);
+      result = stm.executeQuery();
 
-  static public ArrayList<ArrayList<String>> all (final byte presenceCode) {
+      i = 1;
+      while (result.next()) {
+        maxFields = result.getMetaData().getColumnCount();
+        i = 1;
+        while (i <= maxFields) {
+          fields.add(result.getString(i));
+          i++;
+        }
+      }
+
+      stm.close();
+      return buildItem(fields);
+    } catch (final Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  static public ArrayList<Item> all (final byte presenceCode) {
     try {
       final ArrayList<ArrayList<String>> fields = new ArrayList<ArrayList<String>>();
       ResultSet result = null;
@@ -78,7 +109,7 @@ public class ItemController {
       else if (presenceCode == Constants.getNotPresent())
         queryString += "WHERE Item.present = false";
 
-      final PreparedStatement stm = connection.getCon()
+      final PreparedStatement stm = Connect.getCon()
                                     .prepareStatement(queryString);
       result = stm.executeQuery();
       maxFields = result.getMetaData().getColumnCount();
@@ -105,73 +136,8 @@ public class ItemController {
 
       result.close();
       stm.close();
-      return fields;
-    } catch (final Exception e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  static private Item buildItem (final ArrayList<String> fields) {
-    if (fields.size() == 0)
-      return null;
-
-    final int id = Integer.parseInt(fields.get(0));
-    final String name = fields.get(1);
-    final double price = Double.parseDouble(fields.get(2));
-    final boolean present = Boolean.parseBoolean(fields.get(3));
-    Image img = null;
-
-    if (fields.get(4) != null)
-      img = new Image(Integer.parseInt(fields.get(4)));
-
-    if (fields.get(5) == null) {
-      return new Food(id, name, price, fields.get(6), null);
-    } else {
-      return new Food(id, name, price, fields.get(5), null);
-    }
-
-    // return new Item(id, name, price, present, img);
-  }
-
-  static public Item getItem(final int id) {
-    System.out.println(id);
-    try {
-      final ArrayList<String> fields = new ArrayList<String>();
-      ResultSet result = null;
-      int i, maxFields = 0;
-      final PreparedStatement stm = connection.getCon()
-        .prepareStatement("SELECT " +
-                            "Item.id, Item.name, Item.price, " +
-                            "Item.present, Item.img_id, Food.description " +
-                          "FROM Item " +
-                          "INNER JOIN Food ON (Food.food_id = Item.id) " +
-                          "WHERE id = (?) " +
-                          "UNION " +
-                          "SELECT " +
-                            "Item.id, Item.name, Item.price, " +
-                            "Item.present, Item.img_id, Drink.provider " +
-                          "FROM Item " +
-                          "INNER JOIN Drink ON (Drink.drink_id = Item.id) " +
-                          "WHERE id = (?)"
-                          );
-      stm.setInt(1, id);
-      stm.setInt(2, id);
-      result = stm.executeQuery();
-
-      i = 1;
-      while (result.next()) {
-        maxFields = result.getMetaData().getColumnCount();
-        i = 1;
-        while (i <= maxFields) {
-          fields.add(result.getString(i));
-          // System.out.println(fields.get(i-1));
-          i++;
-        }
-      }
-
-      stm.close();
-      return buildItem(fields);
+      // return fields;
+      return buildItems(fields);
     } catch (final Exception e) {
       e.printStackTrace();
       return null;
@@ -181,7 +147,7 @@ public class ItemController {
   static public boolean update(final Item item) {
     try {
       boolean isPresent = item.isPresent();
-      final PreparedStatement stm = connection.getCon()
+      final PreparedStatement stm = Connect.getCon()
           .prepareStatement("UPDATE Item " +
                               "SET name = (?), price = (?), " +
                               "present = (?), img_id = (?) " +
@@ -204,9 +170,10 @@ public class ItemController {
     }
   }
 
-  static public boolean remove(final int id) {
+  static public boolean delete(final int id) {
     try {
-      final PreparedStatement stm = connection.getCon().prepareStatement("DELETE FROM Item " + "WHERE id = (?)");
+      final PreparedStatement stm = Connect.getCon()
+            .prepareStatement("DELETE FROM Item " + "WHERE id = (?)");
       stm.setInt(1, id);
       stm.executeUpdate();
 
@@ -218,20 +185,68 @@ public class ItemController {
     }
   }
 
-  static public boolean remove(final String name) {
-    try {
-      final PreparedStatement stm = connection.getCon().prepareStatement(
-        "DELETE FROM Item " +
-        "WHERE name = (?)");
-      stm.setString(1, name);
-      stm.executeUpdate();
+  static private Item buildItem (final ArrayList<String> fields) {
+    if (fields.size() == 0)
+      return null;
 
-      stm.close();
-      return true;
-    } catch (final Exception e) {
-      e.printStackTrace();
-      return false;
+    final int id = Integer.parseInt(fields.get(0));
+    final String name = fields.get(1);
+    final double price = Double.parseDouble(fields.get(2));
+    final boolean present = Boolean.parseBoolean(fields.get(3));
+    Image img = null;
+
+    if (fields.get(4) != null)
+      img = new Image(Integer.parseInt(fields.get(4)));
+
+    if (fields.get(5) == null)
+      return new Food(id, name, price, fields.get(6), null);
+
+    return new Food(id, name, price, fields.get(5), null);
+  }
+
+  static private Item buildItem (final ArrayList<String> fields, boolean setter) {
+    if (fields.size() == 0)
+      return null;
+    int lastPos, imgId, id;
+    Image img = null;
+    String name, extra, filename, filepath, filetype;
+    double price;
+    byte[] content = null;
+
+    lastPos = fields.size() - 1;
+    filepath = filename = filetype = null; imgId = -1; img = null; content = null;
+    id = Integer.parseInt(fields.get(0));
+    name = fields.get(1);
+    price = Double.parseDouble(fields.get(2));
+    extra = fields.get(4);
+
+    if (!fields.get(3).equals("null")) {
+      imgId = Integer.parseInt(fields.get(3));
+      filepath = fields.get(5);
+      filename = fields.get(6);
+      filetype = fields.get(7);
+      content = fields.get(8).getBytes();
+      img = new Image(imgId, filepath, filename, filetype, content);
     }
+
+    if (fields.get(lastPos).equals("food"))
+      return new Food(id, name, price, extra, img);
+
+    return new Drink(id, name, price, extra, img);
+  }
+
+  static private ArrayList<Item> buildItems(final ArrayList<ArrayList<String>> fields) {
+    ArrayList<Item> items = new ArrayList<Item>();
+    Item tmp = null;
+
+    for (int i = 0; i < fields.size(); i++) {
+      tmp = buildItem(fields.get(i), true);
+      if (tmp != null)
+        items.add(tmp);
+
+    }
+
+    return items;
   }
 
 }

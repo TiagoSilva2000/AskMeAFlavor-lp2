@@ -9,15 +9,11 @@ import com.LP2.database.Connect;
 import com.LP2.server.users.Client;
 import com.LP2.server.users.User;
 
-public class ClientController extends UserController{
-
-  public ClientController(Connect conn) {
-    super(conn);
-  }
+public class ClientController {
 
   static public int create(final User user) {
     try {
-      PreparedStatement stm = connection.getCon().prepareStatement(
+      PreparedStatement stm = Connect.getCon().prepareStatement(
           "INSERT INTO Client" + "(client_id, lastBought, lastVisit)" +
           "VALUES(?, 0, NULL)"
       );
@@ -33,13 +29,13 @@ public class ClientController extends UserController{
   }
 
 
-  static public ArrayList<String> get (final int id) {
+  static public ArrayList<String> read (final int id) {
     try {
       ResultSet result;
       ArrayList<String> fields = new ArrayList<String>();
       int i = 1, maxFields;
 
-      PreparedStatement stm = connection.getCon().prepareStatement(
+      PreparedStatement stm = Connect.getCon().prepareStatement(
         "SELECT * FROM Client " +
         "WHERE client_id = (?)");
       stm.setInt(1, id);
@@ -64,7 +60,7 @@ public class ClientController extends UserController{
 
   static public void update(final Client client) {
     try {
-      PreparedStatement stm = connection.getCon().prepareStatement(
+      PreparedStatement stm = Connect.getCon().prepareStatement(
         "UPDATE Client " +
         "SET lastBought = (?), lastVisit = (?) " +
         "WHERE client_id = (?)"
@@ -81,7 +77,7 @@ public class ClientController extends UserController{
   }
     public static boolean remove(final int id) {
     try {
-      final PreparedStatement stm = connection.getCon().prepareStatement(
+      final PreparedStatement stm = Connect.getCon().prepareStatement(
         "DELETE FROM Client " +
         "WHERE client_id = (?)");
       stm.setInt(1, id);
@@ -97,7 +93,7 @@ public class ClientController extends UserController{
   }
 
 }
-// PreparedStatement stm = connection.getCon().prepareStatement(
+// PreparedStatement stm = Connect.getCon().prepareStatement(
 //   "SELECT Person, Client " +
 //   "FROM Person " +
 //   "INNER JOIN Client " +

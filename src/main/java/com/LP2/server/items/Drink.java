@@ -37,7 +37,7 @@ public class Drink extends Item {
 
   public Drink(final int id) {
     super(id);
-    Drink drink = DrinkController.getDrink(this);
+    Drink drink = DrinkController.read(this);
     this.provider = drink.provider;
   }
 

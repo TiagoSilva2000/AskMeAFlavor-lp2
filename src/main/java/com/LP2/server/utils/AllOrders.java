@@ -11,7 +11,7 @@ public class AllOrders {
   static private byte nextCode;
 
   static public void load(final int status) {
-    orders = OrderController.all(status);
+    orders = OrderController.read(status);
     availableCodes = new ArrayList<Byte>();
   }
 
