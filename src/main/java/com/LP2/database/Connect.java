@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import com.LP2.app.loader.Dataset;
+import com.LP2.models.loader.Dataset;
 
 public class Connect {
   private static String url;

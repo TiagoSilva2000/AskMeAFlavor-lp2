@@ -5,7 +5,8 @@
  */
 package com.LP2.view.pages.manager;
 
-import com.LP2.app.Session;
+import com.LP2.controllers.items.DrinkController;
+import com.LP2.controllers.items.FoodController;
 import com.LP2.view.pages.warnings.Error;
 import com.LP2.view.pages.warnings.Success;
 
@@ -314,12 +315,9 @@ public class RegisterProducts extends javax.swing.JFrame {
         } else {
 
             if (productDrinkRBTN.isSelected()) {
-                success = Session.storeDrink(name,
-                                   Double.parseDouble(price),
-                                    provider,
-                                    true);
+                success = DrinkController.create(name, Double.parseDouble(price), provider, true);
             } else {
-                success = Session.storeFood(name, Double.parseDouble(price), description, true);
+                success = FoodController.create(name, Double.parseDouble(price), description, true);
             }
         }
         if (success == 1) {

@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 package com.LP2.view.pages;
-import com.LP2.controllers.LoginVV;
-import com.LP2.server.utils.Constants;
+import com.LP2.controllers.misc.LoginController;
+import com.LP2.models.utils.Constants;
 import com.placeholder.PlaceHolder;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
@@ -232,21 +232,21 @@ public class Login extends javax.swing.JFrame {
         return login.equals(value) && password.equals(value);
     }
     private void selectScreen(){
-        LoginVV.login(loginTXT.getText(), new String(passwordTXT.getPassword()));
-        if (LoginVV.getuser() == null) {
+        LoginController.login(loginTXT.getText(), new String(passwordTXT.getPassword()));
+        if (LoginController.getUser() == null) {
             System.out.println("ERRO DE AUTENTICAÇÃO!");
         }
-        if (LoginVV.getuser().getUsertype() == Constants.getManagerCode()){
+        if (LoginController.getUser().getUsertype() == Constants.getManagerCode()){
             ManagerAccount screenManager = new ManagerAccount();
             screenManager.setVisible(true);
             this.dispose();
             profileType = 1;
-        }else if(LoginVV.getuser().getUsertype() == Constants.getClientCode()){
+        }else if(LoginController.getUser().getUsertype() == Constants.getClientCode()){
             UsersAccount screenUser = new UsersAccount();
             screenUser.setVisible(true);
             this.dispose();
             profileType = 3;
-        }else if(LoginVV.getuser().getUsertype() == Constants.getCookCode()){
+        }else if(LoginController.getUser().getUsertype() == Constants.getCookCode()){
             KitchenAccount screenKitchen = new KitchenAccount();
             screenKitchen.setVisible(true);
             this.dispose();

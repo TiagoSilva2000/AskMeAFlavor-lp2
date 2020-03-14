@@ -1,10 +1,12 @@
 package com.LP2.app;
 
-import com.LP2.app.loader.Loader;
+import com.LP2.models.loader.Loader;
+import com.LP2.models.users.Client;
+import com.LP2.controllers.users.ClientController;
 import com.LP2.database.Connect;
-import com.LP2.server.utils.AllOrders;
-import com.LP2.server.utils.Constants;
-import com.LP2.server.utils.Menu;
+import com.LP2.models.utils.AllOrders;
+import com.LP2.models.utils.Constants;
+import com.LP2.models.utils.Menu;
 import com.LP2.view.pages.Login;
 
 // import javax.imageio.ImageIO;
@@ -26,13 +28,9 @@ public class App {
     Connect.connect();
     Menu.load(Constants.getPresent());
     AllOrders.load(Constants.getUnOrder());
-    Session.open();
-
-    // db.addColumnToTable("ALTER TABLE Person ADD COLUMN phone varchar(20) NOT NULL DEFAULT '(21)22222-2222'");
 
     Login.main(args);
 
-    Session.close();
     Loader.unloadStreams();
   }
 }

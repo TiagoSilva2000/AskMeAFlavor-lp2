@@ -9,7 +9,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
-import com.LP2.controllers.LoginVV;
+import com.LP2.controllers.misc.LoginController;
 
 /**
  *
@@ -252,9 +252,9 @@ public class Cart extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadProps() {
-        String out = String.format("%.2f", LoginVV.getuser().getCashBack());
-        double total = (LoginVV.getuser().getCurrentExpenses()
-        - LoginVV.getuser().getCashBack());
+        String out = String.format("%.2f", LoginController.getUser().getCashBack());
+        double total = (LoginController.getUser().getCurrentExpenses()
+        - LoginController.getUser().getCashBack());
 
         discountTXT.setText("Desconto: R$ " + out);
         total = total < 0 ? 0 : total;
@@ -297,7 +297,7 @@ public class Cart extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelBTNMouseClicked
 
     private void confirmBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBTNMouseClicked
-        double value = LoginVV.processPayment();
+        double value = LoginController.processPayment();
         Payment paymentDialog = new Payment(this , true, value);
         paymentDialog.setVisible(true);
     }//GEN-LAST:event_confirmBTNMouseClicked
@@ -309,7 +309,7 @@ public class Cart extends javax.swing.JFrame {
     private void loadTable(){
         DefaultTableModel model = (DefaultTableModel) cartTBL.getModel();
         model.setNumRows(0);
-        Object[][] orders = LoginVV.getuser().getOrdersMatrix();
+        Object[][] orders = LoginController.getUser().getOrdersMatrix();
 
         cartTBL.getColumnModel().getColumn(0).setPreferredWidth(5);
         cartTBL.getColumnModel().getColumn(1).setPreferredWidth(5);

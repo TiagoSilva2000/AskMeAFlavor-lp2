@@ -9,7 +9,7 @@ import java.awt.Color;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
-import com.LP2.controllers.ItemVV;
+import com.LP2.controllers.items.ItemController;
 /**
  *
  * @author evelyn.ferreira
@@ -203,8 +203,7 @@ public class Menu extends javax.swing.JFrame {
             this.dispose();
             int id = Integer.parseInt(menuTBL.getValueAt(rowIdx, 0).toString());
             System.out.println("ID: " + id);
-            ItemVV.setItemID(id);
-            ItemDetailed itemScreen = new ItemDetailed();
+            ItemDetailed itemScreen = new ItemDetailed(id);
             itemScreen.setVisible(true);
         }
     }//GEN-LAST:event_menuTBLMouseClicked
@@ -218,7 +217,7 @@ public class Menu extends javax.swing.JFrame {
      private void loadTable(){
 
         DefaultTableModel model = (DefaultTableModel) menuTBL.getModel();
-        Object[][] items = com.LP2.server.utils.Menu.getMatrixMenu();
+        Object[][] items = com.LP2.models.utils.Menu.getMatrixMenu();
         model.setNumRows(0);
 
         menuTBL.getColumnModel().getColumn(0).setPreferredWidth(2);

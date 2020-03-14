@@ -20,8 +20,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.plaf.basic.BasicMenuBarUI;
 import javax.swing.table.DefaultTableModel;
 
-import com.LP2.app.Session;
 import com.LP2.view.pages.Login;
+import com.LP2.controllers.items.DrinkController;
+import com.LP2.controllers.items.FoodController;
 import com.LP2.view.pages.EditProfile;
 
 import static com.LP2.view.pages.CustomizeMenuBar.CustomizeMenuBar;
@@ -55,9 +56,9 @@ public class ManagerAccount extends javax.swing.JFrame {
                     String extra = productsTBL.getValueAt(rowIdx, 4).toString();
 
                     if (type.equals("comida"))
-                        Session.updateFood(id, name, price, true, extra, null);
+                        FoodController.update(id, name, price, true, extra, null);
                     else
-                        Session.updateDrink(id, name, price, true, extra, null);
+                        DrinkController.update(id, name, price, true, extra, null);
                 }
             }
         });
@@ -270,7 +271,7 @@ public class ManagerAccount extends javax.swing.JFrame {
 
         DefaultTableModel model = (DefaultTableModel) productsTBL.getModel();
         model.setNumRows(0);
-        Object[][] items = com.LP2.server.utils.Menu.getMatrixMenuToManager();
+        Object[][] items = com.LP2.models.utils.Menu.getMatrixMenuToManager();
 
         productsTBL.getColumnModel().getColumn(0).setPreferredWidth(5);
         productsTBL.getColumnModel().getColumn(1).setPreferredWidth(50);

@@ -11,8 +11,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
-import com.LP2.app.Session;
-import com.LP2.controllers.CookVV;
+import com.LP2.controllers.users.UserController;
+import com.LP2.models.utils.Constants;
 
 /**
  *
@@ -44,14 +44,14 @@ public class ManageEmployees extends javax.swing.JFrame {
                         if (idObject == null) {
                             String password = nameObj.toString() + "12345";
                             System.out.println("Stored.");
-                            Session.storeCook(nameObj.toString(), emailObj.toString(),
-                            password, codeObj.toString(), null);
+                            UserController.create(nameObj.toString(), emailObj.toString(),
+                            password, idObject.toString(), null, Constants.getCookCode());
                         } else {
                             System.out.println("Updated.");
                             String password = nameObj.toString() + "12345";
-                            Session.updateCook(Integer.parseInt(idObject.toString()),
-                                nameObj.toString(), emailObj.toString(),
-                                password, codeObj.toString(), null);
+                            UserController.update(Integer.parseInt(idObject.toString()),
+                            nameObj.toString(), emailObj.toString(), codeObj.toString(),
+                            null);
                         }
                     }
                 }
@@ -72,7 +72,8 @@ public class ManageEmployees extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         employeesTBL = new javax.swing.JTable();
         employeesBackBTN = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -99,14 +100,24 @@ public class ManageEmployees extends javax.swing.JFrame {
         }
 
         employeesBackBTN.setBackground(new java.awt.Color(38, 70, 27));
-        employeesBackBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir")  + "/assets/back16.png"))); // NOI18N
+        employeesBackBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/back16.png"))); // NOI18N
         employeesBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 employeesBackBTNMouseClicked(evt);
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir")  + "/assets/logo.png"))); // NOI18N
+        logo.setBackground(new java.awt.Color(255, 0, 0));
+        logo.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
+
+        jButton1.setBackground(new java.awt.Color(30, 70, 27));
+        jButton1.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
+        jButton1.setText("+");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,27 +127,33 @@ public class ManageEmployees extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(employeesBackBTN)
-                        .addGap(0, 0, 0)
-                        .addComponent(jLabel1))
+                        .addComponent(employeesBackBTN))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(110, 110, 110))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(employeesBackBTN))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel1)))
+                .addGap(12, 12, 12)
+                .addComponent(employeesBackBTN)
+                .addGap(9, 9, 9)
+                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -149,10 +166,15 @@ public class ManageEmployees extends javax.swing.JFrame {
        managerAccountScreen.setVisible(true);
     }//GEN-LAST:event_employeesBackBTNMouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) employeesTBL.getModel();
+        model.addRow(new Object[4]);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void loadTable() {
         DefaultTableModel model = (DefaultTableModel) employeesTBL.getModel();
         model.setNumRows(0);
-        Object[][] items = CookVV.allObj();
+        Object[][] cooks = UserController.allObj(Constants.getCookCode());
 
         employeesTBL.getColumnModel().getColumn(0).setPreferredWidth(5);
         employeesTBL.getColumnModel().getColumn(1).setPreferredWidth(50);
@@ -160,8 +182,8 @@ public class ManageEmployees extends javax.swing.JFrame {
         employeesTBL.getColumnModel().getColumn(3).setPreferredWidth(30);
 
 //        pegar do bd e preencher as linhas
-        for (int i = 0; i < items.length; i++) {
-            model.addRow(items[i]);
+        for (int i = 0; i < cooks.length; i++) {
+            model.addRow(cooks[i]);
         }
 
 
@@ -205,7 +227,8 @@ public class ManageEmployees extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton employeesBackBTN;
     private javax.swing.JTable employeesTBL;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel logo;
     // End of variables declaration//GEN-END:variables
 }

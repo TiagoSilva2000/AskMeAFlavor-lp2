@@ -13,11 +13,12 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-import com.LP2.controllers.ItemVV;
-import com.LP2.controllers.LoginVV;
-import com.LP2.controllers.OrderVV;
-import com.LP2.server.items.Item;
-import com.LP2.server.utils.Constants;
+import com.LP2.controllers.items.ItemController;
+import com.LP2.controllers.misc.LoginController;
+import com.LP2.controllers.misc.MenuController;
+import com.LP2.controllers.misc.OrderController;
+import com.LP2.models.items.Item;
+import com.LP2.models.utils.Constants;
 
 import static com.LP2.view.pages.Login.profileType;
 import com.LP2.view.pages.client.UsersAccount;
@@ -32,12 +33,14 @@ public class ItemDetailed extends javax.swing.JFrame {
      * Creates new form ItemDeatailed
      */
     private int qnt;
-    public ItemDetailed() {
+    static private int itemID;
+    public ItemDetailed(final int itemid) {
         initComponents();
         this.getContentPane().setBackground(Color.decode("14027569"));
         quantityTXT.setDocument(new JustNumbers());
         quantityTXT.setText("1");
         this.qnt = 1;
+        itemID = itemid;
         quantityTXT.setFont(new Font("Verdana",0, 14));
         quantityTXT.setHorizontalAlignment(SwingConstants.CENTER);
         quantityTXT.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white));
@@ -225,9 +228,9 @@ public class ItemDetailed extends javax.swing.JFrame {
              this.dispose();
              Login loginScreen = new Login();
              loginScreen.setVisible(true);
-         } else if (LoginVV.getuser().getUsertype() == Constants.getClientCode()) {
+         } else if (LoginController.getUser().getUsertype() == Constants.getClientCode()) {
              // Adcionar ao carrinho
-             OrderVV.create(ItemVV.getItemID(), this.qnt);
+             OrderController.create(itemID, this.qnt);
              this.dispose();
              UsersAccount usrAcc = new UsersAccount();
              usrAcc.setVisible(true);
@@ -268,7 +271,7 @@ public class ItemDetailed extends javax.swing.JFrame {
     }//GEN-LAST:event_plusBTNMouseClicked
 
     private void loadProps() {
-        Item loadedItem = com.LP2.server.utils.Menu.selectItem(ItemVV.getItemID());
+        Item loadedItem = ItemController.read(itemID, false);
         String out = String.format("%.2f", loadedItem.getPrice());
         NameitemTXT.setText(loadedItem.getName());
         descriptionItemTXT1.setText(loadedItem.getExtra());
@@ -305,7 +308,7 @@ public class ItemDetailed extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ItemDetailed().setVisible(true);
+            new ItemDetailed(itemID).setVisible(true);
         });
     }
 

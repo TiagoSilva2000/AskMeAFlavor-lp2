@@ -9,9 +9,8 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
-import com.LP2.app.Session;
-import com.LP2.controllers.OrderVV;
-import com.LP2.server.utils.Constants;
+import com.LP2.controllers.misc.OrderController;
+import com.LP2.models.utils.Constants;
 import com.LP2.view.pages.EditProfile;
 import com.LP2.view.pages.Login;
 
@@ -173,7 +172,7 @@ public class KitchenAccount extends javax.swing.JFrame {
         int rowIdx = kitchenTBL.getSelectedRow();
         if (rowIdx > -1) {
             int id = Integer.parseInt(kitchenTBL.getValueAt(rowIdx, 1).toString());
-            Session.closeOrder(id);
+            OrderController.update(id, Constants.getFinishedOrder());
             this.dispose();
             KitchenAccount ka = new KitchenAccount();
             ka.setVisible(true);
@@ -182,7 +181,7 @@ public class KitchenAccount extends javax.swing.JFrame {
     private void loadTable(){
 
         DefaultTableModel model = (DefaultTableModel) kitchenTBL.getModel();
-        Object[][] orders = OrderVV.allObj(Constants.getUnOrder());
+        Object[][] orders = OrderController.allObj(Constants.getUnOrder());
         model.setNumRows(0);
 
         kitchenTBL.getColumnModel().getColumn(0).setPreferredWidth(2);

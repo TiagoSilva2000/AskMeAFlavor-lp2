@@ -20,7 +20,7 @@ import javax.swing.plaf.basic.BasicMenuBarUI;
 import javax.swing.table.DefaultTableModel;
 
 
-import com.LP2.controllers.ItemVV;
+import com.LP2.controllers.items.ItemController;
 import com.LP2.view.pages.EditProfile;
 import com.LP2.view.pages.Login;
 import com.LP2.view.pages.ItemDetailed;
@@ -282,9 +282,7 @@ public class UsersAccount extends javax.swing.JFrame {
         if(rowIdx > -1){
             this.dispose();
             int id = Integer.parseInt(menuTBL.getValueAt(rowIdx, 0).toString());
-            System.out.println("ID: " + id);
-            ItemVV.setItemID(id);
-            ItemDetailed itemScreen = new ItemDetailed();
+            ItemDetailed itemScreen = new ItemDetailed(id);
             itemScreen.setVisible(true);
         }
     }//GEN-LAST:event_menuTBLMouseClicked
@@ -318,7 +316,7 @@ public class UsersAccount extends javax.swing.JFrame {
 
         DefaultTableModel model = (DefaultTableModel) menuTBL.getModel();
         model.setNumRows(0);
-        Object[][] items = com.LP2.server.utils.Menu.getMatrixMenu();
+        Object[][] items = com.LP2.models.utils.Menu.getMatrixMenu();
 
 
         menuTBL.getColumnModel().getColumn(0).setPreferredWidth(2);

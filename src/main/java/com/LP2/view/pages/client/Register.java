@@ -5,8 +5,8 @@
  */
 package com.LP2.view.pages.client;
 
-import com.LP2.app.Session;
-import com.LP2.controllers.LoginVV;
+import com.LP2.controllers.misc.LoginController;
+import com.LP2.controllers.users.ClientController;
 import com.placeholder.PlaceHolder;
 import java.awt.Color;
 import java.awt.Font;
@@ -338,8 +338,8 @@ public class Register extends javax.swing.JFrame {
            passConfirm.isEmpty()){
                 emptyDataLBL.setVisible(true);
         } else {
-            Session.sigin(name, email, pass, idCode, phone);
-            LoginVV.login(name, pass);
+            ClientController.create(name, email, pass, idCode, phone);
+            LoginController.login(name, pass);
             wrongPasswordLBL.setVisible(false);
             emptyDataLBL.setVisible(false);
             this.dispose();

@@ -1,12 +1,10 @@
-Vídeo sobre MVC
-Refatorar código:
-  - organizar em models,views, controladores, database e app
-  - povoar controladores e remover session
-  - substituir controladores por acesso ao banco
 Exibir Imagem
 Adicionar imagem e presença no menu na adição de item
 Refatorar Query de Menu
 Refatorar ItemControlador
+Refatorar o constructor para não automaticamente salvar no banco, mas depender
+agora do create.
+
 
 Extra
 ?) Relacionar a parte de comentários, entre os módulos.

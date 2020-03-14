@@ -10,8 +10,9 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 
-import com.LP2.controllers.LoginVV;
-import com.LP2.controllers.UserVV;
+import com.LP2.controllers.misc.LoginController;
+import com.LP2.controllers.users.UserController;
+import com.LP2.models.users.User;
 
 import static com.LP2.view.pages.Login.profileType;
 
@@ -257,11 +258,11 @@ public class EditProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_editBackBTNMouseClicked
 
     private void saveBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBTNMouseClicked
-        int success = UserVV.update(LoginVV.getuser().getID(), userNameTXT.getText(),
+        User user = UserController.update(LoginController.getUser().getID(), userNameTXT.getText(),
                     userEmailTXT.getText(),
                     userCpfTXT.getText(), userPhoneTXT.getText()
                     );
-        if (success == 1) {
+        if (user != null) {
             Success successDialog = new Success(this , true);
             successDialog.setVisible(true);
         } else {
@@ -309,10 +310,10 @@ public class EditProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_userPhoneTXTFocusLost
 
     private void fillUserFields() {
-        userNameTXT.setText(LoginVV.getuser().getName());
-        userEmailTXT.setText(LoginVV.getuser().getEmail());
-        userCpfTXT.setText(LoginVV.getuser().getIDCode());
-        userPhoneTXT.setText(LoginVV.getuser().getPhone());
+        userNameTXT.setText(LoginController.getUser().getName());
+        userEmailTXT.setText(LoginController.getUser().getEmail());
+        userCpfTXT.setText(LoginController.getUser().getIDCode());
+        userPhoneTXT.setText(LoginController.getUser().getPhone());
     }
     /**
      * @param args the command line arguments
