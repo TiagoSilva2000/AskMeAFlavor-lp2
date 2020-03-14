@@ -90,6 +90,7 @@ public class ItemDAO {
     try {
       final ArrayList<ArrayList<String>> fields = new ArrayList<ArrayList<String>>();
       ResultSet result = null;
+      ArrayList<byte[]> imgContents = new ArrayList<byte[]>();
       int i, j, maxFields;
       String queryString = (
       "SELECT " +
@@ -122,13 +123,16 @@ public class ItemDAO {
           fields.add(new ArrayList<String>());
           while (j <= maxFields) {
             String field = result.getMetaData().getColumnName(j);
-            String content = result.getString(j++);
-
+            String content = result.getString(j);
             if (content == null)
               content = "null";
 
-            if ((field.equals("img_id") || !content.equals("null")))
+            if (field.equals("content"))
+              imgContents.add(result.getBytes(j));
+            else if ((field.equals("img_id") || !content.equals("null")))
               fields.get(i).add(content);
+
+            j++;
           }
           i += 1;
         }
@@ -137,7 +141,7 @@ public class ItemDAO {
       result.close();
       stm.close();
       // return fields;
-      return buildItems(fields);
+      return buildItems(fields, imgContents);
     } catch (final Exception e) {
       e.printStackTrace();
       return null;
@@ -150,17 +154,17 @@ public class ItemDAO {
       final PreparedStatement stm = Connect.getCon()
           .prepareStatement("UPDATE Item " +
                               "SET name = (?), price = (?), " +
-                              "present = (?), img_id = (?) " +
+                              "present = (?) " +
                             "WHERE id = (?)");
       stm.setString(1, item.getName());
       stm.setDouble(2, item.getPrice());
       stm.setBoolean(3, isPresent);
-      if (item.getImage() == null) {
-        stm.setNull(4, Types.INTEGER);
-      } else {
-        stm.setInt(4, item.getImage().getID());
-      }
-      stm.setInt(5, item.getID());
+      // if (item.getImage() == null) {
+      //   stm.setNull(4, Types.INTEGER);
+      // } else {
+      //   stm.setInt(4, item.getImage().getID());
+      // }
+      stm.setInt(4, item.getID());
       stm.executeUpdate();
 
       return true;
@@ -204,17 +208,17 @@ public class ItemDAO {
     return new Food(id, name, price, fields.get(5), null);
   }
 
-  static private Item buildItem (final ArrayList<String> fields, boolean setter) {
+  static private Item buildItem (final ArrayList<String> fields, final boolean setter,
+                                final byte[] content) {
     if (fields.size() == 0)
       return null;
     int lastPos, imgId, id;
     Image img = null;
     String name, extra, filename, filepath, filetype;
     double price;
-    byte[] content = null;
 
     lastPos = fields.size() - 1;
-    filepath = filename = filetype = null; imgId = -1; img = null; content = null;
+    filepath = filename = filetype = null; imgId = -1; img = null; /* content = null; */
     id = Integer.parseInt(fields.get(0));
     name = fields.get(1);
     price = Double.parseDouble(fields.get(2));
@@ -225,7 +229,7 @@ public class ItemDAO {
       filepath = fields.get(5);
       filename = fields.get(6);
       filetype = fields.get(7);
-      content = fields.get(8).getBytes();
+      // content = fields.get(8).getBytes();
       img = new Image(imgId, filepath, filename, filetype, content);
     }
 
@@ -235,12 +239,13 @@ public class ItemDAO {
     return new Drink(id, name, price, extra, img);
   }
 
-  static private ArrayList<Item> buildItems(final ArrayList<ArrayList<String>> fields) {
+  static private ArrayList<Item> buildItems(final ArrayList<ArrayList<String>> fields,
+    final ArrayList<byte[]> imgContents) {
     ArrayList<Item> items = new ArrayList<Item>();
     Item tmp = null;
 
     for (int i = 0; i < fields.size(); i++) {
-      tmp = buildItem(fields.get(i), true);
+      tmp = buildItem(fields.get(i), true, imgContents.get(i));
       if (tmp != null)
         items.add(tmp);
 

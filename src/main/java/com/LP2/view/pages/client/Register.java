@@ -7,12 +7,17 @@ package com.LP2.view.pages.client;
 
 import com.LP2.controllers.misc.LoginController;
 import com.LP2.controllers.users.ClientController;
+import com.LP2.models.validators.ValidationState;
+import com.LP2.models.validators.Validator;
 import com.placeholder.PlaceHolder;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 import com.LP2.view.pages.Login;
+import com.LP2.view.pages.warnings.General;
 /**
  *
  * @author evelyn.ferreira
@@ -328,7 +333,7 @@ public class Register extends javax.swing.JFrame {
         final String passConfirm = new String(registerConfirmPasswordTXT.getPassword()).trim();
         final String phone = registerPhoneTXT.getText().trim();
         final String idCode = registerCodeTXT.getText().trim();
-
+        ArrayList<String> messages = null;
 
         if(name.isEmpty() ||
            email.isEmpty() ||
@@ -336,7 +341,14 @@ public class Register extends javax.swing.JFrame {
            phone.isEmpty() ||
            pass.isEmpty() ||
            passConfirm.isEmpty()){
-                emptyDataLBL.setVisible(true);
+            emptyDataLBL.setVisible(true);
+            return;
+        }
+
+        messages = validateAll(name, email, pass, phone, idCode);
+        if (messages.size() != 0) {
+            General gen = new General(messages.get(0));
+            gen.setVisible(true);
         } else {
             ClientController.create(name, email, pass, idCode, phone);
             LoginController.login(name, pass);
@@ -347,6 +359,21 @@ public class Register extends javax.swing.JFrame {
             ua.setVisible(true);
         }
     }//GEN-LAST:event_registerBTNMouseClicked
+
+    private ArrayList<String> validateAll (String name, String email, String pass, String phone,
+                            String idCode) {
+        ArrayList<ValidationState> vStates = new ArrayList<ValidationState>();
+        ArrayList<String> messages = new ArrayList<String>();
+
+        vStates.add(Validator.email(email));
+        vStates.add(Validator.password(pass));
+        for (ValidationState vs : vStates)
+            if (!vs.wasAccepted())
+                for (String msg : vs.getMessage())
+                    messages.add(msg);
+
+        return messages;
+    }
 
     private void registerNameTXTFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_registerNameTXTFocusLost
         registerNameTXT.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.white));

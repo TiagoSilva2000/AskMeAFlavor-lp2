@@ -21,6 +21,8 @@ public class ValidationState {
     this.messages = new ArrayList<String>();
   }
 
+  public int messagesSize() { return messages.size(); }
+
   public boolean wasAccepted() { return this.accepted; }
 
   public ArrayList<String> getMessage() { return this.messages; }

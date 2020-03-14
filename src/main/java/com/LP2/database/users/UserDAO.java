@@ -29,8 +29,8 @@ public class UserDAO {
       final PreparedStatement stm = Connect.getCon()
       .prepareStatement(
         "INSERT INTO Person" +
-        "(name, email, password, idcode, usertype, salt, phone)" +
-        "VALUES (?,?,?,?,?, ?, ?)"
+        "(name, email, password, idcode, usertype, salt, phone) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?)"
         , Statement.RETURN_GENERATED_KEYS);
 
       stm.setString(1, user.getName());
@@ -39,7 +39,9 @@ public class UserDAO {
       stm.setString(4, user.getIDCode());
       stm.setInt(5, user.getUsertype());
       stm.setString(6, salt);
-      stm.setString(7, user.getPhone());
+      if (user.getPhone() != null)
+        stm.setString(7, user.getPhone());
+
       stm.executeUpdate();
       result = stm.getGeneratedKeys();
       while (result.next())

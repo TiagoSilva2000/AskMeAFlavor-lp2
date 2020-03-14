@@ -45,6 +45,7 @@ public class User {
   public User(final String username, final String password) {
     this.name = username;
     this.password = password;
+    this.id = -1;
 
     User tmp = read();
     if (tmp == null) {

@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 import com.LP2.view.pages.client.UsersAccount;
 import com.LP2.view.pages.cook.KitchenAccount;
 import com.LP2.view.pages.manager.ManagerAccount;
+import com.LP2.view.pages.warnings.General;
 import com.LP2.view.pages.client.Register;
 
 /**
@@ -232,11 +233,14 @@ public class Login extends javax.swing.JFrame {
         return login.equals(value) && password.equals(value);
     }
     private void selectScreen(){
-        LoginController.login(loginTXT.getText(), new String(passwordTXT.getPassword()));
-        if (LoginController.getUser() == null) {
-            System.out.println("ERRO DE AUTENTICAÇÃO!");
-        }
-        if (LoginController.getUser().getUsertype() == Constants.getManagerCode()){
+        int result = LoginController.login(loginTXT.getText(),
+                                    new String(passwordTXT.getPassword()));
+        System.out.println("passou");
+        if (result == 0) {
+            System.out.println("passed!");
+            General gen = new General("Erro de Autenticação!");
+            gen.setVisible(true);
+        } else if (LoginController.getUser().getUsertype() == Constants.getManagerCode()){
             ManagerAccount screenManager = new ManagerAccount();
             screenManager.setVisible(true);
             this.dispose();
@@ -246,7 +250,7 @@ public class Login extends javax.swing.JFrame {
             screenUser.setVisible(true);
             this.dispose();
             profileType = 3;
-        }else if(LoginController.getUser().getUsertype() == Constants.getCookCode()){
+        } else if(LoginController.getUser().getUsertype() == Constants.getCookCode()){
             KitchenAccount screenKitchen = new KitchenAccount();
             screenKitchen.setVisible(true);
             this.dispose();

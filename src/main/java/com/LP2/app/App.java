@@ -1,6 +1,7 @@
 package com.LP2.app;
 
 import com.LP2.models.loader.Loader;
+import com.LP2.models.resources.Image;
 import com.LP2.models.users.Client;
 import com.LP2.controllers.users.ClientController;
 import com.LP2.database.Connect;
@@ -28,6 +29,8 @@ public class App {
     Connect.connect();
     Menu.load(Constants.getPresent());
     AllOrders.load(Constants.getUnOrder());
+
+    new Image(18);
 
     Login.main(args);
 

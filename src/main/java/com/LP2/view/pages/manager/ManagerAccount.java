@@ -8,6 +8,8 @@ package com.LP2.view.pages.manager;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.util.Vector;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -21,8 +23,10 @@ import javax.swing.plaf.basic.BasicMenuBarUI;
 import javax.swing.table.DefaultTableModel;
 
 import com.LP2.view.pages.Login;
+import com.LP2.view.pages.warnings.General;
 import com.LP2.controllers.items.DrinkController;
 import com.LP2.controllers.items.FoodController;
+import com.LP2.controllers.items.ItemController;
 import com.LP2.view.pages.EditProfile;
 
 import static com.LP2.view.pages.CustomizeMenuBar.CustomizeMenuBar;
@@ -76,18 +80,20 @@ public class ManagerAccount extends javax.swing.JFrame {
         managerBackBTN = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         productsTBL = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        removeLabel = new javax.swing.JLabel();
+        removeTXTField = new javax.swing.JTextField();
+        removeButton = new javax.swing.JButton();
         managerMENU = new javax.swing.JMenuBar();
         registerItensMENU = new javax.swing.JMenu();
         employeeMENU = new javax.swing.JMenu();
         editProfileMENU = new javax.swing.JMenu();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Gerência La Cocina Bistrô");
 
         managerBackBTN.setBackground(new java.awt.Color(38, 70, 27));
-        managerBackBTN.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")  + "/assets/back16.png")); // NOI18N
+        managerBackBTN.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/back16.png"))); // NOI18N
         managerBackBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 managerBackBTNMouseClicked(evt);
@@ -119,14 +125,33 @@ public class ManagerAccount extends javax.swing.JFrame {
             productsTBL.getColumnModel().getColumn(4).setPreferredWidth(20);
         }
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")  + "/assets/logo.png")); // NOI18N
+        logo.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
 
         jButton1.setBackground(new java.awt.Color(38, 70, 27));
         jButton1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Salvar");
 
-        registerItensMENU.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")  + "/assets/food16.png")); // NOI18N
+        removeLabel.setFont(new java.awt.Font("DejaVu Sans", 0, 16)); // NOI18N
+        removeLabel.setForeground(new java.awt.Color(255, 255, 255));
+        removeLabel.setText("Código: ");
+
+        removeTXTField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeTXTFieldActionPerformed(evt);
+            }
+        });
+
+        removeButton.setBackground(new java.awt.Color(255, 51, 51));
+        removeButton.setForeground(new java.awt.Color(255, 255, 255));
+        removeButton.setText("Remover");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
+
+        registerItensMENU.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/food16.png"))); // NOI18N
         registerItensMENU.setText("Cadastrar itens");
         registerItensMENU.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -141,7 +166,7 @@ public class ManagerAccount extends javax.swing.JFrame {
         });
         managerMENU.add(registerItensMENU);
 
-        employeeMENU.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")  + "/assets/func16.png")); // NOI18N
+        employeeMENU.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/func16.png"))); // NOI18N
         employeeMENU.setText("Funcionários");
         employeeMENU.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -156,7 +181,7 @@ public class ManagerAccount extends javax.swing.JFrame {
         });
         managerMENU.add(employeeMENU);
 
-        editProfileMENU.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")  + "/assets/profileEdit16.png")); // NOI18N
+        editProfileMENU.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/profileEdit16.png"))); // NOI18N
         editProfileMENU.setText("Perfil");
         editProfileMENU.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -182,9 +207,16 @@ public class ManagerAccount extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(managerBackBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(managerBackBTN)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(removeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(removeTXTField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(removeButton)))
+                        .addGap(17, 17, 17)
+                        .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -199,15 +231,20 @@ public class ManagerAccount extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(managerBackBTN)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(removeLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(removeTXTField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(removeButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(29, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -267,6 +304,57 @@ public class ManagerAccount extends javax.swing.JFrame {
         EditProfile editProfileScreen = new EditProfile();
         editProfileScreen.setVisible(true);
     }//GEN-LAST:event_editProfileMENUMouseClicked
+
+    private void removeTXTFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeTXTFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_removeTXTFieldActionPerformed
+
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        final String inputCode = removeTXTField.getText();
+        final int itemCode;
+
+        if (inputCode.length() == 0) {
+            General gen = new General("Nenhum código foi inserido.");
+            gen.setVisible(true);
+        } else {
+            try {
+                itemCode = Integer.parseInt(inputCode);
+                //removeLineByItemCode(itemCode);
+                ItemController.delete(itemCode);
+                General gen = new General("Sucesso na Operação.");
+                this.dispose();
+                ManagerAccount ma = new ManagerAccount();
+                ma.setVisible(true);
+                gen.setVisible(true);
+            } catch(final Exception e) {
+                e.printStackTrace();
+                General gen = new General("Erro durante a remoção.");
+                gen.setVisible(true);
+                return;
+            }
+        }
+    }//GEN-LAST:event_removeButtonActionPerformed
+    private int removeLineByItemCode(final int id) {
+        DefaultTableModel model = (DefaultTableModel) productsTBL.getModel();
+        //Vector<Vector> rows = model.getDataVector();
+        int currId;
+
+        productsTBL.repaint();
+        // model.fireTableDataChanged();
+        return 1;
+        // System.out.println("size: " + rows.size());
+        // for (int i = 0; i < rows.size(); i++) {
+        //     currId = Integer.parseInt(rows.elementAt(i).elementAt(0).toString());
+        //     System.out.println(currId);
+        //     if (currId == id) {
+        //         System.out.println("i: " + i);
+        //         model.removeRow(i);
+        //         return 1;
+        //     }
+        // }
+        // return 0;
+    }
+
     private void loadTable(){
 
         DefaultTableModel model = (DefaultTableModel) productsTBL.getModel();
@@ -319,11 +407,14 @@ public class ManagerAccount extends javax.swing.JFrame {
     private javax.swing.JMenu editProfileMENU;
     private javax.swing.JMenu employeeMENU;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel logo;
     private javax.swing.JButton managerBackBTN;
     private javax.swing.JMenuBar managerMENU;
     private javax.swing.JTable productsTBL;
     private javax.swing.JMenu registerItensMENU;
+    private javax.swing.JButton removeButton;
+    private javax.swing.JLabel removeLabel;
+    private javax.swing.JTextField removeTXTField;
     // End of variables declaration//GEN-END:variables
 }

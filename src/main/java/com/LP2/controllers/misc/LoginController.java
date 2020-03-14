@@ -13,8 +13,12 @@ import com.LP2.models.utils.Order;
 
 public class LoginController {
 
-  static public void login(final String username, final String password) {
+  static public int login(final String username, final String password) {
     User user = new User(username, password);
+
+    if (user.getID() == -1)
+      return 0;
+
     if (user.getUsertype() == Constants.getClientCode())
       user = new Client(user);
     else if (user.getUsertype() == Constants.getManagerCode())
@@ -22,6 +26,7 @@ public class LoginController {
     else
       user = new Cook(user);
     Auth.setUser(user);
+    return 1;
   }
 
   static public void logout() {

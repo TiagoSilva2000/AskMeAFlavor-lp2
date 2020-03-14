@@ -17,12 +17,13 @@ public class FoodController extends ItemController{
     return 1;
   }
 
-  static public void create(final String name, final double price,
+  static public int create(final String name, final double price,
               final String description, final boolean isPresent, final Image img) {
 
     final Food food = new Food(name, price, description, isPresent, img);
     if (food.isPresent())
       Menu.pushNewItem(food);
+    return 1;
   }
 
   static public void update(final int oldId, final String uName, final double uPrice,

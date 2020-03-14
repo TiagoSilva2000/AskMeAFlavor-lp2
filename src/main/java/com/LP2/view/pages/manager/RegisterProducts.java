@@ -7,13 +7,19 @@ package com.LP2.view.pages.manager;
 
 import com.LP2.controllers.items.DrinkController;
 import com.LP2.controllers.items.FoodController;
+import com.LP2.models.resources.Image;
 import com.LP2.view.pages.warnings.Error;
 import com.LP2.view.pages.warnings.Success;
 
 import com.placeholder.PlaceHolder;
 import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
 
 /**
@@ -25,10 +31,14 @@ public class RegisterProducts extends javax.swing.JFrame {
     /**
      * Creates new form registerProducts
      */
+    private static File selectedFile;
     public RegisterProducts() {
         initComponents();
+
+        selectedFile = null;
         this.getContentPane().setBackground(Color.decode("14027569"));
         productDrinkRBTN.setSelected(true);
+        presentRBTN.setSelected(true);
 
         PlaceHolder placeHolderName = new PlaceHolder(productNameTXT, Color.white, Color.white, "Qual o nome do produto?", false, "Verdana", 14);
         PlaceHolder placeHolderPrice = new PlaceHolder(productPriceTXT, Color.white, Color.white, "Preço", false, "Verdana", 14);
@@ -64,6 +74,9 @@ public class RegisterProducts extends javax.swing.JFrame {
         foodDescriptionTXT.setCaretColor(Color.white);
 
 
+        presentRBTN.setBackground(Color.decode("14027569"));
+        notPresentRTBN.setBackground(Color.decode("14027569"));
+
         emptyDataLBL.setVisible(false);
         emptyData2LBL.setVisible(false);
         productDrinkRBTN.setBackground(Color.decode("14027569"));
@@ -80,6 +93,8 @@ public class RegisterProducts extends javax.swing.JFrame {
     private void initComponents() {
 
         choicefoodGRP = new javax.swing.ButtonGroup();
+        presenceBTNGroup = new javax.swing.ButtonGroup();
+        fileChooser = new javax.swing.JFileChooser();
         productsBackBTN = new javax.swing.JButton();
         registerProductsPNL = new javax.swing.JPanel();
         Cadastrar = new javax.swing.JButton();
@@ -91,7 +106,13 @@ public class RegisterProducts extends javax.swing.JFrame {
         emptyDataLBL = new javax.swing.JLabel();
         emptyData2LBL = new javax.swing.JLabel();
         foodDescriptionTXT = new javax.swing.JTextField();
-        emptyData2LBL1 = new javax.swing.JLabel();
+        presentRBTN = new javax.swing.JRadioButton();
+        notPresentRTBN = new javax.swing.JRadioButton();
+        imageBTN = new javax.swing.JButton();
+        logo = new javax.swing.JLabel();
+
+        fileChooser.setDialogTitle("Adicionar imagem...");
+        fileChooser.setFileHidingEnabled(false);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -123,6 +144,11 @@ public class RegisterProducts extends javax.swing.JFrame {
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 productNameTXTFocusLost(evt);
+            }
+        });
+        productNameTXT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productNameTXTActionPerformed(evt);
             }
         });
 
@@ -187,6 +213,30 @@ public class RegisterProducts extends javax.swing.JFrame {
             }
         });
 
+        presentRBTN.setBackground(productDrinkRBTN.getBackground());
+        presenceBTNGroup.add(presentRBTN);
+        presentRBTN.setForeground(new java.awt.Color(255, 255, 255));
+        presentRBTN.setText("No Menu");
+        presentRBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                presentRBTNActionPerformed(evt);
+            }
+        });
+
+        notPresentRTBN.setBackground(productDrinkRBTN.getBackground());
+        presenceBTNGroup.add(notPresentRTBN);
+        notPresentRTBN.setForeground(new java.awt.Color(255, 255, 255));
+        notPresentRTBN.setText("Fora do Menu");
+
+        imageBTN.setBackground(new java.awt.Color(38, 70, 27));
+        imageBTN.setForeground(new java.awt.Color(255, 255, 255));
+        imageBTN.setText("Adicionar Imagem...");
+        imageBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imageBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout registerProductsPNLLayout = new javax.swing.GroupLayout(registerProductsPNL);
         registerProductsPNL.setLayout(registerProductsPNLLayout);
         registerProductsPNLLayout.setHorizontalGroup(
@@ -200,25 +250,32 @@ public class RegisterProducts extends javax.swing.JFrame {
                         .addComponent(productDrinkRBTN))
                     .addComponent(drinkProviderTXT, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                     .addComponent(productNameTXT)
-                    .addComponent(foodDescriptionTXT, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
+                    .addComponent(foodDescriptionTXT))
                 .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(registerProductsPNLLayout.createSequentialGroup()
-                        .addGap(0, 34, Short.MAX_VALUE)
+                        .addGap(30, 30, 30)
+                        .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(productPriceTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(registerProductsPNLLayout.createSequentialGroup()
+                                .addComponent(presentRBTN)
+                                .addGap(32, 32, 32)
+                                .addComponent(notPresentRTBN)))
+                        .addGap(0, 50, Short.MAX_VALUE))
+                    .addGroup(registerProductsPNLLayout.createSequentialGroup()
                         .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(registerProductsPNLLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(productPriceTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(59, 59, 59)
+                                .addComponent(imageBTN))
                             .addGroup(registerProductsPNLLayout.createSequentialGroup()
-                                .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(registerProductsPNLLayout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(emptyData2LBL))
-                                    .addComponent(emptyDataLBL))
-                                .addGap(0, 9, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, registerProductsPNLLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(92, 92, 92)
+                                .addComponent(Cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(registerProductsPNLLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(emptyDataLBL)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(emptyData2LBL)
+                .addGap(26, 26, 26))
         );
         registerProductsPNLLayout.setVerticalGroup(
             registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,30 +284,30 @@ public class RegisterProducts extends javax.swing.JFrame {
                 .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(productNameTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(productPriceTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
+                .addGap(39, 39, 39)
                 .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(productFoodRBTN)
-                    .addComponent(productDrinkRBTN))
-                .addGap(18, 18, 18)
-                .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(registerProductsPNLLayout.createSequentialGroup()
-                        .addComponent(emptyDataLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(emptyData2LBL, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(Cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(registerProductsPNLLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(drinkProviderTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(foodDescriptionTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(109, 109, 109))))
+                    .addComponent(productDrinkRBTN)
+                    .addComponent(presentRBTN)
+                    .addComponent(notPresentRTBN))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(drinkProviderTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(imageBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(foodDescriptionTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(registerProductsPNLLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(emptyData2LBL, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(emptyDataLBL, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(77, 77, 77))
         );
 
-        emptyData2LBL1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        emptyData2LBL1.setForeground(new java.awt.Color(255, 255, 255));
-        emptyData2LBL1.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
+        logo.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        logo.setForeground(new java.awt.Color(255, 255, 255));
+        logo.setIcon(new javax.swing.ImageIcon((System.getProperty("user.dir") + "/assets/logo.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -258,25 +315,26 @@ public class RegisterProducts extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(productsBackBTN)
-                .addGap(75, 75, 75)
-                .addComponent(emptyData2LBL1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(productsBackBTN)
+                        .addContainerGap(575, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(registerProductsPNL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(registerProductsPNL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21))
+                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(178, 178, 178))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(productsBackBTN)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(emptyData2LBL1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(productsBackBTN)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(logo, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(registerProductsPNL, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23))
         );
@@ -308,16 +366,23 @@ public class RegisterProducts extends javax.swing.JFrame {
         if((provider.isEmpty() &&
            description.isEmpty()) ||
            name.isEmpty() ||
-           price.isEmpty() || (!provider.isEmpty() && !description.isEmpty())){
+           price.isEmpty()){
 
             emptyDataLBL.setVisible(true);
             emptyData2LBL.setVisible(true);
         } else {
+            Image img = null;
+            if (selectedFile!= null)
+                img = new Image(selectedFile);
 
             if (productDrinkRBTN.isSelected()) {
-                success = DrinkController.create(name, Double.parseDouble(price), provider, true);
+                success = DrinkController.create(name, Double.parseDouble(price),
+                                                provider, presentRBTN.isSelected(),
+                                                img);;
             } else {
-                success = FoodController.create(name, Double.parseDouble(price), description, true);
+                success = FoodController.create(name, Double.parseDouble(price),
+                                                description, presentRBTN.isSelected(),
+                                                img);
             }
         }
         if (success == 1) {
@@ -366,6 +431,29 @@ public class RegisterProducts extends javax.swing.JFrame {
         foodDescriptionTXT.setVisible(true);
     }//GEN-LAST:event_productFoodRBTNMouseClicked
 
+    private void presentRBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presentRBTNActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_presentRBTNActionPerformed
+
+    private void imageBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageBTNActionPerformed
+        try {
+            int returnVal = fileChooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                selectedFile = fileChooser.getSelectedFile();
+                System.out.println(selectedFile.getAbsolutePath());
+            } else {
+                System.out.println("File access cancelled by user.");
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+            System.out.println("Problem accessing file: " + selectedFile.getAbsolutePath());
+        }
+    }//GEN-LAST:event_imageBTNActionPerformed
+
+    private void productNameTXTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productNameTXTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_productNameTXTActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -401,9 +489,14 @@ public class RegisterProducts extends javax.swing.JFrame {
     private javax.swing.ButtonGroup choicefoodGRP;
     private javax.swing.JTextField drinkProviderTXT;
     private javax.swing.JLabel emptyData2LBL;
-    private javax.swing.JLabel emptyData2LBL1;
     private javax.swing.JLabel emptyDataLBL;
+    private javax.swing.JFileChooser fileChooser;
     private javax.swing.JTextField foodDescriptionTXT;
+    private javax.swing.JButton imageBTN;
+    private javax.swing.JLabel logo;
+    private javax.swing.JRadioButton notPresentRTBN;
+    private javax.swing.ButtonGroup presenceBTNGroup;
+    private javax.swing.JRadioButton presentRBTN;
     private javax.swing.JRadioButton productDrinkRBTN;
     private javax.swing.JRadioButton productFoodRBTN;
     private javax.swing.JTextField productNameTXT;

@@ -71,10 +71,11 @@ public class ImageDAO {
 
       maxFields = result.getMetaData().getColumnCount();
       i = 1;
-      while (result.next())
+      while (result.next()) {
         while (i <= (maxFields - 1))
           fields.add(result.getString(i++));
         content = result.getBytes(i);
+      }
 
       stm.close();
       return buildImage(fields, content);

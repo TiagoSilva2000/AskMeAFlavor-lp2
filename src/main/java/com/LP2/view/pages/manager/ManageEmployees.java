@@ -43,19 +43,16 @@ public class ManageEmployees extends javax.swing.JFrame {
 
                         if (idObject == null) {
                             String password = nameObj.toString() + "12345";
-                            System.out.println("Stored.");
                             UserController.create(nameObj.toString(), emailObj.toString(),
-                            password, idObject.toString(), null, Constants.getCookCode());
+                            password, codeObj.toString(), "(21)22222-2222", Constants.getCookCode());
                         } else {
-                            System.out.println("Updated.");
-                            String password = nameObj.toString() + "12345";
+                            // String password = nameObj.toString() + "12345";
                             UserController.update(Integer.parseInt(idObject.toString()),
                             nameObj.toString(), emailObj.toString(), codeObj.toString(),
-                            null);
+                            "(21)22222-2222");
                         }
                     }
                 }
-                System.out.println("Editada!");
             }
         });
     }
@@ -76,6 +73,7 @@ public class ManageEmployees extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
 
         employeesTBL.setModel(new javax.swing.table.DefaultTableModel(
@@ -112,6 +110,7 @@ public class ManageEmployees extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(30, 70, 27));
         jButton1.setFont(new java.awt.Font("DejaVu Sans", 0, 10)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("+");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

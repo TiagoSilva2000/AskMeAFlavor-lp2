@@ -1,5 +1,3 @@
-Exibir Imagem
-Adicionar imagem e presença no menu na adição de item
 Refatorar Query de Menu
 Refatorar ItemControlador
 Refatorar o constructor para não automaticamente salvar no banco, mas depender

@@ -20,8 +20,10 @@ import com.LP2.controllers.misc.OrderController;
 import com.LP2.models.items.Item;
 import com.LP2.models.utils.Constants;
 
+
 import static com.LP2.view.pages.Login.profileType;
 import com.LP2.view.pages.client.UsersAccount;
+import com.LP2.view.pages.warnings.General;
 
 /**
  *
@@ -82,7 +84,7 @@ public class ItemDetailed extends javax.swing.JFrame {
 
         imageItemIMG.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         imageItemIMG.setForeground(new java.awt.Color(255, 255, 255));
-        imageItemIMG.setText("imagem");
+        imageItemIMG.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         priceItemTXT.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         priceItemTXT.setForeground(new java.awt.Color(255, 255, 255));
@@ -105,7 +107,7 @@ public class ItemDetailed extends javax.swing.JFrame {
         addCartBTN.setBackground(new java.awt.Color(38, 70, 27));
         addCartBTN.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         addCartBTN.setForeground(new java.awt.Color(255, 255, 255));
-        addCartBTN.setText("Adcionar");
+        addCartBTN.setText("Adicionar");
         addCartBTN.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addCartBTNMouseClicked(evt);
@@ -152,59 +154,54 @@ public class ItemDetailed extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(140, 140, 140)
-                        .addComponent(imageItemIMG, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(backDetailedItemBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(feedBackBTN))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(204, 204, 204)
+                        .addComponent(minusBTN)
+                        .addGap(18, 18, 18)
+                        .addComponent(quantityTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(plusBTN)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(backDetailedItemBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(NameitemTXT)
-                                        .addGap(170, 170, 170)
-                                        .addComponent(priceItemTXT)
-                                        .addGap(24, 24, 24))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(36, 36, 36)
-                                        .addComponent(feedBackBTN))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(minusBTN)
-                                .addGap(18, 18, 18)
-                                .addComponent(quantityTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(plusBTN)
-                                .addGap(18, 18, 18)
-                                .addComponent(addCartBTN)))))
+                            .addComponent(addCartBTN)
+                            .addComponent(priceItemTXT))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(212, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(204, 204, 204))
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(descriptionItemTXT1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(262, 262, 262)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(imageItemIMG, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NameitemTXT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(descriptionItemTXT1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addComponent(backDetailedItemBTN)
                     .addComponent(feedBackBTN))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NameitemTXT)
+                .addGap(4, 4, 4)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(NameitemTXT, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(priceItemTXT))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(imageItemIMG, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(imageItemIMG, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(descriptionItemTXT1)
-                .addGap(88, 88, 88)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(minusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(plusBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -224,12 +221,10 @@ public class ItemDetailed extends javax.swing.JFrame {
     }//GEN-LAST:event_backDetailedItemBTNMouseClicked
 
     private void addCartBTNMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addCartBTNMouseClicked
-        if (profileType > 3 || profileType < 1) {
-             this.dispose();
-             Login loginScreen = new Login();
-             loginScreen.setVisible(true);
+        if (LoginController.getUser() == null) {
+            General gen = new General("Crie sua conta ou autentique-se primeiro.");
+            gen.setVisible(true);
          } else if (LoginController.getUser().getUsertype() == Constants.getClientCode()) {
-             // Adcionar ao carrinho
              OrderController.create(itemID, this.qnt);
              this.dispose();
              UsersAccount usrAcc = new UsersAccount();
@@ -276,6 +271,11 @@ public class ItemDetailed extends javax.swing.JFrame {
         NameitemTXT.setText(loadedItem.getName());
         descriptionItemTXT1.setText(loadedItem.getExtra());
         priceItemTXT.setText(out);
+        if (loadedItem.getImage() == null)
+            imageItemIMG.setVisible(false);
+        else {
+            imageItemIMG.setIcon(new ImageIcon(loadedItem.getImage().getContent()));
+        }
     }
 
     /**

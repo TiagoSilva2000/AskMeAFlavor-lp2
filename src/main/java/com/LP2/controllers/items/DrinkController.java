@@ -8,12 +8,13 @@ import com.LP2.models.utils.Menu;
 
 public class DrinkController extends ItemController {
 
-  static public void create(String name, double price, String provider,
+  static public int create(String name, double price, String provider,
                               boolean isPresent, Image img) {
     Drink drink = new Drink(name, price, provider, isPresent, img);
     if (drink.isPresent())
       Menu.pushNewItem(drink);
 
+      return 1;
     }
 
 

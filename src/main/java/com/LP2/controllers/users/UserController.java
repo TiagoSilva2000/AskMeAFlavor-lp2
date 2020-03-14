@@ -49,7 +49,7 @@ public class UserController {
 
     byte result = User.update(Auth.getUser());
     if (result == 0)
-    return Auth.getUser();
+      return Auth.getUser();
 
     return null;
   }
@@ -72,12 +72,6 @@ public class UserController {
         users.get(i).getIDCode()
       });
     }
-    objs.add(new Object[]{
-      null,
-      null,
-      null,
-      null
-    });
 
     Object[][] ob = objs.toArray(new Object[0][]);
     return ob;
