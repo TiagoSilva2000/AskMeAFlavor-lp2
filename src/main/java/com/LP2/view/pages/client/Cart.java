@@ -300,6 +300,9 @@ public class Cart extends javax.swing.JFrame {
         double value = LoginController.processPayment();
         Payment paymentDialog = new Payment(this , true, value);
         paymentDialog.setVisible(true);
+        // this.dispose();
+        // Cart c = new Cart();
+        // c.setVisible(true);
     }//GEN-LAST:event_confirmBTNMouseClicked
 
     /**

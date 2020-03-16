@@ -5,14 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-import com.LP2.app.Reader;
-import com.LP2.database.Connect;
-import com.LP2.database.items.ItemDAO;
-import com.LP2.database.misc.ImageDAO;
-import com.LP2.database.misc.OrderDAO;
-import com.LP2.database.misc.VisitDAO;
-import com.LP2.database.users.UserDAO;
-
 public class Loader {
   static private Data parse (String line) {
     String[] strings = line.split("=");
@@ -44,7 +36,6 @@ public class Loader {
 
   static public boolean preLoad() {
     loadVariables();
-    loadStreams();
 
     return true;
   }
@@ -61,16 +52,4 @@ public class Loader {
     loadVariables(dir + "/.env");
     return true;
   }
-
-  static private boolean loadStreams () {
-    Reader.loadStream();
-    return true;
-  }
-
-  static public boolean unloadStreams() {
-    Reader.unloadStream();
-    return true;
-  }
-
-
 }

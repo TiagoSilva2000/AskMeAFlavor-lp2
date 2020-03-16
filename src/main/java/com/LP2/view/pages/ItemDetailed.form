@@ -34,7 +34,7 @@
                       <Component id="feedBackBTN" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="204" max="-2" attributes="0"/>
+                      <EmptySpace min="204" pref="481" max="32767" attributes="0"/>
                       <Component id="minusBTN" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="quantityTXT" min="-2" pref="31" max="-2" attributes="0"/>
@@ -45,6 +45,11 @@
                           <Component id="addCartBTN" min="-2" max="-2" attributes="0"/>
                           <Component id="priceItemTXT" min="-2" max="-2" attributes="0"/>
                       </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="favIcon" min="-2" pref="60" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -73,8 +78,16 @@
                   <Component id="backDetailedItemBTN" min="-2" max="-2" attributes="0"/>
                   <Component id="feedBackBTN" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" pref="87" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" pref="87" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="favIcon" min="-2" pref="60" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="NameitemTXT" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -229,6 +242,11 @@
         <Property name="selectionColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="31" green="b" red="d6" type="rgb"/>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="favIcon">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jLabel2"/>
       </Properties>
     </Component>
   </SubComponents>

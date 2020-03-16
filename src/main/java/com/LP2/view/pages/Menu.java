@@ -29,7 +29,10 @@ public class Menu extends javax.swing.JFrame {
         foodTypeCBOX.setForeground(Color.white);
         this.setResizable(false);
 
-        }
+        foodTypeCBOX.setVisible(false);
+        cashbackTXT.setVisible(false);
+        valueCashbackTXT.setVisible(false);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

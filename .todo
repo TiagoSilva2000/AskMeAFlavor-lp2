@@ -1,7 +1,10 @@
-Refatorar Query de Menu
-Refatorar ItemControlador
-Refatorar o constructor para não automaticamente salvar no banco, mas depender
-agora do create.
+Interface
+  Feedback não aparecer para usuários não logados.
+  Cashback visível para usuários não logados.
+  Corrigir estrela do favorito.
+  Alteração de senha
+  Habilitar feedbacks
+  Remover Funcionário
 
 
 Extra

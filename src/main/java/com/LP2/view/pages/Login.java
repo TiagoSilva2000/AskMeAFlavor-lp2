@@ -71,6 +71,7 @@ public class Login extends javax.swing.JFrame {
         showMenuLBL = new javax.swing.JLabel();
         loginBTN = new javax.swing.JButton();
         registerLBL = new javax.swing.JLabel();
+        exitBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -185,6 +186,15 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        exitBTN.setBackground(new java.awt.Color(38, 70, 27));
+        exitBTN.setForeground(new java.awt.Color(255, 255, 255));
+        exitBTN.setText("Exit");
+        exitBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -207,13 +217,18 @@ public class Login extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(234, 234, 234)
                                 .addComponent(showMenuLBL)))
-                        .addGap(0, 117, Short.MAX_VALUE)))
+                        .addGap(0, 117, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(exitBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(41, 41, 41)
+                .addContainerGap()
+                .addComponent(exitBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(iconIMG)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(showMenuLBL)
@@ -223,7 +238,7 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(registerLBL)
                     .addComponent(loginBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         pack();
@@ -235,7 +250,6 @@ public class Login extends javax.swing.JFrame {
     private void selectScreen(){
         int result = LoginController.login(loginTXT.getText(),
                                     new String(passwordTXT.getPassword()));
-        System.out.println("passou");
         if (result == 0) {
             System.out.println("passed!");
             General gen = new General("Erro de Autenticação!");
@@ -316,6 +330,10 @@ public class Login extends javax.swing.JFrame {
         passwordTXT.setEchoChar('°');
     }//GEN-LAST:event_passwordTXTKeyTyped
 
+    private void exitBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBTNActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_exitBTNActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -347,6 +365,7 @@ public class Login extends javax.swing.JFrame {
     }
     public static int profileType;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton exitBTN;
     private javax.swing.JLabel iconIMG;
     private javax.swing.JButton loginBTN;
     private javax.swing.JPanel loginPNL;

@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 import com.LP2.controllers.items.ItemController;
+import com.LP2.models.security.Auth;
 import com.LP2.view.pages.EditProfile;
 import com.LP2.view.pages.Login;
 import com.LP2.view.pages.ItemDetailed;
@@ -46,6 +47,10 @@ public class UsersAccount extends javax.swing.JFrame {
         foodTypeCBOX.setBackground(Color.decode("2508315"));
         foodTypeCBOX.setForeground(Color.white);
 
+        foodTypeCBOX.setVisible(false);
+        feedbackMENU.setVisible(false);
+        String out = String.format("%.2f", Auth.getUser().getCashBack());
+        valueCashbackTXT.setText(out);
     }
 
     /**

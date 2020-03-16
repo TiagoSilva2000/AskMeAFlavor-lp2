@@ -71,6 +71,7 @@ public class ItemDetailed extends javax.swing.JFrame {
         plusBTN = new javax.swing.JLabel();
         minusBTN = new javax.swing.JLabel();
         quantityTXT = new javax.swing.JTextField();
+        favIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Detalhes do item");
@@ -149,6 +150,8 @@ public class ItemDetailed extends javax.swing.JFrame {
         quantityTXT.setText("1");
         quantityTXT.setSelectionColor(new java.awt.Color(214, 11, 49));
 
+        favIcon.setText("jLabel2");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -161,7 +164,7 @@ public class ItemDetailed extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(feedBackBTN))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(204, 204, 204)
+                        .addGap(204, 481, Short.MAX_VALUE)
                         .addComponent(minusBTN)
                         .addGap(18, 18, 18)
                         .addComponent(quantityTXT, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -170,7 +173,11 @@ public class ItemDetailed extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addCartBTN)
-                            .addComponent(priceItemTXT))))
+                            .addComponent(priceItemTXT)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(favIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(212, Short.MAX_VALUE)
@@ -191,8 +198,13 @@ public class ItemDetailed extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(backDetailedItemBTN)
                     .addComponent(feedBackBTN))
-                .addGap(4, 4, 4)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(favIcon, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(NameitemTXT, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -271,10 +283,14 @@ public class ItemDetailed extends javax.swing.JFrame {
         NameitemTXT.setText(loadedItem.getName());
         descriptionItemTXT1.setText(loadedItem.getExtra());
         priceItemTXT.setText(out);
+        favIcon.setIcon(new ImageIcon(System.getProperty("user.dir") + "/assets/staryu.png"));
+        feedBackBTN.setVisible(false);
+        favIcon.setVisible(false);
         if (loadedItem.getImage() == null)
             imageItemIMG.setVisible(false);
-        else {
-            imageItemIMG.setIcon(new ImageIcon(loadedItem.getImage().getContent()));
+            else {
+            imageItemIMG.setVisible(false);
+            // imageItemIMG.setIcon(new ImageIcon(loadedItem.getImage().getContent()));
         }
     }
 
@@ -317,6 +333,7 @@ public class ItemDetailed extends javax.swing.JFrame {
     private javax.swing.JButton addCartBTN;
     private javax.swing.JButton backDetailedItemBTN;
     private javax.swing.JLabel descriptionItemTXT1;
+    private javax.swing.JLabel favIcon;
     private javax.swing.JButton feedBackBTN;
     private javax.swing.JLabel imageItemIMG;
     private javax.swing.JLabel jLabel1;

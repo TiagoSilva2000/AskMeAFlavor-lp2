@@ -2,6 +2,7 @@ package com.LP2.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.LP2.models.loader.Dataset;
@@ -26,6 +27,14 @@ public class Connect {
       System.exit(1);
     }
     System.out.println("Conexão sucedida");
+  }
+
+  public static void close() {
+    try {
+      conn.close();
+    } catch(final SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   public static Connection getCon() { return conn; }

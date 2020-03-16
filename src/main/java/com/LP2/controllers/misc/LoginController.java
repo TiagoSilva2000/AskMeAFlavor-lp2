@@ -16,6 +16,7 @@ public class LoginController {
   static public int login(final String username, final String password) {
     User user = new User(username, password);
 
+    System.out.println(user.getID());
     if (user.getID() == -1)
       return 0;
 
@@ -50,7 +51,6 @@ public class LoginController {
       AllOrders.removeAndSetStatus(order.getID(), Constants.getPaidOrder());
     }
 
-    logout();
     return paidValue;
   }
 
